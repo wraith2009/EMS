@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Role {
+  student
+  teacher
+  hod
+  admin
+}
+
+enum AccessLevel {
+  superadmin
+  admin
+}
+
+enum AttendanceStatus {
+  present
+  absent
+  late
+  excused
+}
+
+enum LeaveStatus {
+  pending
+  approved
+  rejected
+}
+
+enum DayOfWeek {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+// Models
+model User {
+  user_id     Int        @id @default(autoincrement())
+  email       String     @unique
+  password    String
+  role        Role
+  profile_id  Int
+  student     Student?
+  teacher     Teacher?
+  hod         Hod?
+  admin       Admin?
+  attendances Attendance[]
+  leaveRequests LeaveRequest[]
+  notifications Notification[]
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+}
+
+model Student {
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [user_id], references: [user_id])
+  user_id        Int      @unique
+  batch          Batch    @relation(fields: [batch_id], references: [id])
+  batch_id       Int
+  department     Department @relation(fields: [department_id], references: [id])
+  department_id  Int
+  course         Course   @relation(fields: [course_id], references: [id])
+  course_id      Int
+  enrollment_year Int
+  marks          Mark[]
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Teacher {
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [user_id], references: [user_id])
+  user_id        Int      @unique
+  department     Department @relation(fields: [department_id], references: [id])
+  department_id  Int
+  timetables     Timetable[]
+  subjects_teaching Json
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Hod {
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [user_id], references: [user_id])
+  user_id        Int      @unique
+  department     Department @relation(fields: [department_id], references: [id])
+  department_id  Int
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Admin {
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [user_id], references: [user_id])
+  user_id        Int      @unique
+  access_level   AccessLevel
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Institute {
+  id         Int      @id @default(autoincrement())
+  reg_no     Int      @unique
+  name       String
+  address    String?
+  departments Department[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Department {
+  id           Int        @id @default(autoincrement())
+  institute    Institute  @relation(fields: [institute_id], references: [id])
+  institute_id Int
+  name         String
+  students     Student[]
+  teachers     Teacher[]
+  hods         Hod[]
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+}
+
+model Batch {
+  id         Int        @id @default(autoincrement())
+  name       String
+  start_year Int
+  end_year   Int
+  course     Course     @relation(fields: [course_id], references: [id])
+  course_id  Int
+  students   Student[]
+  timetables Timetable[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+}
+
+model Course {
+  id         Int        @id @default(autoincrement())
+  name       String
+  description String?
+  batches    Batch[]
+  subjects   Subject[]
+  students   Student[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+}
+
+model Subject {
+  id         Int        @id @default(autoincrement())
+  name       String
+  course     Course     @relation(fields: [course_id], references: [id])
+  course_id  Int
+  attendances Attendance[]
+  marks      Mark[]
+  timetables Timetable[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+}
+
+model Attendance {
+  id         Int        @id @default(autoincrement())
+  user       User       @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  subject    Subject    @relation(fields: [subject_id], references: [id])
+  subject_id Int
+  date       DateTime
+  status     AttendanceStatus
+  remarks    String?
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+}
+
+model Mark {
+  id         Int        @id @default(autoincrement())
+  student    Student    @relation(fields: [student_id], references: [id])
+  student_id Int
+  subject    Subject    @relation(fields: [subject_id], references: [id])
+  subject_id Int
+  marks_obtained Float
+  total_marks  Float
+  exam_date   DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+model LeaveRequest {
+  id         Int        @id @default(autoincrement())
+  user       User       @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  start_date DateTime
+  end_date   DateTime
+  reason     String?
+  status     LeaveStatus @default(pending)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+}
+
+model Timetable {
+  id         Int        @id @default(autoincrement())
+  batch      Batch      @relation(fields: [batch_id], references: [id])
+  batch_id   Int
+  subject    Subject    @relation(fields: [subject_id], references: [id])
+  subject_id Int
+  teacher    Teacher    @relation(fields: [teacher_id], references: [id])
+  teacher_id Int
+  day_of_week DayOfWeek
+  start_time DateTime
+  end_time   DateTime
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  user        User?    @relation(fields: [user_id], references: [user_id])
+  user_id     Int?
+  title       String
+  message     String
+  read_status Boolean  @default(false)
+  created_at  DateTime @default(now())
+}
