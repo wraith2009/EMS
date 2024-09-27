@@ -1,6 +1,7 @@
-'use client';
-import { FC, useState } from 'react';
-import axios from 'axios'; // Import Axios
+"use client";
+import { FC, useState } from "react";
+import axios from "axios"; // Import Axios
+import React from "react";
 
 // Define the types for the props
 interface SignupPopupProps {
@@ -9,24 +10,27 @@ interface SignupPopupProps {
 
 const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
   // State for managing form inputs and submission status
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
 
   // Function to handle form submission
   const handleSignup = async () => {
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
     try {
       // Make an Axios POST request to your signup endpoint
-      const response = await axios.post('/api/users/signup', { email, password });
+      const response = await axios.post("/api/users/signup", {
+        email,
+        password,
+      });
 
       // Handle success (display a success message or navigate, etc.)
-      setSuccess('Signup successful! Redirecting...');
-      console.log('Signup successful:', response.data);
+      setSuccess("Signup successful! Redirecting...");
+      console.log("Signup successful:", response.data);
 
       // Optionally, close the modal after a short delay
       setTimeout(() => {
@@ -34,8 +38,8 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       }, 2000);
     } catch (error) {
       // Handle error
-      setError('Signup failed. Please try again.');
-      console.error('Signup error:', error);
+      setError("Signup failed. Please try again.");
+      console.error("Signup error:", error);
     } finally {
       setLoading(false);
     }
@@ -74,7 +78,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
               disabled={loading}
               className="bg-blue-500 text-white rounded-lg py-2"
             >
-              {loading ? 'Signing up...' : 'Continue with email'}
+              {loading ? "Signing up..." : "Continue with email"}
             </button>
           </div>
 
@@ -88,8 +92,16 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
           </p>
           <p className="mt-2 text-xs text-gray-500">
             By signing up, you agree to the
-            <a href="#" className="text-blue-500"> Terms of Service </a> and
-            <a href="#" className="text-blue-500"> Privacy Policy</a>.
+            <a href="#" className="text-blue-500">
+              {" "}
+              Terms of Service{" "}
+            </a>{" "}
+            and
+            <a href="#" className="text-blue-500">
+              {" "}
+              Privacy Policy
+            </a>
+            .
           </p>
         </div>
         <button

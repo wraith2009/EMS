@@ -1,38 +1,40 @@
-'use client';
-import { FC, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react'; // To handle both Google and credentials sign-in
+"use client";
+import { FC, useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import React from "react"; // To handle both Google and credentials sign-in
 
 const SigninPage: FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const router = useRouter();
 
   // Handle sign-in with email and password
   const handleSignin = async () => {
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
       // Attempt to sign in using the credentials provider
-      const response = await signIn('credentials', {
+      const response = await signIn("credentials", {
         email,
         password,
         redirect: false, // Handle the response manually
       });
 
       if (response?.error) {
-        setError('Sign-in failed. Please check your credentials.');
+        setError("Sign-in failed. Please check your credentials.");
       } else {
-        setSuccess('Sign-in successful! Redirecting...');
-        setTimeout(() => router.push('/'), 2000); // Redirect after 2 seconds
+        setSuccess("Sign-in successful! Redirecting...");
+        setTimeout(() => router.push("/"), 2000); // Redirect after 2 seconds
       }
     } catch (error) {
-      setError('An unexpected error occurred. Please try again.');
+      console.error(error);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -41,21 +43,23 @@ const SigninPage: FC = () => {
   // Handle sign-in with Google
   const handleGoogleSignin = async () => {
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
       // Trigger Google sign-in using next-auth
-      const response = await signIn('google', { redirect: false });
-      
+      const response = await signIn("google", { redirect: false });
+
       if (response?.error) {
-        setError('Google sign-in failed. Please try again.');
+        setError("Google sign-in failed. Please try again.");
       } else {
-        setSuccess('Google sign-in successful! Redirecting...');
-        setTimeout(() => router.push('/'), 2000); // Redirect after 2 seconds
+        setSuccess("Google sign-in successful! Redirecting...");
+        setTimeout(() => router.push("/"), 2000); // Redirect after 2 seconds
       }
     } catch (error) {
-      setError('An unexpected error occurred. Please try again.');
+      console.error(error);
+
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -75,7 +79,7 @@ const SigninPage: FC = () => {
           <svg className="mr-2" width="20" height="20" fill="currentColor">
             <circle cx="10" cy="10" r="10" fill="#EA4335" />
           </svg>
-          {loading ? 'Signing in...' : 'Continue with Google'}
+          {loading ? "Signing in..." : "Continue with Google"}
         </button>
 
         <div className="flex flex-col w-full">
@@ -98,7 +102,7 @@ const SigninPage: FC = () => {
             disabled={loading}
             className="bg-blue-500 text-white rounded-lg py-2"
           >
-            {loading ? 'Signing in...' : 'Continue with email'}
+            {loading ? "Signing in..." : "Continue with email"}
           </button>
         </div>
 
@@ -107,14 +111,22 @@ const SigninPage: FC = () => {
 
         <p className="mt-4 text-sm">
           <a href="/signup" className="text-blue-500">
-            Don't have an account? Sign up here.
+            Don&apost have an account? Sign up here.
           </a>
         </p>
 
         <p className="mt-2 text-xs text-gray-500">
           By signing in, you agree to the
-          <a href="#" className="text-blue-500"> Terms of Service </a> and
-          <a href="#" className="text-blue-500"> Privacy Policy</a>.
+          <a href="#" className="text-blue-500">
+            {" "}
+            Terms of Service{" "}
+          </a>{" "}
+          and
+          <a href="#" className="text-blue-500">
+            {" "}
+            Privacy Policy
+          </a>
+          .
         </p>
       </div>
     </div>

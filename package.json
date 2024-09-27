@@ -6,7 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install",
+    "check-types": "tsc --pretty --noEmit",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "ts": "tsc --noEmit",
+    "typecheck": "tsc --pretty --noEmit",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,json,scss,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,scss,css}\"",
+    "test-all": "npm run format:fix && npm run check-lint && npm run build && npm run check-types",
+    "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -28,15 +39,23 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^8.57.1",
     "eslint-config-next": "14.2.11",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.0",
+    "globals": "^15.9.0",
+    "husky": "^8.0.0",
     "postcss": "^8",
+    "prettier": "^3.3.3",
     "prisma": "^5.20.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.7.0"
   }
 }
