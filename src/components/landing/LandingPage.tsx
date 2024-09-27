@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import Slideshow from "./Slideshow";
 import FeatureCards from "./Whyus";
@@ -83,7 +83,7 @@ export default function LandingPage() {
           <FeatureCards />
         </div>
       </div>
-      
+
       {isModalOpen && (
         <div className="fixed inset-0 z-50">
           <SignupPopup onClose={closeModal} />

@@ -1,6 +1,7 @@
-  "use client";
-  import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+
 interface SlideshowProps {
   images: string[];
 }
@@ -14,36 +15,42 @@ const Slideshow: React.FC<SlideshowProps> = ({ images }) => {
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
+
   useEffect(() => {
     if (isManual) return;
     const intervalId = setInterval(() => {
       nextImage();
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [currentImageIndex, isManual, nextImage]);
-
+  }, [currentImageIndex, isManual]);
 
   const selectImage = (index: number) => {
     setCurrentImageIndex(index);
     setIsManual(true);
-    // Reset to automatic after a delay
     setTimeout(() => setIsManual(false), 10000);
   };
 
   return (
     <div className="relative w-2/3 m-4 h-[400px] overflow-hidden">
-      <div 
+      <div
         className="image-container flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
       >
         {images.map((image, index) => (
-          <Image
+          <div
             key={index}
-            src={image}
-            alt={`Slide ${index + 1}`}
-            className="w-full h-[400px] rounded-lg object-cover flex-shrink-0"
-          />
+            className="relative w-full h-[400px] flex-shrink-0"
+            style={{ position: "relative", width: "100%", height: "400px" }}
+          >
+            <Image
+              src={image}
+              alt={`Slide ${index + 1}`}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+          </div>
         ))}
       </div>
 
