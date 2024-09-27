@@ -1,8 +1,7 @@
 'use client';
 import { FC, useState } from 'react';
-import axios from 'axios'; // Axios for HTTP requests
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react'; // To handle both Google and credentials sign-in
 
 const SigninPage: FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -10,60 +9,73 @@ const SigninPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
-  const router = useRouter(); // Next.js router to navigate
+  const router = useRouter();
 
+  // Handle sign-in with email and password
   const handleSignin = async () => {
     setLoading(true);
     setError('');
     setSuccess('');
-  
+
     try {
-      console.log('1');
-      console.log(email)
-      console.log(password)
-      
       // Attempt to sign in using the credentials provider
       const response = await signIn('credentials', {
         email,
         password,
-        redirect: false, // Set redirect to false to handle the response manually
+        redirect: false, // Handle the response manually
       });
-  
-      console.log('Response:', response); // Debugging the response
-      
+
       if (response?.error) {
-        // Handle errors (e.g., invalid credentials)
         setError('Sign-in failed. Please check your credentials.');
-        console.error('Sign-in error:', response.error);
       } else {
-        // Handle success (if no error)
         setSuccess('Sign-in successful! Redirecting...');
-        console.log('Sign-in successful:', response);
-  
-        // Redirect to the home page or dashboard after 2 seconds
-        setTimeout(() => {
-          router.push('/');
-        }, 2000);
+        setTimeout(() => router.push('/'), 2000); // Redirect after 2 seconds
       }
     } catch (error) {
-      // Handle any unexpected errors (e.g., network issues)
       setError('An unexpected error occurred. Please try again.');
-      console.error('Sign-in exception:', error);
     } finally {
       setLoading(false);
     }
   };
-  
+
+  // Handle sign-in with Google
+  const handleGoogleSignin = async () => {
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      // Trigger Google sign-in using next-auth
+      const response = await signIn('google', { redirect: false });
+      
+      if (response?.error) {
+        setError('Google sign-in failed. Please try again.');
+      } else {
+        setSuccess('Google sign-in successful! Redirecting...');
+        setTimeout(() => router.push('/'), 2000); // Redirect after 2 seconds
+      }
+    } catch (error) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-4">Sign in to your account</h2>
 
-        <button className="bg-gray-800 text-white rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center">
+        {/* Google Sign-in Button */}
+        <button
+          onClick={handleGoogleSignin}
+          disabled={loading}
+          className="bg-gray-800 text-white rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center"
+        >
           <svg className="mr-2" width="20" height="20" fill="currentColor">
             <circle cx="10" cy="10" r="10" fill="#EA4335" />
           </svg>
-          Continue with Google
+          {loading ? 'Signing in...' : 'Continue with Google'}
         </button>
 
         <div className="flex flex-col w-full">
