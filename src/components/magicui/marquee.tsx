@@ -1,4 +1,5 @@
 import { cn } from "@/src/lib/utils";
+import React from "react";
 
 interface MarqueeProps {
   className?: string;

@@ -1,5 +1,5 @@
-'use client';
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 
 interface SlideshowProps {
   images: string[];
@@ -10,23 +10,17 @@ const Slideshow: React.FC<SlideshowProps> = ({ images }) => {
   const [isManual, setIsManual] = useState(false);
 
   useEffect(() => {
-    if (isManual) return; 
+    if (isManual) return;
     const intervalId = setInterval(() => {
       nextImage();
-    }, 2000); 
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, [currentImageIndex, isManual]);
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const previousImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1,
     );
   };
 
@@ -37,7 +31,6 @@ const Slideshow: React.FC<SlideshowProps> = ({ images }) => {
 
   return (
     <div className="relative w-2/3 m-4 h-[400px] ">
-      
       <div className="image-container">
         <img
           src={images[currentImageIndex]}
@@ -51,15 +44,13 @@ const Slideshow: React.FC<SlideshowProps> = ({ images }) => {
           <div
             key={index}
             className={`dot w-3 h-3 rounded-full cursor-pointer ${
-              index === currentImageIndex
-                ? 'bg-gray-600'
-                : 'bg-gray-300'
+              index === currentImageIndex ? "bg-gray-600" : "bg-gray-300"
             }`}
             onClick={() => selectImage(index)}
           />
         ))}
       </div>
-{/* 
+      {/* 
       <button
         className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
         onClick={previousImage}

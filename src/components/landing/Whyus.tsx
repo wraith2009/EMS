@@ -1,11 +1,13 @@
-import { BentoGrid, BentoCard } from '../magicui/bento-grid'; // assuming the file is named BentoGrid
+import { BentoGrid, BentoCard } from "../magicui/bento-grid"; // assuming the file is named BentoGrid
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import React from "react";
 
 export default function FeatureCards() {
   const cards = [
     {
       name: "Streamlined Leave Application",
-      description: "Easily apply for leaves with a few clicks, saving time and effort.",
+      description:
+        "Easily apply for leaves with a few clicks, saving time and effort.",
       background: <div className="w-full h-full bg-[#bfa6d6]" />, // Custom background color
       Icon: ArrowRightIcon,
       href: "#", // Add the appropriate link
@@ -13,7 +15,8 @@ export default function FeatureCards() {
     },
     {
       name: "Effortless Attendance Tracking",
-      description: "Monitor attendance seamlessly with our intuitive management tools.",
+      description:
+        "Monitor attendance seamlessly with our intuitive management tools.",
       background: <div className="w-full h-full bg-[#d5b5b2]" />,
       Icon: ArrowRightIcon,
       href: "#",
@@ -21,7 +24,8 @@ export default function FeatureCards() {
     },
     {
       name: "Transparent Financial Management",
-      description: "Gain insights into finances with real-time tracking and reporting.",
+      description:
+        "Gain insights into finances with real-time tracking and reporting.",
       background: <div className="w-full h-full bg-[#a5c6bd]" />,
       Icon: ArrowRightIcon,
       href: "#",
@@ -29,12 +33,13 @@ export default function FeatureCards() {
     },
     {
       name: "Event Coordination Made Simple",
-      description: "Plan and manage events effortlessly, ensuring a smooth experience for all.",
+      description:
+        "Plan and manage events effortlessly, ensuring a smooth experience for all.",
       background: <div className="w-full h-full bg-[#9eb1bf]" />,
       Icon: ArrowRightIcon,
       href: "#",
       cta: "Learn More",
-    }
+    },
   ];
 
   return (
