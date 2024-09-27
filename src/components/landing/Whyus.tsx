@@ -1,4 +1,4 @@
-import { BentoGrid, BentoCard } from "../magicui/bento-grid"; // assuming the file is named BentoGrid
+import { BentoCard, BentoGrid } from "../magicui/bento-grid";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import React from "react";
 
@@ -8,16 +8,16 @@ export default function FeatureCards() {
       name: "Streamlined Leave Application",
       description:
         "Easily apply for leaves with a few clicks, saving time and effort.",
-      background: <div className="w-full h-full bg-[#bfa6d6]" />, // Custom background color
+      backgroundImage: "url(/leave.png)", // Add image path here
       Icon: ArrowRightIcon,
-      href: "#", // Add the appropriate link
+      href: "#",
       cta: "Learn More",
     },
     {
       name: "Effortless Attendance Tracking",
       description:
         "Monitor attendance seamlessly with our intuitive management tools.",
-      background: <div className="w-full h-full bg-[#d5b5b2]" />,
+      backgroundImage: "url(/attendance.png)", // Use your image path
       Icon: ArrowRightIcon,
       href: "#",
       cta: "Learn More",
@@ -26,7 +26,7 @@ export default function FeatureCards() {
       name: "Transparent Financial Management",
       description:
         "Gain insights into finances with real-time tracking and reporting.",
-      background: <div className="w-full h-full bg-[#a5c6bd]" />,
+      backgroundImage: "url(/fee.png)",
       Icon: ArrowRightIcon,
       href: "#",
       cta: "Learn More",
@@ -35,7 +35,7 @@ export default function FeatureCards() {
       name: "Event Coordination Made Simple",
       description:
         "Plan and manage events effortlessly, ensuring a smooth experience for all.",
-      background: <div className="w-full h-full bg-[#9eb1bf]" />,
+      backgroundImage: "url(/timetable.png)",
       Icon: ArrowRightIcon,
       href: "#",
       cta: "Learn More",
@@ -50,14 +50,14 @@ export default function FeatureCards() {
             key={index}
             name={card.name}
             description={card.description}
-            background={card.background}
+            backgroundImage={card.backgroundImage} // Pass backgroundImage
             Icon={card.Icon}
             href={card.href}
             cta={card.cta}
             className={
               index === 0 || index === 3
-                ? "col-span-1 sm:col-span-2" // 1 space on small, 2 on large for 1st and 4th card
-                : "col-span-1" // 1 space for 2nd and 3rd card
+                ? "col-span-1 sm:col-span-2"
+                : "col-span-1"
             }
           />
         ))}

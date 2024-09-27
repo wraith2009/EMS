@@ -111,7 +111,7 @@ const SigninPage: FC = () => {
 
         <p className="mt-4 text-sm">
           <a href="/signup" className="text-blue-500">
-            Don&apost have an account? Sign up here.
+            Don&apos;t have an account? Sign up here.
           </a>
         </p>
 
