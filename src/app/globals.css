@@ -178,7 +178,9 @@
 .hidden-element {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
 }
 
 /* When the components become visible */
@@ -186,4 +188,3 @@
   opacity: 1;
   transform: translateY(0);
 }
-

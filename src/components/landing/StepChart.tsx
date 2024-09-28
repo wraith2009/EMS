@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Step {
   number: number;
@@ -7,34 +7,33 @@ interface Step {
 }
 
 export default function StepChart(): JSX.Element {
-    const steps: Step[] = [
-        {
-          number: 1,
-          title: 'School Signup',
-          description: 'Create an account',
-        },
-        {
-          number: 2,
-          title: 'Add School Details',
-          description: 'Fill in school info',
-        },
-        {
-          number: 3,
-          title: 'Add Teachers',
-          description: 'Invite teachers',
-        },
-        {
-          number: 4,
-          title: 'Teachers Add Students',
-          description: 'Teachers add students',
-        },
-        {
-          number: 5,
-          title: 'Start Managing',
-          description: 'Manage school',
-        },
-      ];
-    
+  const steps: Step[] = [
+    {
+      number: 1,
+      title: "School Signup",
+      description: "Create an account",
+    },
+    {
+      number: 2,
+      title: "Add School Details",
+      description: "Fill in school info",
+    },
+    {
+      number: 3,
+      title: "Add Teachers",
+      description: "Invite teachers",
+    },
+    {
+      number: 4,
+      title: "Teachers Add Students",
+      description: "Teachers add students",
+    },
+    {
+      number: 5,
+      title: "Start Managing",
+      description: "Manage school",
+    },
+  ];
 
   return (
     <div className="flex justify-between items-center px-8 py-4 w-2/3">

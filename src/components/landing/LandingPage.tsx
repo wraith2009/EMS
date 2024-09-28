@@ -28,7 +28,7 @@ export default function LandingPage() {
           }
         });
       },
-      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 } // Adjust rootMargin as needed
+      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 }, // Adjust rootMargin as needed
     );
 
     if (slideshowRef.current) observer.observe(slideshowRef.current);
@@ -51,13 +51,24 @@ export default function LandingPage() {
         <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 md:h-14 px-4 z-10 bg-[#f3f7f9]">
           <span className="text-[#253b47] font-bold text-lg">campussync</span>
           <div className="flex gap-6">
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">About</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">For Business</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">Try for free</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">Pricing</span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              About
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              For Business
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              Try for free
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              Pricing
+            </span>
           </div>
           <div className="flex gap-2">
-            <button className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl" onClick={openModal}>
+            <button
+              className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+              onClick={openModal}
+            >
               <span className="text-primary-red font-sans">Signup</span>
             </button>
           </div>
@@ -71,31 +82,45 @@ export default function LandingPage() {
             Operations with Ease
           </h1>
           <div className="text-[#8c9499] mt-4 text-sm animate-fade-delay">
-            <p>Comprehensive Management Solutions for Attendance, Finances, and Events</p>
+            <p>
+              Comprehensive Management Solutions for Attendance, Finances, and
+              Events
+            </p>
             <p>– Empowering Universities and Schools to Thrive.</p>
           </div>
         </div>
 
         {/* Slideshow */}
         <div className="flex justify-center items-center flex-grow my-4 ">
-          <div className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px] hidden-element" ref={slideshowRef}>
+          <div
+            className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px] hidden-element"
+            ref={slideshowRef}
+          >
             <Slideshow images={images} />
           </div>
         </div>
 
         {/* Feature Cards */}
-        <div className="flex flex-col justify-center items-center my-10 hidden-element" ref={featureCardsRef}>
+        <div
+          className="flex flex-col justify-center items-center my-10 hidden-element"
+          ref={featureCardsRef}
+        >
           <div className="w-2/3">
             <p>
-              <span className="text-primary-red font-bold text-[30px]">Why Choose Us?</span>
+              <span className="text-primary-red font-bold text-[30px]">
+                Why Choose Us?
+              </span>
             </p>
           </div>
           <FeatureCards />
         </div>
 
         {/* Step Chart */}
-        <div className="w-full flex justify-center hidden-element min-h-[300px]" ref={stepChartRef}>
-\
+        <div
+          className="w-full flex justify-center hidden-element min-h-[300px]"
+          ref={stepChartRef}
+        >
+          \
           <StepChart />
         </div>
       </div>
