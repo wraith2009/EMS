@@ -17,41 +17,23 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any): Promise<any> {
         try {
-          console.log("Backend received email:", credentials.email);
-          console.log("Backend received password:", credentials.password);
-          // Find user by email
           const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email,
-            },
+            where: { email: credentials.email },
           });
 
-          // Log user details for debugging
-          console.log("User found:", user);
+          if (!user) throw new Error("No user found with this email.");
 
-          if (!user) {
-            console.log("No user found with this email");
-            throw new Error("No user found");
-          }
-
-          // Compare the password
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password,
+            user.password
           );
 
-          // Log password comparison result
-          console.log("Is password correct?", isPasswordCorrect);
-
-          if (!isPasswordCorrect) {
-            console.log("Incorrect password");
-            throw new Error("Incorrect Password");
-          }
+          if (!isPasswordCorrect) throw new Error("Incorrect password.");
 
           return user;
         } catch (error: any) {
-          console.log("Error during authentication:", error);
-          throw new Error(error);
+          // console.error("Authorization error:", error.message);
+          throw new Error(error.message || "Error during authentication.");
         }
       },
     }),
@@ -63,18 +45,11 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google" && profile) {
-        // Check if the user exists in your database
         const user = await prisma.user.findUnique({
-          where: {
-            email: profile.email,
-          },
+          where: { email: profile.email },
         });
 
-        if (!user) {
-          if (!profile?.email || !profile?.name) {
-            throw new Error("Google profile is missing an email.");
-          }
-          // If the user doesn't exist, create a new user in the database
+        if (!user && profile.email && profile.name) {
           await prisma.user.create({
             data: {
               email: profile.email,
@@ -83,13 +58,13 @@ export const authOptions: NextAuthOptions = {
             },
           });
         }
-        return true; // Continue the authentication
+        return true;
       }
-      return true; // Default return for other providers
+      return true;
     },
     async jwt({ token, user }) {
       if (user) {
-        token._id = user.user_id?.toString();
+        token.user_id = user.id?.toString();
         token.role = user.role?.toString();
       }
       return token;

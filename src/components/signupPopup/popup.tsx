@@ -97,7 +97,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
           {success && <p className="mt-2 text-green-500">{success}</p>}
 
           <p className=" text-sm">
-            <Link href="sign-in" className="text-blue-500">
+            <Link href="/sign-in" className="text-blue-500">
               Already have an account?
             </Link>
           </p>

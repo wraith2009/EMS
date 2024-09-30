@@ -120,7 +120,7 @@ export default function LandingPage() {
           className="w-full flex justify-center hidden-element min-h-[300px]"
           ref={stepChartRef}
         >
-          \
+          
           <StepChart />
         </div>
       </div>
