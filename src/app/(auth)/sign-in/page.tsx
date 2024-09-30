@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React from "react"; // To handle both Google and credentials sign-in
 
-
 const SigninPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -42,35 +41,33 @@ const SigninPage: FC = () => {
   };
 
   // Handle sign-in with Google
-// Handle sign-in with Google
-const handleGoogleSignin = async () => {
-  setLoading(true);
-  setError("");
-  setSuccess("");
+  // Handle sign-in with Google
+  const handleGoogleSignin = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
-  try {
-    const response = await signIn("google", { redirect: false });
-    console.log("res",response)
-    // Check if the signIn response has an error field
-    if (response?.error) {
-      console.log("Google sign-in error:", response.error);
-      setError("Google sign-in failed. Please try again.");
-    } 
-    else if (response?.ok) {
-      console.log("Google sign-in successful! Redirecting...", response);
-      setSuccess("Google sign-in successful! Redirecting...");
-      setTimeout(() => router.push("/"), 2000); // Redirect after 2 seconds
-    } else {
-      console.log("Google sign-in response: ", response); // for debugging purposes
+    try {
+      const response = await signIn("google", { redirect: false });
+      console.log("res", response);
+      // Check if the signIn response has an error field
+      if (response?.error) {
+        console.log("Google sign-in error:", response.error);
+        setError("Google sign-in failed. Please try again.");
+      } else if (response?.ok) {
+        console.log("Google sign-in successful! Redirecting...", response);
+        setSuccess("Google sign-in successful! Redirecting...");
+        setTimeout(() => router.push("/"), 2000); // Redirect after 2 seconds
+      } else {
+        console.log("Google sign-in response: ", response); // for debugging purposes
+      }
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error during Google sign-in:", error);
-    setError("An unexpected error occurred. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

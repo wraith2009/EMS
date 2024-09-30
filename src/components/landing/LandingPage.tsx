@@ -4,6 +4,9 @@ import FeatureCards from "./Whyus";
 import SignupPopup from "../signupPopup/popup";
 import StepChart from "./StepChart";
 import React from "react";
+import Testimonials from "./testimonials";
+import CallToAction from "./callToAction";
+import Footer from "./footer";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,9 +107,9 @@ export default function LandingPage() {
           className="flex flex-col justify-center items-center my-10 hidden-element"
           ref={featureCardsRef}
         >
-          <div className="w-2/3">
+          <div className="w-2/3 text-center">
             <p>
-              <span className="text-primary-red font-bold text-[30px]">
+              <span className="text-4xl md:text-5xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-b from-primary-red to-slate-200 text-transparent bg-clip-text text-center mt-5">
                 Why Choose Us?
               </span>
             </p>
@@ -120,6 +123,23 @@ export default function LandingPage() {
           ref={stepChartRef}
         >
           <StepChart />
+        </div>
+
+        <div className="flex justify-center my-10">
+          <div className="w-2/3">
+            <Testimonials />
+          </div>
+        </div>
+
+        <div className="flex justify-center my-10">
+          <div className="w-2/3">
+            {/* Pass openModal to CallToAction */}
+            <CallToAction onOpen={openModal} />
+          </div>
+        </div>
+
+        <div>
+          <Footer />
         </div>
       </div>
 
