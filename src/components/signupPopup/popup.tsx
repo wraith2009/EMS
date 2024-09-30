@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import axios from "axios"; // Import Axios
 import React from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 // Define the types for the props
 interface SignupPopupProps {
   onClose: () => void;
@@ -45,13 +46,42 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
     }
   };
 
+  const handlegooglelogin = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await signIn("google", { redirect: false });
+      console.log("res", response);
+      // Check if the signIn response has an error field
+      if (response?.error) {
+        console.log("Google sign-in error:", response.error);
+        setError("Google sign-in failed. Please try again.");
+      } else if (response?.ok) {
+        console.log("Google sign-in successful! Redirecting...", response);
+        setSuccess("Google sign-in successful! Redirecting...");
+        // setTimeout(() => router.push("/login"), 2000); // Redirect after 2 seconds
+      } else {
+        console.log("Google sign-in response: ", response); // for debugging purposes
+      }
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm">
       <div className="relative bg-[#f3f7f9] py-16 px-12 rounded-2xl shadow-lg max-w-sm w-full">
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-lg font-semibold ">Create your account</h2>
 
-          <button className="bg-primary-red text-white rounded-2xl py-2 px-4 w-full  flex items-center justify-center">
+          <button
+            className="bg-primary-red text-white rounded-2xl py-2 px-4 w-full  flex items-center justify-center"
+            onClick={handlegooglelogin}
+          >
             <div className="flex gap-2 items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

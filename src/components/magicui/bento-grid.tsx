@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/src/lib/utils";
+import React from "react";
 import { Button } from "../ui/button";
 
 const BentoGrid = ({
@@ -35,7 +36,7 @@ const BentoCard = ({
   name: string;
   className?: string;
   backgroundImage?: string; // Optional string for background image URL
-  Icon: any;
+  Icon?: any;
   description: string;
   href: string;
   cta: string;

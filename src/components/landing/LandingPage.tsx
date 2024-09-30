@@ -1,13 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Slideshow from "./Slideshow";
 import FeatureCards from "./Whyus";
 import SignupPopup from "../signupPopup/popup";
 import StepChart from "./StepChart";
+import React from "react";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const images = ["/slideshow1.jpg", "/slideshow2.jpg", "/slideshow3.jpg"];
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -92,11 +91,11 @@ export default function LandingPage() {
 
         {/* Slideshow */}
         <div className="flex justify-center items-center flex-grow my-4 ">
-          <div
-            className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px] hidden-element"
-            ref={slideshowRef}
-          >
-            <Slideshow images={images} />
+          <div className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px] hidden-element">
+            <img
+              src="/slideshow1.jpg"
+              className="w-full md:h-[500px] rounded-2xl shadow-2xl"
+            />
           </div>
         </div>
 
@@ -120,7 +119,6 @@ export default function LandingPage() {
           className="w-full flex justify-center hidden-element min-h-[300px]"
           ref={stepChartRef}
         >
-          
           <StepChart />
         </div>
       </div>

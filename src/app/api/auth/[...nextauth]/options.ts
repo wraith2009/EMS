@@ -1,13 +1,10 @@
 import { NextAuthOptions, SessionStrategy } from "next-auth";
 import bcrypt from "bcryptjs";
 import prisma from "@/src/db/db";
-import type { Adapter } from "next-auth/adapters";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -15,25 +12,45 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text", placeholder: "demo@demo.com" },
         password: { label: "Password", type: "password" },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async authorize(credentials: any): Promise<any> {
         try {
+          console.log("Backend received email:", credentials.email);
+          console.log("Backend received password:", credentials.password);
+          // Find user by email
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: {
+              email: credentials.email,
+            },
           });
 
-          if (!user) throw new Error("No user found with this email.");
+          // Log user details for debugging
+          console.log("User found:", user);
 
+          if (!user) {
+            console.log("No user found with this email");
+            throw new Error("No user found");
+          }
+
+          // Compare the password
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password,
           );
 
-          if (!isPasswordCorrect) throw new Error("Incorrect password.");
+          // Log password comparison result
+          console.log("Is password correct?", isPasswordCorrect);
+
+          if (!isPasswordCorrect) {
+            console.log("Incorrect password");
+            throw new Error("Incorrect Password");
+          }
 
           return user;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-          // console.error("Authorization error:", error.message);
-          throw new Error(error.message || "Error during authentication.");
+          console.error("Error during authentication:", error);
+          throw new Error(error);
         }
       },
     }),
@@ -45,30 +62,36 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google" && profile) {
-        const user = await prisma.user.findUnique({
-          where: { email: profile.email },
+        const { sub: oauthId, email, name } = profile;
+
+        let existingUser = await prisma.user.findFirst({
+          where: {
+            OR: [{ email: email! }, { oauthId: oauthId! }],
+          },
         });
 
-        if (!user && profile.email && profile.name) {
-          await prisma.user.create({
+        if (!existingUser) {
+          existingUser = await prisma.user.create({
             data: {
-              email: profile.email,
-              name: profile.name ?? null,
-              password: "google-auth-user",
+              oauthId,
+              email: email as string,
+              name,
             },
           });
         }
-        return true;
       }
+
       return true;
     },
+
     async jwt({ token, user }) {
       if (user) {
-        token.user_id = user.id?.toString();
+        token._id = user.user_id?.toString();
         token.role = user.role?.toString();
       }
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
       if (token) {
         session.user.user_id = token.user_id;
