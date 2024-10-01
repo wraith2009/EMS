@@ -7,6 +7,7 @@ import React from "react";
 import Testimonials from "./testimonials";
 import CallToAction from "./callToAction";
 import Footer from "./footer";
+import Image from "next/image";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function LandingPage() {
           }
         });
       },
-      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 }, // Adjust rootMargin as needed
+      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 } // Adjust rootMargin as needed
     );
 
     if (slideshowRef.current) observer.observe(slideshowRef.current);
@@ -92,12 +93,14 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Slideshow */}
         <div className="flex justify-center items-center flex-grow my-4 ">
-          <div className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px] hidden-element">
-            <img
-              src="/slideshow1.jpg"
-              className="w-full md:h-[500px] rounded-2xl shadow-2xl"
+          <div className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px]  animate-fade-delay">
+            <Image
+              src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1727768563/Screenshot_2024-10-01_131209_nnpd2b.png"
+              width={1000}
+              height={500}
+              alt="hero image"
+              priority
             />
           </div>
         </div>
