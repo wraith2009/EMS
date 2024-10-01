@@ -41,24 +41,28 @@ const SigninPage: FC = () => {
   };
 
   // Handle sign-in with Google
+  // Handle sign-in with Google
   const handleGoogleSignin = async () => {
     setLoading(true);
     setError("");
     setSuccess("");
 
     try {
-      // Trigger Google sign-in using next-auth
       const response = await signIn("google", { redirect: false });
-
+      console.log("res", response);
+      // Check if the signIn response has an error field
       if (response?.error) {
+        console.log("Google sign-in error:", response.error);
         setError("Google sign-in failed. Please try again.");
-      } else {
+      } else if (response?.ok) {
+        console.log("Google sign-in successful! Redirecting...", response);
         setSuccess("Google sign-in successful! Redirecting...");
         setTimeout(() => router.push("/"), 2000); // Redirect after 2 seconds
+      } else {
+        console.log("Google sign-in response: ", response); // for debugging purposes
       }
     } catch (error) {
-      console.error(error);
-
+      console.error("Error during Google sign-in:", error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -111,7 +115,7 @@ const SigninPage: FC = () => {
 
         <p className="mt-4 text-sm">
           <a href="/signup" className="text-blue-500">
-            Don&apost have an account? Sign up here.
+            Don&apos;t have an account? Sign up here.
           </a>
         </p>
 

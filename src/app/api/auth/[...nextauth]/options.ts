@@ -1,13 +1,10 @@
 import { NextAuthOptions, SessionStrategy } from "next-auth";
 import bcrypt from "bcryptjs";
 import prisma from "@/src/db/db";
-import type { Adapter } from "next-auth/adapters";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -15,6 +12,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text", placeholder: "demo@demo.com" },
         password: { label: "Password", type: "password" },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async authorize(credentials: any): Promise<any> {
         try {
           console.log("Backend received email:", credentials.email);
@@ -49,8 +47,9 @@ export const authOptions: NextAuthOptions = {
           }
 
           return user;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-          console.log("Error during authentication:", error);
+          console.error("Error during authentication:", error);
           throw new Error(error);
         }
       },
@@ -63,30 +62,28 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google" && profile) {
-        // Check if the user exists in your database
-        const user = await prisma.user.findUnique({
+        const { sub: oauthId, email, name } = profile;
+
+        let existingUser = await prisma.user.findFirst({
           where: {
-            email: profile.email,
+            OR: [{ email: email! }, { oauthId: oauthId! }],
           },
         });
 
-        if (!user) {
-          if (!profile?.email || !profile?.name) {
-            throw new Error("Google profile is missing an email.");
-          }
-          // If the user doesn't exist, create a new user in the database
-          await prisma.user.create({
+        if (!existingUser) {
+          existingUser = await prisma.user.create({
             data: {
-              email: profile.email,
-              name: profile.name ?? null,
-              password: "google-auth-user",
+              oauthId,
+              email: email as string,
+              name,
             },
           });
         }
-        return true; // Continue the authentication
       }
-      return true; // Default return for other providers
+
+      return true;
     },
+
     async jwt({ token, user }) {
       if (user) {
         token._id = user.user_id?.toString();
@@ -94,6 +91,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
       if (token) {
         session.user.user_id = token.user_id;
