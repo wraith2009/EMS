@@ -31,7 +31,7 @@ export default function LandingPage() {
           }
         });
       },
-      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 } // Adjust rootMargin as needed
+      { rootMargin: "0px 0px -100px 0px", threshold: 0.1 }, // Adjust rootMargin as needed
     );
 
     if (slideshowRef.current) observer.observe(slideshowRef.current);
