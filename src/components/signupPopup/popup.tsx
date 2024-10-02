@@ -51,7 +51,10 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
     setError("");
     setSuccess("");
     try {
-      const response = await signIn("google", { redirect: false });
+      const response = await signIn("google", {
+        redirect: false,
+        callbackUrl: "/profile",
+      });
       console.log("res", response);
       // Check if the signIn response has an error field
       if (response?.error) {
@@ -60,7 +63,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       } else if (response?.ok) {
         console.log("Google sign-in successful! Redirecting...", response);
         setSuccess("Google sign-in successful! Redirecting...");
-        // setTimeout(() => router.push("/login"), 2000); // Redirect after 2 seconds
+        // setTimeout(() => router.push("/pro"), 2000); // Redirect after 2 seconds
       } else {
         console.log("Google sign-in response: ", response); // for debugging purposes
       }
