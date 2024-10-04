@@ -45,7 +45,7 @@ enum DayOfWeek {
 
 // Models
 model User {
-  id             String        @id @default(cuid()) // Use cuid for ID
+  id             String        @id @default(cuid()) 
   email          String        @unique
   password       String?
   name           String?
