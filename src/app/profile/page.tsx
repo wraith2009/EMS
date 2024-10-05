@@ -1,10 +1,8 @@
-"use client"
+"use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 
-interface ProfilePageProps {}
-
-const Profile: React.FC<ProfilePageProps> = () => {
+const Profile: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -50,7 +48,10 @@ const Profile: React.FC<ProfilePageProps> = () => {
       {message && <p className="mb-4 text-green-600">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
@@ -62,7 +63,10 @@ const Profile: React.FC<ProfilePageProps> = () => {
           />
         </div>
         <div>
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="gender"
+            className="block text-sm font-medium text-gray-700"
+          >
             Gender
           </label>
           <input
@@ -74,7 +78,10 @@ const Profile: React.FC<ProfilePageProps> = () => {
           />
         </div>
         <div>
-          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="phoneNumber"
+            className="block text-sm font-medium text-gray-700"
+          >
             Phone Number
           </label>
           <input
@@ -86,7 +93,10 @@ const Profile: React.FC<ProfilePageProps> = () => {
           />
         </div>
         <div>
-          <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="avatar"
+            className="block text-sm font-medium text-gray-700"
+          >
             Avatar
           </label>
           <input
