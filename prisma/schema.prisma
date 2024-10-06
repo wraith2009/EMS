@@ -54,7 +54,7 @@ model User {
   profile_id     Int?
   oauthId        String?
   gender         String?
-  phoneNumber         Int?
+  phoneNumber    String?
   avatar         String?
   // Relations
   student        Student?
@@ -118,14 +118,17 @@ model Admin {
 
 model Institute {
   id             String        @id @default(cuid())
-  reg_no         Int           @unique
+  reg_no         String           @unique
   name           String
   address        String?
+  contactNumber  String        
+  insEmail       String
   departments    Department[]
   
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
+
 
 model Department {
   id             String        @id @default(cuid())
