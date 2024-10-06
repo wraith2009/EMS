@@ -32,6 +32,9 @@ export const authOptions: NextAuthOptions = {
             throw new Error("No user found");
           }
 
+          if (user.password === null) {
+            throw new Error("Password is missing");
+          }
           // Compare the password
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
@@ -84,19 +87,26 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
+      console.log("profile data", profile);
+      console.log("JWT Callback - Token before modification:", token);
+      console.log("JWT Callback - User (available only on sign-in):", user);
       if (user) {
-        token._id = user.user_id?.toString();
+        token.id = user.id?.toString();
         token.role = user.role?.toString();
+        console.log("JWT Callback - User:", user);
+        console.log("JWT Callback - Token after modification:", token);
       }
       return token;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
+      console.log("Session Callback - Token:", token);
       if (token) {
-        session.user.user_id = token.user_id;
+        session.user.id = token.id;
         session.user.role = token.role;
       }
+      console.log("Session Callback - Session:", session);
       return session;
     },
   },

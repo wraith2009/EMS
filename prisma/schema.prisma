@@ -45,32 +45,33 @@ enum DayOfWeek {
 
 // Models
 model User {
-  user_id     String        @id @default(cuid()) // Use cuid for ID
-  email       String        @unique
-  password    String?
-  name        String?
-  isvarified  Boolean? 
-  role        Role?
-  profile_id  Int?
-  oauthId     String?
-  
+  id             String        @id @default(cuid()) 
+  email          String        @unique
+  password       String?
+  name           String?
+  isvarified     Boolean? 
+  role           Role?
+  profile_id     Int?
+  oauthId        String?
+  gender         String?
+  phoneNumber    String?
+  avatar         String?
   // Relations
-  student     Student?
-  teacher     Teacher?
-  hod         Hod?
-  admin       Admin?
-  attendances Attendance[]
-  leaveRequests LeaveRequest[]
-  notifications Notification[]
+  student        Student?
+  teacher        Teacher?
+  hod            Hod?
+  admin          Admin?
+  attendances    Attendance[]
+  leaveRequests  LeaveRequest[]
+  notifications  Notification[]
 
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @updatedAt
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
 }
 
 model Student {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
-  user_id        String        @unique
+  user           User          @relation(fields: [id], references: [id])
   batch          Batch         @relation(fields: [batch_id], references: [id])
   batch_id       String
   department     Department    @relation(fields: [department_id], references: [id])
@@ -79,50 +80,55 @@ model Student {
   course_id      String
   enrollment_year Int
   marks          Mark[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Teacher {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
-  user_id        String        @unique
+  user           User          @relation(fields: [id], references: [id])
   department     Department    @relation(fields: [department_id], references: [id])
   department_id  String
   timetables     Timetable[]
   subjects_teaching Json
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Hod {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
-  user_id        String        @unique
+  user           User          @relation(fields: [id], references: [id])
   department     Department    @relation(fields: [department_id], references: [id])
   department_id  String
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Admin {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
-  user_id        String        @unique
+  user           User          @relation(fields: [id], references: [id])
   access_level   AccessLevel
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Institute {
   id             String        @id @default(cuid())
-  reg_no         Int           @unique
+  reg_no         String           @unique
   name           String
   address        String?
+  contactNumber  String        
+  insEmail       String
   departments    Department[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
+
 
 model Department {
   id             String        @id @default(cuid())
@@ -132,6 +138,7 @@ model Department {
   students       Student[]
   teachers       Teacher[]
   hods           Hod[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -145,6 +152,7 @@ model Batch {
   course_id      String
   students       Student[]
   timetables     Timetable[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -156,6 +164,7 @@ model Course {
   batches        Batch[]
   subjects       Subject[]
   students       Student[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -168,19 +177,21 @@ model Subject {
   attendances    Attendance[]
   marks          Mark[]
   timetables     Timetable[]
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Attendance {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
+  user           User          @relation(fields: [user_id], references: [id])
   user_id        String
   subject        Subject       @relation(fields: [subject_id], references: [id])
   subject_id     String
   date           DateTime
   status         AttendanceStatus
   remarks        String?
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -194,18 +205,20 @@ model Mark {
   marks_obtained Float
   total_marks    Float
   exam_date      DateTime
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model LeaveRequest {
   id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [user_id])
+  user           User          @relation(fields: [user_id], references: [id])
   user_id        String
   start_date     DateTime
   end_date       DateTime
   reason         String?
   status         LeaveStatus   @default(pending)
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -221,16 +234,18 @@ model Timetable {
   day_of_week    DayOfWeek
   start_time     DateTime
   end_time       DateTime
+  
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Notification {
   id             String        @id @default(cuid())
-  user           User?         @relation(fields: [user_id], references: [user_id])
+  user           User?         @relation(fields: [user_id], references: [id])
   user_id        String?
   title          String
   message        String
   read_status    Boolean       @default(false)
+  
   created_at     DateTime      @default(now())
 }
