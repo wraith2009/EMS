@@ -60,20 +60,35 @@ export default function LandingPage() {
 
           {/* Hamburger Menu for Mobile */}
           <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
-            {menuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+            {menuOpen ? (
+              <AiOutlineClose size={24} />
+            ) : (
+              <AiOutlineMenu size={24} />
+            )}
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-6">
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">About</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">For Business</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">Try for free</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">Pricing</span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              About
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              For Business
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              Try for free
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+              Pricing
+            </span>
           </div>
 
           {/* Signup Button (Desktop) */}
           <div className="hidden md:flex gap-2">
-            <button className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl" onClick={openModal}>
+            <button
+              className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+              onClick={openModal}
+            >
               <span className="text-primary-red font-sans">Signup</span>
             </button>
           </div>
@@ -82,11 +97,22 @@ export default function LandingPage() {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden absolute top-14 left-0 w-full bg-[#f3f7f9] flex flex-col items-start p-4 z-20">
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">About</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">For Business</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">Try for free</span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">Pricing</span>
-            <button className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl mt-4" onClick={openModal}>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              About
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              For Business
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              Try for free
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              Pricing
+            </span>
+            <button
+              className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl mt-4"
+              onClick={openModal}
+            >
               <span className="text-primary-red font-sans">Signup</span>
             </button>
           </div>
@@ -100,7 +126,10 @@ export default function LandingPage() {
             Operations with Ease
           </h1>
           <div className="text-[#8c9499] mt-10 md:mt-4 text-sm animate-fade-delay">
-            <p>Comprehensive Management Solutions for Attendance, Finances, and Events</p>
+            <p>
+              Comprehensive Management Solutions for Attendance, Finances, and
+              Events
+            </p>
             <p>– Empowering Universities and Schools to Thrive.</p>
           </div>
         </div>
@@ -118,7 +147,10 @@ export default function LandingPage() {
         </div>
 
         {/* Feature Cards */}
-        <div className="flex flex-col justify-center items-center my-10 hidden-element" ref={featureCardsRef}>
+        <div
+          className="flex flex-col justify-center items-center my-10 hidden-element"
+          ref={featureCardsRef}
+        >
           <div className="md:w-2/3 text-center">
             <p>
               <span className="text-5xl md:text-5xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-b from-primary-red to-slate-200 text-transparent bg-clip-text text-center mt-5">
@@ -130,7 +162,10 @@ export default function LandingPage() {
         </div>
 
         {/* Step Chart */}
-        <div className="w-full flex justify-center hidden-element min-h-[300px]" ref={stepChartRef}>
+        <div
+          className="w-full flex justify-center hidden-element min-h-[300px]"
+          ref={stepChartRef}
+        >
           <StepChart />
         </div>
 
