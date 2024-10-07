@@ -39,14 +39,13 @@ export async function POST(req: NextRequest) {
         message: "Institute Registered successfully",
         user: InstitueData,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
