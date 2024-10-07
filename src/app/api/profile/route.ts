@@ -4,12 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { NextResponse, NextRequest } from "next/server";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable Next.js bodyParser since we are using formData
-  },
-};
-
 export const POST = async (req: NextRequest) => {
   try {
     const session = await getServerSession(authOptions);
@@ -17,7 +11,7 @@ export const POST = async (req: NextRequest) => {
     if (!session) {
       return NextResponse.json(
         { message: "You must be logged in." },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -33,7 +27,7 @@ export const POST = async (req: NextRequest) => {
     if (!existingUser) {
       return NextResponse.json(
         { message: "User does not exist" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -83,13 +77,13 @@ export const POST = async (req: NextRequest) => {
         message: "User updated successfully",
         user: updatedUser,
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Error updating user" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 };
