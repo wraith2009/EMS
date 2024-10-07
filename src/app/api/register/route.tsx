@@ -1,9 +1,9 @@
 import prisma from "@/src/db/db";
 import { NextRequest, NextResponse } from "next/server";
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "../auth/[...nextauth]/options";
 
-export const config = {
+// New format for route configuration
+export const segmentConfig = {
+  runtime: 'nodejs', // Can also be 'edge' if you're using edge functions
   api: {
     bodyParser: false, // Disable Next.js bodyParser since we are using formData
   },
