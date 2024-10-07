@@ -18,13 +18,13 @@ const CallToAction = ({ onOpen }: CallToActionProps) => {
       </div>
       <div className="flex justify-center py-10 gap-10">
         <a href="#">
-          <button className="border border-white lg:h-[40px] lg:w-[100px] bg-primary-red rounded shadow-lg text-slate-200 hover:text-white">
+          <button className="border border-white lg:h-[40px] lg:w-[100px] bg-primary-red rounded shadow-lg text-slate-200 hover:text-white px-4 py-2">
             Learn More
           </button>
         </a>
 
         <button
-          className="border border-white bg-primary-red lg:h-[40px] lg:w-[100px] rounded shadow-lg text-slate-200 hover:text-white"
+          className="border border-white bg-primary-red lg:h-[40px] lg:w-[100px] rounded shadow-lg text-slate-200 hover:text-white px-4"
           onClick={onOpen} // Trigger the modal when clicked
         >
           Sign Up

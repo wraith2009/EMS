@@ -36,9 +36,9 @@ export default function StepChart(): JSX.Element {
   ];
 
   return (
-    <div className="flex justify-between items-center px-8 py-4 w-2/3">
+    <div className="flex flex-col md:flex-row justify-between items-center md:px-8 md:py-4 md:w-2/3 w-full px-4">
       {steps.map((step, index) => (
-        <div key={index}>
+        <div key={index} className="mb-8 md:mb-0 md:w-1/5 w-full">
           <div className="flex flex-col items-center text-center text-primary-red z-10">
             <div className="bg-primary-red text-white rounded-full h-12 w-12 flex items-center justify-center text-xl font-bold mb-4">
               {step.number}
@@ -48,12 +48,12 @@ export default function StepChart(): JSX.Element {
               <p>{step.description}</p>
             </div>
           </div>
-          {/* Optional connector line (uncomment if desired) */}
-          {/* {index < steps.length - 1 && (
-            <div className="mb-20 relative">
-              <div className="w-32 h-0.5 bg-gradient-to-r from-gray-600 via-gray-400 to-gray-600 opacity-50"></div>
+          {/* Optional connector line for larger screens */}
+          {index < steps.length - 1 && (
+            <div className="hidden md:block ml-[119px] -mt-[88px] absolute">
+              <div className="w-[141px] h-0.5 bg-gradient-to-r from-gray-600 via-gray-400 to-gray-600 opacity-50 "></div>
             </div>
-          )} */}
+          )}
         </div>
       ))}
     </div>
