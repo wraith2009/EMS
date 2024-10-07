@@ -1,24 +1,8 @@
 import prisma from "@/src/db/db";
 import { NextRequest, NextResponse } from "next/server";
 
-// New format for route configuration
-export const segmentConfig = {
-  runtime: "nodejs", // Can also be 'edge' if you're using edge functions
-  api: {
-    bodyParser: false, // Disable Next.js bodyParser since we are using formData
-  },
-};
-
 export async function POST(req: NextRequest) {
   try {
-    // const session = await getServerSession(authOptions);
-    // if (!session) {
-    //   return NextResponse.json(
-    //     { message: "You must be logged in." },
-    //     { status: 401 },
-    //   );
-    // }
-
     const formData = await req.formData();
 
     console.log("formdata", formData);
@@ -55,13 +39,14 @@ export async function POST(req: NextRequest) {
         message: "Institute Registered successfully",
         user: InstitueData,
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
+
