@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // New format for route configuration
 export const segmentConfig = {
-  runtime: 'nodejs', // Can also be 'edge' if you're using edge functions
+  runtime: "nodejs", // Can also be 'edge' if you're using edge functions
   api: {
     bodyParser: false, // Disable Next.js bodyParser since we are using formData
   },
