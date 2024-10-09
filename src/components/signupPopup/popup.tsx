@@ -10,22 +10,20 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/src/actions/auth.actions"; // Import useRouter for navigation
+import { signUp } from "@/src/actions/auth.actions";
+import toast from "react-hot-toast";
 
-// Define the types for the props
 interface SignupPopupProps {
   onClose: () => void;
 }
 
 const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
-  const router = useRouter(); // Initialize router for navigation
+  const router = useRouter();
 
-  // State for managing submission status
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  // Initialize useForm with Zod resolver
   const {
     register,
     handleSubmit,
@@ -34,7 +32,6 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
     resolver: zodResolver(AuthSchema),
   });
 
-  // Function to handle form submission
   const onSubmit = async (data: AuthSchemaType) => {
     setLoading(true);
     setError("");
@@ -45,30 +42,23 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       formData.append("password", data.password);
       const response = await signUp(formData);
 
-      if (response.error) {
-        setError(response.error);
-      } else {
+      if (response?.success) {
+        toast.success("Signup successful!");
         setSuccess("Signup successful! Redirecting...");
-        console.log("Signup successful:", response);
       }
 
-      // Optionally, redirect after a short delay
       setTimeout(() => {
         onClose();
-        router.push("/profile"); // Redirect to profile or desired page
+        router.push("/profile");
       }, 2000);
-    } catch (error: any) {
-      // Handle error
-      setError(
-        error.response?.data?.message || "Signup failed. Please try again.",
-      );
+    } catch (error) {
+      toast.error("Signup failed. Please try again.");
       console.error("Signup error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Function to handle Google login
   const handlegooglelogin = async () => {
     setLoading(true);
     setError("");
@@ -79,20 +69,16 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
         callbackUrl: "/profile",
       });
       console.log("res", response);
-      // Check if the signIn response has an error field
+
       if (response?.error) {
         console.log("Google sign-in error:", response.error);
         setError("Google sign-in failed. Please try again.");
       } else if (response?.ok) {
-        console.log("Google sign-in successful! Redirecting...", response);
         setSuccess("Google sign-in successful! Redirecting...");
-        // Redirect after 2 seconds
         setTimeout(() => {
           onClose();
-          router.push("/profile"); // Redirect to profile or desired page
+          router.push("/profile");
         }, 2000);
-      } else {
-        console.log("Google sign-in response: ", response); // for debugging purposes
       }
     } catch (error) {
       console.error("Error during Google sign-in:", error);
@@ -131,7 +117,6 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
           </button>
 
           <div className="w-full">
-            {/* Handle form submission with handleSubmit */}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-2"
@@ -178,7 +163,6 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
             </form>
           </div>
 
-          {/* Display global error or success messages */}
           {error && <p className="mt-2 text-red-500">{error}</p>}
           {success && <p className="mt-2 text-green-500">{success}</p>}
 
