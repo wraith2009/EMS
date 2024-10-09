@@ -1,51 +1,74 @@
 "use client";
 import { FC, useState } from "react";
-import axios from "axios"; // Import Axios
 import React from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import {
+  AuthSchema,
+  AuthSchemaType,
+} from "@/src/lib/validators/auth.validator";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { signUp } from "@/src/actions/auth.actions"; // Import useRouter for navigation
+
 // Define the types for the props
 interface SignupPopupProps {
   onClose: () => void;
 }
 
 const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
-  // State for managing form inputs and submission status
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const router = useRouter(); // Initialize router for navigation
+
+  // State for managing submission status
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
+  // Initialize useForm with Zod resolver
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthSchemaType>({
+    resolver: zodResolver(AuthSchema),
+  });
+
   // Function to handle form submission
-  const handleSignup = async () => {
+  const onSubmit = async (data: AuthSchemaType) => {
     setLoading(true);
     setError("");
     setSuccess("");
     try {
-      // Make an Axios POST request to your signup endpoint
-      const response = await axios.post("/api/users/signup", {
-        email,
-        password,
-      });
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      const response = await signUp(formData);
 
-      // Handle success (display a success message or navigate, etc.)
-      setSuccess("Signup successful! Redirecting...");
-      console.log("Signup successful:", response.data);
+      if (response.error) {
+        setError(response.error);
+      } else {
+        setSuccess("Signup successful! Redirecting...");
+        console.log("Signup successful:", response);
+      }
 
-      // Optionally, close the modal after a short delay
+      // Optionally, redirect after a short delay
       setTimeout(() => {
         onClose();
+        router.push("/profile"); // Redirect to profile or desired page
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       // Handle error
-      setError("Signup failed. Please try again.");
+      setError(
+        error.response?.data?.message || "Signup failed. Please try again.",
+      );
       console.error("Signup error:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Function to handle Google login
   const handlegooglelogin = async () => {
     setLoading(true);
     setError("");
@@ -63,7 +86,11 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       } else if (response?.ok) {
         console.log("Google sign-in successful! Redirecting...", response);
         setSuccess("Google sign-in successful! Redirecting...");
-        // setTimeout(() => router.push("/pro"), 2000); // Redirect after 2 seconds
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          onClose();
+          router.push("/profile"); // Redirect to profile or desired page
+        }, 2000);
       } else {
         console.log("Google sign-in response: ", response); // for debugging purposes
       }
@@ -82,8 +109,9 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
           <h2 className="text-lg font-semibold ">Create your account</h2>
 
           <button
-            className="bg-primary-red text-white rounded-2xl py-2 px-4 w-full  flex items-center justify-center"
+            className="bg-primary-red text-white rounded-2xl py-2 px-4 w-full flex items-center justify-center"
             onClick={handlegooglelogin}
+            disabled={loading}
           >
             <div className="flex gap-2 items-center">
               <svg
@@ -102,34 +130,59 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
             </div>
           </button>
 
-          <div className="flex flex-col w-full gap-2">
-            <input
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className=" p-2 border border-gray-300 rounded-lg"
-            />
-            <input
-              type="password"
-              placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className=" p-2 border border-gray-300 rounded-lg"
-            />
+          <div className="w-full">
+            {/* Handle form submission with handleSubmit */}
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-2"
+            >
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  {...register("email")}
+                  className={`p-2 border rounded-lg w-full ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  }`}
+                  disabled={loading}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-red-500 text-sm">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="password"
+                  placeholder="Create a password"
+                  {...register("password")}
+                  className={`p-2 border rounded-lg w-full ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
+                  disabled={loading}
+                />
+                {errors.password && (
+                  <p className="mt-1 text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-500 text-white rounded-2xl py-2 w-full mt-2"
+              >
+                {loading ? "Signing up..." : "Continue with email"}
+              </button>
+            </form>
           </div>
-          <button
-            onClick={handleSignup}
-            disabled={loading}
-            className="bg-blue-500 text-white rounded-2xl py-2 w-full"
-          >
-            {loading ? "Signing up..." : "Continue with email"}
-          </button>
 
+          {/* Display global error or success messages */}
           {error && <p className="mt-2 text-red-500">{error}</p>}
           {success && <p className="mt-2 text-green-500">{success}</p>}
 
-          <p className=" text-sm">
+          <p className="text-sm">
             <Link href="/sign-in" className="text-blue-500">
               Already have an account?
             </Link>
@@ -151,6 +204,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+          aria-label="Close signup popup"
         >
           &times;
         </button>
