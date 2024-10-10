@@ -1,9 +1,5 @@
 "use client";
-import {
-  useScroll,
-  useTransform,
-  motion,
-} from "framer-motion";
+import { useScroll, useTransform, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -31,13 +27,11 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
-  // Create an array to hold colors for each timeline step
-  const stepColors = data.map((_, index) =>
-    useTransform(
-      scrollYProgress,
-      [index / data.length, (index + 1) / data.length],
-      ["#D3D3D3", "#FF6347"] // Example: from gray to red
-    )
+  // Create a single color transform for all steps
+  const colorTransform = useTransform(
+    scrollYProgress,
+    data.map((_, i) => i / (data.length - 1)),
+    data.map(() => ["#D3D3D3", "#FF6347"]),
   );
 
   return (
@@ -52,17 +46,16 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             className="flex flex-col md:flex-row justify-start pt-10 md:pt-40 md:gap-10"
           >
             <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              {/* Apply dynamic color to the timeline step circle */}
               <motion.div
                 className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center"
-                style={{ backgroundColor: stepColors[index] }} // Step color changes dynamically
+                style={{ backgroundColor: colorTransform[index] }}
               >
                 <div className="h-4 w-4 rounded-full border border-neutral-300 dark:border-neutral-700 p-2" />
               </motion.div>
 
               <motion.h3
                 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-primary-red dark:text-neutral-500"
-                style={{ color: stepColors[index] }} // Dynamic color for step title
+                style={{ color: colorTransform[index] }}
               >
                 {item.title}
               </motion.h3>
@@ -77,7 +70,6 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           </div>
         ))}
 
-        {/* The progress line */}
         <div
           style={{
             height: height + "px",
