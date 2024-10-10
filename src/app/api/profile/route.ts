@@ -5,11 +5,6 @@ import { authOptions } from "@/src/lib/authOptions";
 import { NextResponse, NextRequest } from "next/server";
 import { ProfileSchema } from "@/src/lib/validators/auth.validator";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable Next.js bodyParser since we are using formData
-  },
-};
 
 export const POST = async (req: NextRequest) => {
   try {
