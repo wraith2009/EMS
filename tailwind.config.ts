@@ -1,6 +1,11 @@
 import type { Config } from "tailwindcss";
+const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -80,13 +85,27 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in-slow": "fade-in 3s ease-in-out 1s forwards", // 1s delay
-        "slide-fade": "slide-up 1s ease-out forwards", // slide and fade together
-        "fade-delay": "fade-in 2s ease-in-out forwards", // fades in the description text after titles
+        "fade-in-slow": "fade-in 3s ease-in-out 1s forwards",
+        "slide-fade": "slide-up 1s ease-out forwards",
+        "fade-delay": "fade-in 2s ease-in-out forwards",
       },
     },
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [
+    addVariablesForColors, // Existing plugin
+  ],
+};
+
+// Plugin: Adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
 
 export default config;
