@@ -8,12 +8,15 @@ import Testimonials from "./testimonials";
 import CallToAction from "./callToAction";
 import Footer from "./footer";
 import Image from "next/image";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import icons for hamburger
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // State to handle mobile menu visibility
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const toggleMenu = () => setMenuOpen(!menuOpen); // Toggle the hamburger menu
 
   // References for components to be scrolled into view
   const slideshowRef = useRef<HTMLDivElement>(null);
@@ -46,14 +49,26 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="relative bg-[#f3f7f9] flex flex-col overflow-hidden">
+    <div className="relative bg-[#f3f7f9] flex flex-col overflow-hidden md:px-0">
       <div className="absolute inset-0 z-0 bg-stars"></div>
 
       {/* Main Content */}
       <div className={`relative z-10 ${isModalOpen ? "blur-sm" : ""}`}>
-        <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 md:h-14 px-4 z-10 bg-[#f3f7f9]">
+        {/* Header */}
+        <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14 px-4 z-10 bg-[#f3f7f9] ">
           <span className="text-[#253b47] font-bold text-lg">campussync</span>
-          <div className="flex gap-6">
+
+          {/* Hamburger Menu for Mobile */}
+          <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
+            {menuOpen ? (
+              <AiOutlineClose size={24} />
+            ) : (
+              <AiOutlineMenu size={24} />
+            )}
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex gap-6">
             <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
               About
             </span>
@@ -67,7 +82,9 @@ export default function LandingPage() {
               Pricing
             </span>
           </div>
-          <div className="flex gap-2">
+
+          {/* Signup Button (Desktop) */}
+          <div className="hidden md:flex gap-2">
             <button
               className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
               onClick={openModal}
@@ -77,14 +94,38 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="text-center mt-20">
-          <h1 className="text-[#23333e] text-[30px] font-bold animate-slide-fade">
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="md:hidden absolute top-14 left-0 w-full bg-[#f3f7f9] flex flex-col items-start p-4 z-20">
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              About
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              For Business
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              Try for free
+            </span>
+            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+              Pricing
+            </span>
+            <button
+              className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl mt-4"
+              onClick={openModal}
+            >
+              <span className="text-primary-red font-sans">Signup</span>
+            </button>
+          </div>
+        )}
+
+        <div className="text-center mt-20 px-4 md:px-0">
+          <h1 className="text-[#23333e] md:text-[30px] text-xl font-bold animate-slide-fade">
             Streamline Your Educational Institution&apos;s
           </h1>
-          <h1 className="text-[#23333e] text-[40px] font-bold animate-slide-fade">
+          <h1 className="text-[#23333e] text-[34px] md:text-[40px] font-bold animate-slide-fade">
             Operations with Ease
           </h1>
-          <div className="text-[#8c9499] mt-4 text-sm animate-fade-delay">
+          <div className="text-[#8c9499] mt-10 md:mt-4 text-sm animate-fade-delay">
             <p>
               Comprehensive Management Solutions for Attendance, Finances, and
               Events
@@ -93,8 +134,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center flex-grow my-4 ">
-          <div className="w-2/3 flex justify-center items-center bg-white rounded-2xl md:h-[500px]  animate-fade-delay">
+        <div className="flex justify-center items-center flex-grow my-4 px-4 md:px-0">
+          <div className="md:w-2/3 flex justify-center items-center bg-white rounded-2xl w md:h-[500px] animate-fade-delay">
             <Image
               src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1727768563/Screenshot_2024-10-01_131209_nnpd2b.png"
               width={1000}
@@ -110,9 +151,9 @@ export default function LandingPage() {
           className="flex flex-col justify-center items-center my-10 hidden-element"
           ref={featureCardsRef}
         >
-          <div className="w-2/3 text-center">
+          <div className="md:w-2/3 text-center">
             <p>
-              <span className="text-4xl md:text-5xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-b from-primary-red to-slate-200 text-transparent bg-clip-text text-center mt-5">
+              <span className="text-5xl md:text-5xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-b from-primary-red to-slate-200 text-transparent bg-clip-text text-center mt-5">
                 Why Choose Us?
               </span>
             </p>
@@ -129,14 +170,13 @@ export default function LandingPage() {
         </div>
 
         <div className="flex justify-center my-10">
-          <div className="w-2/3">
+          <div className="md:w-2/3">
             <Testimonials />
           </div>
         </div>
 
         <div className="flex justify-center my-10">
-          <div className="w-2/3">
-            {/* Pass openModal to CallToAction */}
+          <div className="md:w-2/3">
             <CallToAction onOpen={openModal} />
           </div>
         </div>

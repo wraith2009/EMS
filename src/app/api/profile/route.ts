@@ -5,7 +5,6 @@ import { authOptions } from "@/src/lib/authOptions";
 import { NextResponse, NextRequest } from "next/server";
 import { ProfileSchema } from "@/src/lib/validators/auth.validator";
 
-
 export const POST = async (req: NextRequest) => {
   try {
     const session = await getServerSession(authOptions);

@@ -43,8 +43,8 @@ export default function FeatureCards() {
   ];
 
   return (
-    <div className="w-2/3 flex justify-center mt-10">
-      <BentoGrid className="gap-6">
+    <div className="w-full sm:w-4/5 lg:w-2/3 flex justify-center mt-10 px-4">
+      <BentoGrid className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, index) => (
           <BentoCard
             key={index}
@@ -54,11 +54,9 @@ export default function FeatureCards() {
             Icon={card.Icon}
             href={card.href}
             cta={card.cta}
-            className={
-              index === 0 || index === 3
-                ? "col-span-1 sm:col-span-2"
-                : "col-span-1"
-            }
+            className={`col-span-1 ${
+              index === 0 || index === 3 ? "sm:col-span-2" : ""
+            }`}
           />
         ))}
       </BentoGrid>
