@@ -46,7 +46,9 @@ const Profile: React.FC = () => {
   return (
     <div className="max-w-lg mx-auto p-8 bg-gradient-to-r from-gray-100 via-white to-gray-100 rounded-lg shadow-xl mt-6">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Update Profile</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          Update Profile
+        </h1>
         <p className="text-sm text-gray-500">Keep your profile up-to-date.</p>
       </div>
       {message && (
@@ -56,7 +58,10 @@ const Profile: React.FC = () => {
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Name
           </label>
           <div className="relative">
@@ -73,7 +78,10 @@ const Profile: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="gender"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Gender
           </label>
           <select
@@ -90,7 +98,10 @@ const Profile: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="phoneNumber"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Phone Number
           </label>
           <PhoneInput
@@ -103,7 +114,10 @@ const Profile: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="avatar" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="avatar"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Avatar
           </label>
           <div className="flex items-center space-x-4">

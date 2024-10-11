@@ -37,7 +37,9 @@ export const FileUpload = ({
     // Ensure only one file is uploaded at a time
     const selectedFile = newFiles[0];
     setFile(selectedFile);
-    onChange && onChange(selectedFile);
+    if (onChange) {
+      onChange(selectedFile);
+    }
   };
 
   const handleClick = () => {
@@ -71,15 +73,13 @@ export const FileUpload = ({
           <GridPattern />
         </div>
         <div className="flex flex-col items-center justify-center">
-          
-          
           <div className="relative w-full  max-w-xl mx-auto">
             {file ? (
               <motion.div
                 layoutId="file-upload"
                 className={cn(
                   "relative overflow-hidden z-40 bg-white dark:bg-neutral-900 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md",
-                  "shadow-sm"
+                  "shadow-sm",
                 )}
               >
                 <div className="flex justify-between w-full items-center gap-4">
@@ -131,7 +131,7 @@ export const FileUpload = ({
                 }}
                 className={cn(
                   "relative group-hover/file:shadow-2xl z-40 bg-white dark:bg-neutral-900 flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md",
-                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
+                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]",
                 )}
               >
                 {isDragActive ? (
@@ -180,7 +180,7 @@ export function GridPattern() {
               }`}
             />
           );
-        })
+        }),
       )}
     </div>
   );
