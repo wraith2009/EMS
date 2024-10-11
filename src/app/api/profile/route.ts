@@ -1,8 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
 import prisma from "@/src/db/db";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
+import { authOptions } from "@/src/lib/authOptions";
 import { NextResponse, NextRequest } from "next/server";
+import { ProfileSchema } from "@/src/lib/validators/auth.validator";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -33,7 +34,20 @@ export const POST = async (req: NextRequest) => {
 
     const formData = await req.formData();
     const file = formData.get("avatar") as File;
-    console.log("form", formData);
+
+    const name = formData.get("name") as string;
+    const gender = formData.get("gender") as string;
+    const phoneNumber = formData.get("phoneNumber") as string;
+
+    const validateData = ProfileSchema.safeParse({
+      file,
+      name,
+      gender,
+      phoneNumber,
+    });
+    if (!validateData.success) {
+      return NextResponse.json(validateData.error.issues, { status: 400 });
+    }
 
     let avatarUrl;
     if (file) {
@@ -42,7 +56,6 @@ export const POST = async (req: NextRequest) => {
       const base64Data = Buffer.from(fileBuffer).toString("base64");
       const fileUri = `data:${mimeType};base64,${base64Data}`;
 
-      // Upload to Cloudinary
       const res = await cloudinary.uploader.upload(fileUri, {
         folder: "user_avatars",
         use_filename: true,
@@ -53,10 +66,6 @@ export const POST = async (req: NextRequest) => {
         avatarUrl = res.secure_url;
       }
     }
-
-    const name = formData.get("name") as string;
-    const gender = formData.get("gender") as string;
-    const phoneNumber = formData.get("phoneNumber") as string;
 
     console.log("formData", formData);
     // Update user details in the database

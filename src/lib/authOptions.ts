@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import prisma from "@/src/db/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { AuthSchema } from "@/src/lib/validators/auth.validator";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,14 +14,21 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<any> {
+        const result = AuthSchema.safeParse(credentials);
+
+        if (!result.success) {
+          throw new Error("Validation Error");
+        }
+
+        const { email, password } = result.data;
         try {
-          console.log("Backend received email:", credentials.email);
-          console.log("Backend received password:", credentials.password);
+          console.log("Backend received email:", email);
+          console.log("Backend received password:", password);
           // Find user by email
           const user = await prisma.user.findUnique({
             where: {
-              email: credentials.email,
+              email: email,
             },
           });
 
@@ -37,7 +45,7 @@ export const authOptions: NextAuthOptions = {
           }
           // Compare the password
           const isPasswordCorrect = await bcrypt.compare(
-            credentials.password,
+            password,
             user.password,
           );
 
@@ -78,7 +86,7 @@ export const authOptions: NextAuthOptions = {
             data: {
               oauthId,
               email: email as string,
-              name,
+              name: name as string,
             },
           });
         }
