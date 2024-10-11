@@ -54,9 +54,21 @@ const SigninPage: FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f3f7f9]">
-      <div className="bg-[#f3f7f9] p-6  w-full max-w-md">
-        <h2 className="text-4xl text-center font-bold mb-4">Sign In</h2>
+    <div className="flex items-center justify-between min-h-screen bg-[#f3f7f9] p-4">
+      {/* Left Image section */}
+      <div className="w-1/2 p-8">
+        <img
+          src="/loginPageimage.webp"
+          alt="Login"
+          className="w-full h-auto rounded-lg object-cover"
+        />
+      </div>
+
+      {/* Right Sign-In section */}
+      <div className="w-1/2 bg-[#f3f7f9]  rounded-lg p-6 max-w-md mx-auto">
+        <h2 className="text-4xl text-center text-primary-red font-bold mb-4">
+          Welcome Back
+        </h2>
         <p className="text-lg text-center text-[#676767] pb-8">
           Enter your email and password to Sign In
         </p>
@@ -88,10 +100,14 @@ const SigninPage: FC = () => {
             <p className="text-red-500">{errors.password.message}</p>
           )}
 
+          <p className="text-red-500 mb-2 cursor-pointer hover:text-red-700">
+            forget password ?
+          </p>
+
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-500 text-white py-2 rounded-lg"
+            className="bg-primary-red text-white py-2 rounded-lg"
           >
             {loading ? "Signing in..." : "Continue with email"}
           </button>
@@ -99,6 +115,14 @@ const SigninPage: FC = () => {
 
         {error && <p className="mt-2 text-red-500">{error}</p>}
         {success && <p className="mt-2 text-green-500">{success}</p>}
+        <div>
+          <p className="text-[#676767] py-2">
+            Don&apos;t have an account ?{" "}
+            <span className="text-red-500 hover:text-red-700 cursor-pointer hover:underline">
+              Homepage
+            </span>{" "}
+          </p>
+        </div>
       </div>
     </div>
   );
