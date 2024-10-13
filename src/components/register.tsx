@@ -3,7 +3,7 @@
 import React, { FormEvent } from "react";
 import Image from "next/image";
 import axios from "axios";
-
+import GradualSpacing from "./magicui/gradual-spacing";
 const BusinessRegistration: React.FC = () => {
   const [businessName, setBusinessName] = React.useState<string>("");
   const [businessAddress, setBusinessAddress] = React.useState<string>("");
@@ -24,16 +24,14 @@ const BusinessRegistration: React.FC = () => {
     formData.append("institueEmail", email);
 
     try {
-      // Replace the URL with your actual API endpoint
       const response = await axios.post("/api/register", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Required for form submissions
+          "Content-Type": "multipart/form-data", 
         },
       });
 
       console.log("Business registered successfully:", response);
 
-      // Optionally, reset the form fields
       setBusinessName("");
       setBusinessAddress("");
       setContactNumber("");
@@ -137,13 +135,18 @@ const BusinessRegistration: React.FC = () => {
           </form>
         </div>
       </div>
-      <div className="hidden lg:block w-1/2 bg-[#676767]">
-        <div className="h-full w-full relative">
+      <div className="hidden  w-1/2 bg-white lg:flex lg:flex-col">
+        <div className="text-primary-red font-semibold text-3xl flex justify-center items-center h-full w-full ">
+          <GradualSpacing text="Empower your institution with AI-driven|insights and seamless management"/>
+          
+          
+        </div>
+        <div className="h-full w-full justify-end flex flex-col">
           <Image
-            src="/register.webp?height=1080&width=1080"
+            src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728831169/school2_vgsjc1.webp"
             alt="Business registration illustration"
-            layout="fill"
-            objectFit="cover"
+            width={770}
+            height={450}
           />
         </div>
       </div>
