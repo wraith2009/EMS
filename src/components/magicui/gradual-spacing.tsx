@@ -35,7 +35,10 @@ export default function GradualSpacing({
                 animate="visible"
                 exit="hidden"
                 variants={framerProps}
-                transition={{ duration, delay: (lineIndex * line.length + charIndex) * delayMultiple }}
+                transition={{
+                  duration,
+                  delay: (lineIndex * line.length + charIndex) * delayMultiple,
+                }}
                 className={cn("inline-block tracking-tighter", className)}
               >
                 {char === " " ? "\u00A0" : char}

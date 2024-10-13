@@ -26,7 +26,7 @@ const BusinessRegistration: React.FC = () => {
     try {
       const response = await axios.post("/api/register", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", 
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -137,9 +137,7 @@ const BusinessRegistration: React.FC = () => {
       </div>
       <div className="hidden  w-1/2 bg-white lg:flex lg:flex-col">
         <div className="text-primary-red font-semibold text-3xl flex justify-center items-center h-full w-full ">
-          <GradualSpacing text="Empower your institution with AI-driven|insights and seamless management"/>
-          
-          
+          <GradualSpacing text="Empower your institution with AI-driven|insights and seamless management" />
         </div>
         <div className="h-full w-full justify-end flex flex-col">
           <Image
