@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
@@ -239,8 +240,4 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default Profile;
+}

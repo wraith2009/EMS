@@ -80,7 +80,8 @@ model Student {
   course_id      String
   enrollment_year Int
   marks          Mark[]
-  
+  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+  institute_id   String
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -90,6 +91,8 @@ model Teacher {
   user           User          @relation(fields: [id], references: [id])
   department     Department    @relation(fields: [department_id], references: [id])
   department_id  String
+  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+  institute_id   String
   timetables     Timetable[]
   subjects_teaching Json
   
@@ -102,7 +105,8 @@ model Hod {
   user           User          @relation(fields: [id], references: [id])
   department     Department    @relation(fields: [department_id], references: [id])
   department_id  String
-  
+  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+  institute_id   String
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -111,20 +115,25 @@ model Admin {
   id             String        @id @default(cuid())
   user           User          @relation(fields: [id], references: [id])
   access_level   AccessLevel
-  
+  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+  institute_id   String
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
 
 model Institute {
   id             String        @id @default(cuid())
-  reg_no         String           @unique
-  name           String
-  address        String?
-  contactNumber  String        
-  insEmail       String
-  departments    Department[]
-  
+  registrationNumber      String           @unique
+  businessName            String
+  businessaddress         String?
+  contactNumber           String        
+  email                   String
+  departments             Department[]
+  students                Student[]
+  teachers                Teacher[]
+  hods                    Hod[]
+  admins                  Admin[]
+
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -138,7 +147,7 @@ model Department {
   students       Student[]
   teachers       Teacher[]
   hods           Hod[]
-  
+
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
