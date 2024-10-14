@@ -34,11 +34,11 @@ export const POST = async (req: NextRequest) => {
 
     const formData = await req.formData();
     const file = formData.get("avatar") as File;
-
     const name = formData.get("name") as string;
     const gender = formData.get("gender") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
 
+    // Validate incoming data
     const validateData = ProfileSchema.safeParse({
       file,
       name,
@@ -49,6 +49,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json(validateData.error.issues, { status: 400 });
     }
 
+    // Handle avatar upload if a file is provided
     let avatarUrl;
     if (file) {
       const fileBuffer = await file.arrayBuffer();
@@ -56,21 +57,25 @@ export const POST = async (req: NextRequest) => {
       const base64Data = Buffer.from(fileBuffer).toString("base64");
       const fileUri = `data:${mimeType};base64,${base64Data}`;
 
-      const res = await cloudinary.uploader.upload(fileUri, {
-        folder: "user_avatars",
-        use_filename: true,
-        invalidate: true,
-      });
-
-      if (res) {
-        avatarUrl = res.secure_url;
+      try {
+        const res = await cloudinary.uploader.upload(fileUri, {
+          folder: "user_avatars",
+          use_filename: true,
+          invalidate: true,
+        });
+        if (res) {
+          avatarUrl = res.secure_url;
+        }
+      } catch (cloudinaryError) {
+        console.error("Error uploading avatar to Cloudinary:", cloudinaryError);
+        return NextResponse.json(
+          { message: "Error uploading avatar" },
+          { status: 500 },
+        );
       }
     }
 
-    const name = formData.get("name") as string;
-    const gender = formData.get("gender") as string;
-    const phoneNumber = formData.get("phoneNumber") as string;
-    
+    // Update user information
     const updatedUser = await prisma.user.update({
       where: { email: userEmail },
       data: {
@@ -81,7 +86,9 @@ export const POST = async (req: NextRequest) => {
         isvarified: true,
       },
     });
+
     console.log("updated user:", updatedUser);
+
     // Return updated user data as response
     return NextResponse.json(
       {
@@ -91,7 +98,7 @@ export const POST = async (req: NextRequest) => {
       { status: 200 },
     );
   } catch (error) {
-    console.error(error);
+    console.error("Error updating user:", error);
     return NextResponse.json(
       { message: "Error updating user" },
       { status: 500 },
