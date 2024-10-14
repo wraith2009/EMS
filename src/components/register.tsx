@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import axios from "axios";
 import GradualSpacing from "./magicui/gradual-spacing";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
