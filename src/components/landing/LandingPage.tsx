@@ -50,7 +50,7 @@ export default function LandingPage() {
 
   return (
     <div className="relative bg-[#f3f7f9] flex flex-col overflow-hidden md:px-0">
-      <Particles 
+      <Particles
         className="absolute inset-0 "
         quantity={500}
         ease={80}

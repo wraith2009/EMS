@@ -64,14 +64,14 @@ const Onboarding: React.FC = () => {
 
   return (
     <div className="bg-[#f3f7f9] h-full pb-80">
-      <Particles 
+      <Particles
         className="absolute inset-0 "
         quantity={100}
         ease={80}
         color="#ff6f61"
         size={0.8}
-        refresh 
-        />
+        refresh
+      />
       <div className="flex flex-col items-center">
         <div className="title pt-40 text-primary-red flex flex-col gap-12 items-center px-80">
           <div className="flex flex-col gap-6 items-center">

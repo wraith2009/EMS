@@ -195,13 +195,13 @@ const Profile: React.FC = () => {
 
       {/* Right side */}
       <div className="hidden w-1/2 lg:flex lg:flex-col">
-      <Particles 
-        className="absolute inset-0 "
-        quantity={100}
-        ease={80}
-        color="#ff6f61"
-        size={0.8}
-        refresh 
+        <Particles
+          className="absolute inset-0 "
+          quantity={100}
+          ease={80}
+          color="#ff6f61"
+          size={0.8}
+          refresh
         />
         <div className="flex-grow flex items-center justify-center text-primary-red text-3xl font-semibold h-1/3 bg-white">
           <GradualSpacing text="Enhance your experience with streamlined|tools for effortless control and customization" />
@@ -211,25 +211,30 @@ const Profile: React.FC = () => {
             <div className="flex items-end justify-center h-full ">
               <div className="flex items-center pb-8 justify-center gap-4">
                 <Image
-                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935936/linkedin-app-icon_riwyqy.svg"}
+                  src={
+                    "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935936/linkedin-app-icon_riwyqy.svg"
+                  }
                   width={32}
                   height={32}
                   alt="linkedin"
                 />
                 <Image
-                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935838/reddit-icon_q9ik8c.svg"}
+                  src={
+                    "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935838/reddit-icon_q9ik8c.svg"
+                  }
                   width={32}
                   height={32}
                   alt="reddit"
                 />
                 <Image
-                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935894/x-social-media-black-icon_br6wpq.svg"}
+                  src={
+                    "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935894/x-social-media-black-icon_br6wpq.svg"
+                  }
                   width={32}
                   height={32}
                   alt="X"
                 />
               </div>
-
             </div>
           </div>
         </div>
