@@ -5,8 +5,8 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { User } from "lucide-react";
 import GradualSpacing from "@/src/components/magicui/gradual-spacing";
-import { Message, Loader, useToaster } from 'rsuite';
-import AvatarIcon from '@rsuite/icons/legacy/Avatar';
+import { Message, Loader, useToaster } from "rsuite";
+import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 
 type PreviewFileCallback = (result: string | ArrayBuffer | null) => void;
 
@@ -34,7 +34,9 @@ const Profile: React.FC = () => {
       previewFile(file, (value) => {
         setAvatar(value as string);
         setUploading(false);
-        toaster.push(<Message type="success">Image selected successfully</Message>);
+        toaster.push(
+          <Message type="success">Image selected successfully</Message>,
+        );
       });
     }
   };
@@ -79,18 +81,19 @@ const Profile: React.FC = () => {
             <h1 className="text-4xl font-bold text-primary-red mb-2">
               Update Profile
             </h1>
-            <p className="text-sm text-primary-red">Keep your profile up-to-date.</p>
+            <p className="text-sm text-primary-red">
+              Keep your profile up-to-date.
+            </p>
           </div>
           {message && (
             <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-md">
               {message}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit}>
             {/* Avatar section (now first) */}
             <div className="flex flex-col gap-4">
-              
               <div className="relative w-32 h-32 mx-auto cursor-pointer">
                 {uploading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75 rounded-full">
