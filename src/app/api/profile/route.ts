@@ -67,8 +67,10 @@ export const POST = async (req: NextRequest) => {
       }
     }
 
-    console.log("formData", formData);
-    // Update user details in the database
+    const name = formData.get("name") as string;
+    const gender = formData.get("gender") as string;
+    const phoneNumber = formData.get("phoneNumber") as string;
+    
     const updatedUser = await prisma.user.update({
       where: { email: userEmail },
       data: {

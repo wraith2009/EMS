@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import axios from "axios";
+import GradualSpacing from "./magicui/gradual-spacing";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -151,15 +153,41 @@ const BusinessRegistration: React.FC = () => {
           </form>
         </div>
       </div>
-      <div className="hidden lg:block w-1/2 bg-[#676767]">
-        <div className="h-full w-full relative">
+      <div className="hidden  w-1/2 bg-white lg:flex lg:flex-col">
+        <div className="text-primary-red font-semibold text-3xl flex justify-center items-center h-full w-full ">
+          <GradualSpacing text="Empower your institution with AI-driven|insights and seamless management" />
+        </div>
+        <div className="h-full w-full justify-end flex flex-col">
           <Image
-            src="/register.webp?height=1080&width=1080"
+            src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728831169/school2_vgsjc1.webp"
             alt="Business registration illustration"
-            layout="fill"
-            objectFit="cover"
+            width={770}
+            height={450}
           />
         </div>
+        {/* <div className="flex items-end justify-center h-full absolute ">
+              <div className="flex items-center pb-8 justify-center gap-4">
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935936/linkedin-app-icon_riwyqy.svg"}
+                  width={32}
+                  height={32}
+                  alt="linkedin"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935838/reddit-icon_q9ik8c.svg"}
+                  width={32}
+                  height={32}
+                  alt="reddit"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935894/x-social-media-black-icon_br6wpq.svg"}
+                  width={32}
+                  height={32}
+                  alt="X"
+                />
+              </div>
+
+        </div> */}
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import CallToAction from "./callToAction";
 import Footer from "./footer";
 import Image from "next/image";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import icons for hamburger
-
+import Particles from "../ui/particles";
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // State to handle mobile menu visibility
@@ -50,7 +50,14 @@ export default function LandingPage() {
 
   return (
     <div className="relative bg-[#f3f7f9] flex flex-col overflow-hidden md:px-0">
-      <div className="absolute inset-0 z-0 bg-stars"></div>
+      <Particles
+        className="absolute inset-0 "
+        quantity={500}
+        ease={80}
+        color="#ff6f61"
+        size={0.8}
+        refresh
+      />
 
       {/* Main Content */}
       <div className={`relative z-10 ${isModalOpen ? "blur-sm" : ""}`}>
