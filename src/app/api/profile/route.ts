@@ -57,6 +57,8 @@ export const POST = async (req: NextRequest) => {
     const name = formData.get("name") as string;
     const gender = formData.get("gender") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
+    console.log("call:",phoneNumber)
+    console.log("Phone number type:", typeof phoneNumber); // Should log 'string'
 
     console.log("formData", formData);
     // Update user details in the database

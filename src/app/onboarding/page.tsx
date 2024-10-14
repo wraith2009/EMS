@@ -2,6 +2,7 @@
 import React from "react";
 import { Timeline } from "@/src/components/ui/timeline";
 import Image from "next/image";
+import Particles from "@/src/components/ui/particles";
 const Onboarding: React.FC = () => {
   const timelineData = [
     {
@@ -62,8 +63,15 @@ const Onboarding: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#f3f7f9] h-full ">
-      <div className="absolute inset-0 z-0 bg-stars"></div>
+    <div className="bg-[#f3f7f9] h-full pb-80">
+      <Particles 
+        className="absolute inset-0 "
+        quantity={100}
+        ease={80}
+        color="#ff6f61"
+        size={0.8}
+        refresh 
+        />
       <div className="flex flex-col items-center">
         <div className="title pt-40 text-primary-red flex flex-col gap-12 items-center px-80">
           <div className="flex flex-col gap-6 items-center">

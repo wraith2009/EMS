@@ -147,6 +147,29 @@ const BusinessRegistration: React.FC = () => {
             height={450}
           />
         </div>
+        {/* <div className="flex items-end justify-center h-full absolute ">
+              <div className="flex items-center pb-8 justify-center gap-4">
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935936/linkedin-app-icon_riwyqy.svg"}
+                  width={32}
+                  height={32}
+                  alt="linkedin"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935838/reddit-icon_q9ik8c.svg"}
+                  width={32}
+                  height={32}
+                  alt="reddit"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935894/x-social-media-black-icon_br6wpq.svg"}
+                  width={32}
+                  height={32}
+                  alt="X"
+                />
+              </div>
+
+        </div> */}
       </div>
     </div>
   );

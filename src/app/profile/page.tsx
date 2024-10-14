@@ -7,6 +7,8 @@ import { User } from "lucide-react";
 import GradualSpacing from "@/src/components/magicui/gradual-spacing";
 import { Message, Loader, useToaster } from "rsuite";
 import AvatarIcon from "@rsuite/icons/legacy/Avatar";
+import Particles from "@/src/components/ui/particles";
+import Image from "next/image";
 
 type PreviewFileCallback = (result: string | ArrayBuffer | null) => void;
 
@@ -75,10 +77,10 @@ const Profile: React.FC = () => {
   return (
     <div className="flex justify-between">
       {/* Left side */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center h-[100vh]">
-        <div className="w-full p-8 bg-[#F0F0F5] h-[100vh] px-32">
+      <div className="w-full lg:w-1/2 flex items-center justify-center h-[100vh] ">
+        <div className="w-full p-8 bg-[#F0F0F5] h-[100vh] px-32 flex flex-col justify-center ">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary-red mb-2">
+            <h1 className="text-4xl font-bold text-primary-red mb-2 ">
               Update Profile
             </h1>
             <p className="text-sm text-primary-red">
@@ -91,9 +93,9 @@ const Profile: React.FC = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {/* Avatar section (now first) */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col ">
               <div className="relative w-32 h-32 mx-auto cursor-pointer">
                 {uploading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75 rounded-full">
@@ -135,7 +137,7 @@ const Profile: React.FC = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#ff6f61] focus:border-transparent transition duration-200"
+                  className="w-full pl-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#ff6f61] focus:border-transparent transition duration-200 focus:outline-none"
                   placeholder="Enter your name"
                 />
                 <User className="absolute left-3 top-2.5 text-gray-400" />
@@ -154,7 +156,7 @@ const Profile: React.FC = () => {
                 id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#ff6f61] focus:border-transparent transition duration-200"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#ff6f61] focus:border-transparent transition duration-200 focus:outline-none"
               >
                 <option value="">Select gender</option>
                 <option value="male">Male</option>
@@ -193,12 +195,42 @@ const Profile: React.FC = () => {
 
       {/* Right side */}
       <div className="hidden w-1/2 lg:flex lg:flex-col">
-        <div className="flex-grow flex items-center justify-center text-primary-red text-3xl font-semibold h-1/3 bg-gradient-to-l from-[#e0e1e3] via-[#eff0f2] to-[#edeef0]">
+      <Particles 
+        className="absolute inset-0 "
+        quantity={100}
+        ease={80}
+        color="#ff6f61"
+        size={0.8}
+        refresh 
+        />
+        <div className="flex-grow flex items-center justify-center text-primary-red text-3xl font-semibold h-1/3 bg-white">
           <GradualSpacing text="Enhance your experience with streamlined|tools for effortless control and customization" />
         </div>
         <div className="h-2/3">
-          <div className="bg-[url('https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728880469/update_profile2_k1wuz5.jpg')] bg-cover bg-no-repeat h-full w-full flex justify-center items-center pb-20">
-            Social Links
+          <div className="bg-[url('https://res.cloudinary.com/dhrbg2jbi/image/upload/c_pad,ar_16:9/v1728922778/AI_Generated_Image_2024-10-14_466618629025201_ribt8v.jpg')] bg-cover bg-no-repeat h-full w-full  ">
+            <div className="flex items-end justify-center h-full ">
+              <div className="flex items-center pb-8 justify-center gap-4">
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935936/linkedin-app-icon_riwyqy.svg"}
+                  width={32}
+                  height={32}
+                  alt="linkedin"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935838/reddit-icon_q9ik8c.svg"}
+                  width={32}
+                  height={32}
+                  alt="reddit"
+                />
+                <Image
+                  src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728935894/x-social-media-black-icon_br6wpq.svg"}
+                  width={32}
+                  height={32}
+                  alt="X"
+                />
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
