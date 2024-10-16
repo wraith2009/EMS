@@ -5,9 +5,11 @@ import {
   RegisterBusinessSchema,
 } from "../lib/validators/auth.validator";
 import bcryptjs from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
+import APP_PATH from "@/src/config/path.config";
+import { sendConfirmationEmail } from "../lib/sendConfirmationEmail";
 
-// type SignUpResponse = { success: true } | { error: string | string[] };
-
+// Signup server action
 export const signUp = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -32,17 +34,262 @@ export const signUp = async (formData: FormData) => {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email: email,
         password: hashedPassword,
       },
     });
 
+    if (user) {
+      const VerificationToken = uuidv4();
+      const TokenExpiry = new Date(Date.now() + 3 * 60 * 1000);
+      await prisma.user.update({
+        where: {
+          email: user.email,
+        },
+        data: {
+          VerificationToken: VerificationToken,
+          VerificationTokenExpiry: TokenExpiry,
+        },
+      });
+
+      const verificationLink = `${process.env.NEXTAUTH_URL}${APP_PATH.VERIFY_EMAIL}/${VerificationToken}`;
+
+      try {
+        await sendConfirmationEmail(
+          email,
+          verificationLink,
+          "EMAIL_VERIFICATION",
+        );
+      } catch (err) {
+        console.error("Failed to send verification email:", err);
+        return {
+          error: ["Failed to send verification email. Please try again later."],
+          success: false,
+        };
+      }
+    }
+
     return { success: true };
   } catch (error) {
     console.error("Server error:", error);
     return { error: "Unable to sign up user. Please try again later." };
+  }
+};
+
+export const VerifyEmail = async ({
+  email,
+  token,
+}: {
+  email: string;
+  token: string;
+}) => {
+  try {
+    const currentTime = new Date();
+
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+        VerificationToken: token,
+        VerificationTokenExpiry: {
+          gte: currentTime,
+        },
+      },
+    });
+
+    if (!user) {
+      return { error: "Invalid Token or Token Expired" };
+    }
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        isvarified: true,
+        VerificationToken: null,
+        VerificationTokenExpiry: null,
+      },
+    });
+
+    return { success: true, message: "Verification successful" };
+  } catch (error) {
+    console.error("Server Error:", error);
+    return { error: "Server Error" };
+  }
+};
+
+export const ResendVerificationEmail = async ({ email }: { email: string }) => {
+  try {
+    const token = uuidv4();
+    const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return { message: "Unable to find user" };
+    }
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        VerificationToken: token,
+        VerificationTokenExpiry: expiryTime,
+      },
+    });
+
+    const verificationLink = `${process.env.NEXTAUTH_URL}${APP_PATH.VERIFY_EMAIL}/${token}`;
+
+    try {
+      await sendConfirmationEmail(
+        email,
+        verificationLink,
+        "EMAIL_VERIFICATION",
+      );
+    } catch (err) {
+      console.error("Failed to send verification email:", err);
+      return {
+        error: ["Failed to send verification email. Please try again later."],
+        success: false,
+      };
+    }
+    return { success: true, message: "Verification Email Sent" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Server error" };
+  }
+};
+
+export const ResetPasswordLink = async ({ email }: { email: string }) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return { error: "User not found" };
+    }
+
+    const token = uuidv4();
+    const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        ResetPasswordToken: token,
+        ResetPasswordTokenExpiry: expiryTime,
+      },
+    });
+
+    const resetPasswordLink = `${process.env.NEXTAUTH_URL}${APP_PATH.RESET_PASSWORD}/${token}`;
+
+    await sendConfirmationEmail(email, resetPasswordLink, "RESET_PASSWORD");
+  } catch (error) {
+    console.error(error);
+    return { message: "server error" };
+  }
+};
+
+export const ResentResetPasswordLink = async ({ email }: { email: string }) => {
+  try {
+    const token = uuidv4();
+    const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return { message: "Unable to find user" };
+    }
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        ResetPasswordToken: token,
+        ResetPasswordTokenExpiry: expiryTime,
+      },
+    });
+
+    const verificationLink = `${process.env.NEXTAUTH_URL}${APP_PATH.VERIFY_EMAIL}/${token}`;
+
+    try {
+      await sendConfirmationEmail(
+        email,
+        verificationLink,
+        "EMAIL_VERIFICATION",
+      );
+    } catch (err) {
+      console.error("Failed to send verification email:", err);
+      return {
+        error: ["Failed to send verification email. Please try again later."],
+        success: false,
+      };
+    }
+    return { success: true, message: "Verification Email Sent" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Server error" };
+  }
+};
+
+export const ResetPassword = async ({
+  email,
+  password,
+  token,
+}: {
+  email: string;
+  password: string;
+  token: string;
+}) => {
+  try {
+    const currentTime = new Date();
+
+    const user = prisma.user.findUnique({
+      where: {
+        email: email,
+        ResetPasswordToken: token,
+        ResetPasswordTokenExpiry: {
+          gte: currentTime,
+        },
+      },
+    });
+
+    if (!user) {
+      return { error: "Invalid Token or Token Expired" };
+    }
+
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        password: hashedPassword,
+        ResetPasswordToken: null,
+        ResetPasswordTokenExpiry: null,
+      },
+    });
+
+    return { success: true, message: "Password Reset Successfully" };
+  } catch (error) {
+    console.error(error);
+    return { message: "server error" };
   }
 };
 
