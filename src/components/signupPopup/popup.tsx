@@ -49,7 +49,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
 
       setTimeout(() => {
         onClose();
-        router.push("/profile");
+        router.push("/welcome");
       }, 2000);
     } catch (error) {
       toast.error("Signup failed. Please try again.");
