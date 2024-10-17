@@ -1,28 +1,41 @@
 "use client";
 import React, { useState } from "react";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import icons for hamburger
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+import type { Session } from "next-auth";
+import toast from "react-hot-toast";
 
-const Header = () => {
+const Header: React.FC = () => {
   const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState<boolean>(false); // State to handle mobile menu visibility
+  const { data: session }: { data: Session | null } = useSession();
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const handleClick = () => {
+  // Handle SignIn click
+  const handleSignIn = () => {
     router.push("/sign-in");
   };
+
+  // Handle SignOut click
+  const handleSignOut = () => {
+    signOut({ redirect: false });
+    toast.success("SignOut Successfull");
+    setTimeout(() => {
+      router.push("/sign-in");
+    }, 1000);
+  };
+
   return (
-    <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14 px-4 z-10 bg-[#f3f7f9] ">
+    <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14 px-4 z-10 bg-[#f3f7f9]">
       <Image src="/logo-campus.png" height={50} width={50} alt="logo" />
 
-      {/* Hamburger Menu for Mobile */}
       <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
         {menuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
       </div>
 
-      {/* Desktop Menu */}
       <div className="hidden md:flex gap-6">
         <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
           About
@@ -38,15 +51,57 @@ const Header = () => {
         </span>
       </div>
 
-      {/* Signup Button (Desktop) */}
       <div className="hidden md:flex gap-2">
-        <button
-          className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
-          onClick={handleClick}
-        >
-          <span className="text-primary-red font-sans">SignIn</span>
-        </button>
+        {session ? (
+          <button
+            className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+            onClick={handleSignOut}
+          >
+            <span className="text-primary-red font-sans">Sign Out</span>
+          </button>
+        ) : (
+          <button
+            className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+            onClick={handleSignIn}
+          >
+            <span className="text-primary-red font-sans">Sign In</span>
+          </button>
+        )}
       </div>
+
+      {menuOpen && (
+        <div className="md:hidden absolute top-14 left-0 w-full bg-[#f3f7f9] flex flex-col items-start p-4 z-20">
+          <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+            About
+          </span>
+          <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+            For Business
+          </span>
+          <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+            Try for free
+          </span>
+          <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+            Pricing
+          </span>
+          <div>
+            {session ? (
+              <button
+                className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+                onClick={handleSignOut}
+              >
+                <span className="text-primary-red font-sans">Sign Out</span>
+              </button>
+            ) : (
+              <button
+                className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl"
+                onClick={handleSignIn}
+              >
+                <span className="text-primary-red font-sans">Sign In</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
