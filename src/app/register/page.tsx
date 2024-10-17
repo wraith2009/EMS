@@ -8,10 +8,8 @@ const Register = async () => {
 
   if (!session) {
     redirect("/");
-    return null;
   }
 
-  // If user is authenticated, render the registration component
   return <BusinessRegistration />;
 };
 

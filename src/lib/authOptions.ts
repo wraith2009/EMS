@@ -23,34 +23,22 @@ export const authOptions: NextAuthOptions = {
 
         const { email, password } = result.data;
         try {
-          console.log("Backend received email:", email);
-          console.log("Backend received password:", password);
-          // Find user by email
           const user = await prisma.user.findUnique({
             where: {
               email: email,
             },
           });
-
-          // Log user details for debugging
-          console.log("User found:", user);
-
           if (!user) {
-            console.log("No user found with this email");
             throw new Error("No user found");
           }
 
           if (user.password === null) {
             throw new Error("Password is missing");
           }
-          // Compare the password
           const isPasswordCorrect = await bcrypt.compare(
             password,
             user.password,
           );
-
-          // Log password comparison result
-          console.log("Is password correct?", isPasswordCorrect);
 
           if (!isPasswordCorrect) {
             console.log("Incorrect password");
@@ -87,6 +75,7 @@ export const authOptions: NextAuthOptions = {
               oauthId,
               email: email as string,
               name: name as string,
+              isvarified: true,
             },
           });
         }
@@ -95,26 +84,19 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user, profile }) {
-      console.log("profile data", profile);
-      console.log("JWT Callback - Token before modification:", token);
-      console.log("JWT Callback - User (available only on sign-in):", user);
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id?.toString();
         token.role = user.role?.toString();
-        console.log("JWT Callback - User:", user);
-        console.log("JWT Callback - Token after modification:", token);
       }
       return token;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
-      console.log("Session Callback - Token:", token);
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
       }
-      console.log("Session Callback - Session:", session);
       return session;
     },
   },

@@ -24,7 +24,7 @@ export const signUp = async (formData: FormData) => {
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        email: email!,
+        email: email,
       },
     });
 
@@ -78,19 +78,12 @@ export const signUp = async (formData: FormData) => {
   }
 };
 
-export const VerifyEmail = async ({
-  email,
-  token,
-}: {
-  email: string;
-  token: string;
-}) => {
+export const VerifyEmail = async ({ token }: { token: string }) => {
   try {
     const currentTime = new Date();
 
     const user = await prisma.user.findFirst({
       where: {
-        email: email,
         VerificationToken: token,
         VerificationTokenExpiry: {
           gte: currentTime,
@@ -104,7 +97,7 @@ export const VerifyEmail = async ({
 
     await prisma.user.update({
       where: {
-        email: email,
+        email: user.email,
       },
       data: {
         isvarified: true,
@@ -116,7 +109,7 @@ export const VerifyEmail = async ({
     return { success: true, message: "Verification successful" };
   } catch (error) {
     console.error("Server Error:", error);
-    return { error: "Server Error" };
+    return { success: false, error: "Server Error" };
   }
 };
 
@@ -176,12 +169,11 @@ export const ResetPasswordLink = async ({ email }: { email: string }) => {
     });
 
     if (!user) {
-      return { error: "User not found" };
+      return { success: false, message: "User not found" };
     }
 
     const token = uuidv4();
     const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
-
     await prisma.user.update({
       where: {
         email: email,
@@ -195,13 +187,15 @@ export const ResetPasswordLink = async ({ email }: { email: string }) => {
     const resetPasswordLink = `${process.env.NEXTAUTH_URL}${APP_PATH.RESET_PASSWORD}/${token}`;
 
     await sendConfirmationEmail(email, resetPasswordLink, "RESET_PASSWORD");
+
+    return { success: true, message: "Reset password link sent" };
   } catch (error) {
-    console.error(error);
-    return { message: "server error" };
+    console.error("Error generating reset password link:", error);
+    return { success: false, message: "Server error" };
   }
 };
 
-export const ResentResetPasswordLink = async ({ email }: { email: string }) => {
+export const ResendResetPasswordLink = async ({ email }: { email: string }) => {
   try {
     const token = uuidv4();
     const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
@@ -226,14 +220,10 @@ export const ResentResetPasswordLink = async ({ email }: { email: string }) => {
       },
     });
 
-    const verificationLink = `${process.env.NEXTAUTH_URL}${APP_PATH.VERIFY_EMAIL}/${token}`;
+    const verificationLink = `${process.env.NEXTAUTH_URL}${APP_PATH.RESET_PASSWORD}/${token}`;
 
     try {
-      await sendConfirmationEmail(
-        email,
-        verificationLink,
-        "EMAIL_VERIFICATION",
-      );
+      await sendConfirmationEmail(email, verificationLink, "RESET_PASSWORD");
     } catch (err) {
       console.error("Failed to send verification email:", err);
       return {
@@ -249,20 +239,17 @@ export const ResentResetPasswordLink = async ({ email }: { email: string }) => {
 };
 
 export const ResetPassword = async ({
-  email,
   password,
   token,
 }: {
-  email: string;
   password: string;
   token: string;
 }) => {
   try {
     const currentTime = new Date();
 
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: {
-        email: email,
         ResetPasswordToken: token,
         ResetPasswordTokenExpiry: {
           gte: currentTime,
@@ -271,13 +258,14 @@ export const ResetPassword = async ({
     });
 
     if (!user) {
-      return { error: "Invalid Token or Token Expired" };
+      return { success: false, message: "Invalid or expired token" };
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
+
     await prisma.user.update({
       where: {
-        email: email,
+        id: user.id,
       },
       data: {
         password: hashedPassword,
@@ -286,10 +274,10 @@ export const ResetPassword = async ({
       },
     });
 
-    return { success: true, message: "Password Reset Successfully" };
+    return { success: true, message: "Password reset successfully" };
   } catch (error) {
-    console.error(error);
-    return { message: "server error" };
+    console.error("Error resetting password:", error);
+    return { success: false, message: "Server error" };
   }
 };
 

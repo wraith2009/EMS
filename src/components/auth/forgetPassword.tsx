@@ -2,34 +2,61 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import FooterPage from "./footer";
+import {
+  ResetPasswordLink,
+  ResendResetPasswordLink,
+} from "@/src/actions/auth.actions";
+import toast from "react-hot-toast";
 
 const ForgetPassword = () => {
   const [showResend, setShowResend] = useState(false);
   const [seconds, setSeconds] = useState(30);
   const [isClickable, setIsClickable] = useState(false);
-  const [disableResetButton, setDisableResetButton] = useState(false); // State to disable reset button
+  const [disableResetButton, setDisableResetButton] = useState(false);
+  const [email, setEmail] = useState<string>("");
 
-  const handleResetClick = (e: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleResetClick = async (e: any) => {
     e.preventDefault();
 
-    setDisableResetButton(true); // Disable the reset button after click
+    const res = await ResetPasswordLink({ email });
+    setDisableResetButton(true);
     setShowResend(true);
-    setSeconds(30); // Reset timer for both buttons
-    setIsClickable(false); // Disable the resend button initially
+    setSeconds(30);
+    setIsClickable(false);
 
-    // Start the countdown for disabling the reset button
+    if (res?.success === true) {
+      toast.success(res.message || "Reset Link sent Successfully");
+    } else {
+      toast.error(res.message || "Failed to send reset link");
+    }
+
     setTimeout(() => {
-      setDisableResetButton(false); // Re-enable the reset button after 30 seconds
+      setDisableResetButton(false);
     }, 30000);
   };
 
-  // Countdown logic for the resend button
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleResendClick = async (e: any) => {
+    e.preventDefault();
+
+    const res = await ResendResetPasswordLink({ email });
+    setSeconds(30);
+    setIsClickable(false);
+
+    if (res?.success === true) {
+      toast.success(res.message || "Reset Password link resent");
+    } else {
+      toast.error(res.message || "Failed to resend reset link");
+    }
+  };
+
   useEffect(() => {
     if (showResend && seconds > 0) {
       const timer = setTimeout(() => setSeconds(seconds - 1), 1000);
       return () => clearTimeout(timer);
     } else if (seconds === 0) {
-      setIsClickable(true); // Enable the resend button once countdown is complete
+      setIsClickable(true);
     }
   }, [seconds, showResend]);
 
@@ -51,6 +78,9 @@ const ForgetPassword = () => {
               type="email"
               className="w-full rounded-3xl py-2 px-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-red focus:border-transparent"
               placeholder="Email address"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               required
             />
             <button
@@ -60,7 +90,7 @@ const ForgetPassword = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-primary-red hover:bg-red-500"
               }`}
-              disabled={disableResetButton} // Disable the reset button
+              disabled={disableResetButton}
             >
               {disableResetButton
                 ? `Wait for ${seconds} seconds`
@@ -81,13 +111,7 @@ const ForgetPassword = () => {
                       ? "cursor-pointer"
                       : "cursor-not-allowed text-gray-400"
                   }`}
-                  onClick={() => {
-                    if (isClickable) {
-                      // Logic for resending the reset link
-                      setSeconds(30); // Reset timer
-                      setIsClickable(false); // Disable button again
-                    }
-                  }}
+                  onClick={handleResendClick}
                   disabled={!isClickable}
                 >
                   Resend

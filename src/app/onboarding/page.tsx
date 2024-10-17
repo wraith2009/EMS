@@ -14,9 +14,11 @@ const Onboarding: React.FC = () => {
               You&apos;re in! Time to verify that shiny new account of yours.
               Let&apos;s make sure it&apos;s official.
             </p>
-            <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,111,86)] bg-white/[0.2] text-sm transition duration-200 max-w-fit hover:border-primary-red">
-              Verify your Account
-            </button>
+            <a href="/profile">
+              <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,111,86)] bg-white/[0.2] text-sm transition duration-200 max-w-fit hover:border-primary-red">
+                Verify your Account
+              </button>
+            </a>
           </div>
           <Image
             src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728504079/verify1_yywr3h.webp"
@@ -37,9 +39,11 @@ const Onboarding: React.FC = () => {
               Ready to take charge? Register your organization and become the
               mastermind behind the scenes.
             </p>
-            <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,111,86)] bg-white/[0.2] text-sm transition duration-200 max-w-fit hover:border-primary-red">
-              Register your Organization
-            </button>
+            <a href="/register">
+              <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,111,86)] bg-white/[0.2] text-sm transition duration-200 max-w-fit hover:border-primary-red">
+                Register your Organization
+              </button>
+            </a>
           </div>
           <Image
             src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1728504094/register_z2ju15.webp"

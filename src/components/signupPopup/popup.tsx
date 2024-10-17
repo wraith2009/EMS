@@ -45,12 +45,14 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       if (response?.success) {
         toast.success("Signup successful!");
         setSuccess("Signup successful! Redirecting...");
-      }
 
-      setTimeout(() => {
-        onClose();
-        router.push("/welcome");
-      }, 2000);
+        setTimeout(() => {
+          onClose();
+          router.push("/welcome");
+        }, 2000);
+      } else {
+        toast.error("Signup failed");
+      }
     } catch (error) {
       toast.error("Signup failed. Please try again.");
       console.error("Signup error:", error);

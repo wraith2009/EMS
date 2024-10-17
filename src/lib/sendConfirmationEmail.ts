@@ -1,10 +1,9 @@
-import { VerificationType } from "@prisma/client";
 import nodemailer from "nodemailer";
 
 export async function sendConfirmationEmail(
   email: string,
   confirmationLink: string,
-  type: VerificationType,
+  type: string,
 ) {
   try {
     const transporter = nodemailer.createTransport({
@@ -14,6 +13,10 @@ export async function sendConfirmationEmail(
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false, // Avoids self-signed certificate issues
+      },
+      debug: true,
     });
 
     if (type === "EMAIL_VERIFICATION") {
