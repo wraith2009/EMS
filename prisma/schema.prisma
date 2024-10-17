@@ -43,15 +43,15 @@ enum DayOfWeek {
   Sunday
 }
 
+
 // Models
 model User {
   id             String        @id @default(cuid()) 
   email          String        @unique
   password       String?
   name           String?
-  isvarified     Boolean? 
+  isvarified     Boolean       @default(false) 
   role           Role?
-  profile_id     Int?
   oauthId        String?
   gender         String?
   phoneNumber    String?
@@ -61,6 +61,13 @@ model User {
   teacher        Teacher?
   hod            Hod?
   admin          Admin?
+
+  //  Token
+  VerificationToken           String?
+  VerificationTokenExpiry     DateTime?
+  ResetPasswordToken          String?
+  ResetPasswordTokenExpiry    DateTime?
+
   attendances    Attendance[]
   leaveRequests  LeaveRequest[]
   notifications  Notification[]
@@ -258,3 +265,5 @@ model Notification {
   
   created_at     DateTime      @default(now())
 }
+
+
