@@ -63,7 +63,7 @@ const Header: React.FC = () => {
         </span>
         <span
           className={`cursor-pointer font-sans ${
-            isActive("/try-for-free")
+            isActive("/Information/demo")
               ? "text-primary-red"
               : "text-[#8f9ca3] hover:text-primary-red"
           }`}
@@ -126,7 +126,7 @@ const Header: React.FC = () => {
           </span>
           <span
             className={`cursor-pointer font-sans ${
-              isActive("/try-for-free")
+              isActive("/Information/demo")
                 ? "text-primary-red"
                 : "text-[#8f9ca3] hover:text-primary-red"
             } py-2`}

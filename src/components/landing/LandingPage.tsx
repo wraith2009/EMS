@@ -104,7 +104,7 @@ export default function LandingPage() {
             </span>
             <span
               className={`cursor-pointer font-sans ${
-                isActive("/try-for-free")
+                isActive("/Information/demo")
                   ? "text-primary-red"
                   : "text-[#8f9ca3] hover:text-primary-red"
               }`}
@@ -145,9 +145,11 @@ export default function LandingPage() {
             <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
               For Business
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
-              Try for free
-            </span>
+            <a href="/Information/demo">
+              <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+                Try for free
+              </span>
+            </a>
             <a href="/Information/Pricing">
               <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
                 Pricing
