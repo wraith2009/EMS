@@ -5,12 +5,16 @@ import SignupPopup from "../signupPopup/popup";
 import StepChart from "./StepChart";
 import React from "react";
 import Testimonials from "./testimonials";
+import { usePathname, useRouter } from "next/navigation";
 import CallToAction from "./callToAction";
 import Footer from "./footer";
 import Image from "next/image";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import icons for hamburger
 import Particles from "../ui/particles";
 export default function LandingPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // State to handle mobile menu visibility
 
@@ -22,6 +26,8 @@ export default function LandingPage() {
   const slideshowRef = useRef<HTMLDivElement>(null);
   const featureCardsRef = useRef<HTMLDivElement>(null);
   const stepChartRef = useRef<HTMLDivElement>(null);
+
+  const isActive = (path: string) => pathname === path;
 
   // Intersection observer for smooth scrolling
   useEffect(() => {
@@ -76,18 +82,47 @@ export default function LandingPage() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-6">
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+            <span
+              className={`cursor-pointer font-sans ${
+                isActive("/about")
+                  ? "text-primary-red"
+                  : "text-[#8f9ca3] hover:text-primary-red"
+              }`}
+              onClick={() => router.push("/about")}
+            >
               About
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+            <span
+              className={`cursor-pointer font-sans ${
+                isActive("/business")
+                  ? "text-primary-red"
+                  : "text-[#8f9ca3] hover:text-primary-red"
+              }`}
+              onClick={() => router.push("/business")}
+            >
               For Business
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
+            <span
+              className={`cursor-pointer font-sans ${
+                isActive("/try-for-free")
+                  ? "text-primary-red"
+                  : "text-[#8f9ca3] hover:text-primary-red"
+              }`}
+              onClick={() => router.push("/try-for-free")}
+            >
               Try for free
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red">
-              Pricing
-            </span>
+            <a href="/Information/Pricing">
+              <span
+                className={`cursor-pointer font-sans ${
+                  isActive("/Information/Pricing")
+                    ? "text-primary-red"
+                    : "text-[#8f9ca3] hover:text-primary-red"
+                }`}
+              >
+                Pricing
+              </span>
+            </a>
           </div>
 
           {/* Signup Button (Desktop) */}
@@ -113,9 +148,12 @@ export default function LandingPage() {
             <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
               Try for free
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
-              Pricing
-            </span>
+            <a href="/Information/Pricing">
+              <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+                Pricing
+              </span>
+            </a>
+
             <button
               className="bg-[#ffe8e5] shadow-sm h-8 px-4 rounded-2xl mt-4"
               onClick={openModal}

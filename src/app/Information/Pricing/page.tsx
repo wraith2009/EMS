@@ -1,6 +1,8 @@
+"use client";
 import FooterPage from "@/src/components/auth/footer";
 import Header from "@/src/components/auth/Header";
 import React from "react";
+import QuestionsList from "./questionList";
 
 interface PricingCardProps {
   title: string;
@@ -110,6 +112,22 @@ const Pricing = () => {
     },
   ];
 
+  const faqQuestions = [
+    {
+      question: "What is CampusSync?",
+      answer:
+        "CampusSync is a comprehensive platform designed to manage educational institutes.",
+    },
+    {
+      question: "Can I upgrade or downgrade my plan?",
+      answer:
+        "Yes, you can upgrade or downgrade your plan at any time from your account settings.",
+    },
+    {
+      question: "How can I contact support?",
+      answer: "You can reach out to our support team via email or phone, 24/7.",
+    },
+  ];
   return (
     <div className="flex flex-col bg-[#f3f7f9] justify-between min-h-screen">
       <Header />
@@ -126,18 +144,117 @@ const Pricing = () => {
               <PricingCard key={index} {...plan} />
             ))}
           </div>
-          <div className="my-8 flex flex-col">
+          {/* <div className="my-8 flex flex-col">
             <span className="text-primary-red">Scale your website</span>
             <span className="text-xl px-4 text-[#676767] mt-4">
               Empower your institution with seamless management—everything you
               need to run smarter, all in one subscription!
             </span>
+          </div> */}
+          <div className="my-8 flex flex-col items-center text-center  rounded-3xl p-8">
+            <span className="text-primary-red flex items-center justify-center text-2xl font-semibold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-primary-red mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7H7v6h6m5 5l-7-7m7 7V8a2 2 0 00-2-2h-7.5"
+                />
+              </svg>
+              Scale Your Website
+            </span>
+
+            <span className="text-xl px-4 text-[#676767] mt-4">
+              Empower your institution with seamless management—everything you
+              need to run smarter, all in one subscription!
+            </span>
+
+            {/* Key Features Section */}
+            <ul className="mt-6 space-y-4 text-left text-lg text-[#676767] max-w-lg mx-auto">
+              <li className="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-primary-red mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                Seamless student and staff management
+              </li>
+              <li className="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-primary-red mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                Real-time event and schedule tracking
+              </li>
+              <li className="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-primary-red mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                Integrated payments and invoicing
+              </li>
+            </ul>
+
+            {/* Call to Action */}
+            <a
+              href="/learn-more"
+              className="mt-8 bg-primary-red text-white font-semibold px-6 py-2 rounded-full hover:bg-opacity-90"
+            >
+              Learn More
+            </a>
+
+            {/* Testimonial */}
+            <div className="mt-8 max-w-lg mx-auto text-gray-500 italic">
+              <p className="text-sm">
+                “CampusSync transformed our institution’s management. Everything
+                is streamlined, and we’ve saved countless hours!” — Jane Doe,
+                University Admin
+              </p>
+            </div>
           </div>
+
           <div className="my-8 flex flex-col">
             <span className="text-primary-red">Frequently Asked Questions</span>
             <span className="text-3xl text-[#676767] font-bold mt-4">
               Have Any Questions?
             </span>
+
+            <QuestionsList questions={faqQuestions} />
           </div>
         </div>
       </div>
