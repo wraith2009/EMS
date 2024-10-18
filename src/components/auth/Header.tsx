@@ -30,7 +30,12 @@ const Header: React.FC = () => {
 
   return (
     <div className="w-full py-1 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14  z-10 bg-[#f3f7f9]">
-      <Image src="https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg" height={50} width={50} alt="logo" />
+      <Image
+        src="https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"
+        height={50}
+        width={50}
+        alt="logo"
+      />
 
       <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
         {menuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
