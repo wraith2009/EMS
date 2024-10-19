@@ -3,6 +3,8 @@ import Particles from "../ui/particles";
 import Header from "../auth/Header";
 import Image from "next/image";
 import Footer from "../landing/footer";
+import AboutUS from "../../../public/aboutUsBg.svg"
+import about from "@/src/app/Information/about/page";
 const AboutSection = () => {
   return (
     <div className="h-full w-full">
@@ -37,9 +39,9 @@ const AboutSection = () => {
             </div>
           </div>
         </div>
-        {/* <div className="min-h-[400px] min-w-[600px]">
-         <Image src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1729254391/Teachers_Dashboard_mb9jpa.png"} alt="about us bg" height={400} width={600}/>
-      </div> */}
+        <div className="max-h-[500px] min-w-[600px] overflow-hidden ">
+         <Image src={AboutUS} alt="about us bg" height={400} width={600} className="-skew-y-12 perspective-400"/>
+        </div>
         {/* Who we Are */}
         <div className="flex justify-between mt-16 md:px-20 gap-8  w-full">
           {/* title and description */}

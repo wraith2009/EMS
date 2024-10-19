@@ -65,6 +65,7 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
+    "@xpd/tailwind-3dtransforms": "^1.0.3",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.11",
     "eslint-config-prettier": "^9.1.0",
