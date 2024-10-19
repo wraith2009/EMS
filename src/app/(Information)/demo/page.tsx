@@ -2,12 +2,7 @@
 import FooterPage from "@/src/components/auth/footer";
 import Header from "@/src/components/auth/Header";
 import React, { useState } from "react";
-import {
-  FaCheckCircle,
-  FaTwitter,
-  FaLinkedin,
-  FaEnvelope,
-} from "react-icons/fa";
+import { FaTwitter, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import FreeTrealBenefits from "@/src/components/demo/FreeTrialBenifits";
 const Demo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,8 +28,8 @@ const Demo = () => {
         </p>
         <button className="bg-primary-red text-white py-2 px-6 mt-4 rounded-3xl shadow-lg hover:bg-red-600">
           Start Free Trial
-        </button>  
-          <FreeTrealBenefits />
+        </button>
+        <FreeTrealBenefits />
         {/* Query Section */}
         <div className="mt-16 flex flex-col items-center">
           <h2 className="text-[#23333e] text-2xl md:text-3xl font-bold text-center">

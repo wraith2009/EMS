@@ -76,17 +76,16 @@ const Header: React.FC = () => {
         >
           Try for free
         </span>
-          <span
-            className={`cursor-pointer font-sans ${
-              isActive("/Pricing")
-                ? "text-primary-red"
-                : "text-[#8f9ca3] hover:text-primary-red"
-            }`}
-            onClick={() => router.push("/Pricing")}
-            
-          >
-            Pricing
-          </span>
+        <span
+          className={`cursor-pointer font-sans ${
+            isActive("/Pricing")
+              ? "text-primary-red"
+              : "text-[#8f9ca3] hover:text-primary-red"
+          }`}
+          onClick={() => router.push("/Pricing")}
+        >
+          Pricing
+        </span>
       </div>
 
       <div className="hidden md:flex gap-2">
@@ -139,17 +138,16 @@ const Header: React.FC = () => {
           >
             Try for free
           </span>
-            <span
-              className={`cursor-pointer font-sans ${
-                isActive("/Information/Pricing")
-                  ? "text-primary-red"
-                  : "text-[#8f9ca3] hover:text-primary-red"
-              } py-2`}
-               
+          <span
+            className={`cursor-pointer font-sans ${
+              isActive("/Information/Pricing")
+                ? "text-primary-red"
+                : "text-[#8f9ca3] hover:text-primary-red"
+            } py-2`}
             onClick={() => router.push("/Pricing")}
-            >
-              Pricing
-            </span>
+          >
+            Pricing
+          </span>
         </div>
       )}
     </div>

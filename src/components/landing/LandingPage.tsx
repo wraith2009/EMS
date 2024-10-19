@@ -112,16 +112,16 @@ export default function LandingPage() {
             >
               Try for free
             </span>
-              <span
-                className={`cursor-pointer font-sans ${
-                  isActive("/Information/Pricing")
-                    ? "text-primary-red"
-                    : "text-[#8f9ca3] hover:text-primary-red"
-                }`}
-                onClick={() => router.push("/Pricing")}
-              >
-                Pricing
-              </span>
+            <span
+              className={`cursor-pointer font-sans ${
+                isActive("/Information/Pricing")
+                  ? "text-primary-red"
+                  : "text-[#8f9ca3] hover:text-primary-red"
+              }`}
+              onClick={() => router.push("/Pricing")}
+            >
+              Pricing
+            </span>
           </div>
 
           {/* Signup Button (Desktop) */}
