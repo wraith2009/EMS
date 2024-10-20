@@ -46,7 +46,8 @@ const Verifymail = ({ params: { token } }: { params: { token: string } }) => {
               Verification Failed
             </h1>
             <p className="text-[#676767] mb-6">
-              Invalid token or token expired. Please try again or request a new verification email.
+              Invalid token or token expired. Please try again or request a new
+              verification email.
             </p>
             <button
               className="w-full rounded-3xl py-2 text-white bg-primary-red hover:bg-red-600 transition-colors"
