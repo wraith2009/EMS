@@ -32,9 +32,15 @@ export const authOptions: NextAuthOptions = {
             throw new Error("No user found");
           }
 
+          const userVarified = user?.isvarified;
+          if (!userVarified) {
+            throw new Error("User not varified");
+          }
+
           if (user.password === null) {
             throw new Error("Password is missing");
           }
+
           const isPasswordCorrect = await bcrypt.compare(
             password,
             user.password,
