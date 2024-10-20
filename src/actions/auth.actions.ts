@@ -42,13 +42,13 @@ export const signUp = async (formData: FormData) => {
     });
 
     if (user) {
-      cookies().set('userEmail', email, { 
-        maxAge: 60 * 5, 
-        httpOnly: true, 
-        secure: process.env.NODE_ENV === 'production', 
-        sameSite: 'strict' 
+      cookies().set("userEmail", email, {
+        maxAge: 60 * 5,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
       });
-      console.log('Server: Cookie set for email:', email); // Log cookie setting
+      console.log("Server: Cookie set for email:", email); // Log cookie setting
       const VerificationToken = uuidv4();
       const TokenExpiry = new Date(Date.now() + 3 * 60 * 1000);
       await prisma.user.update({

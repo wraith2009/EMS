@@ -3,30 +3,31 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import FooterPage from "./footer";
 import { ResendVerificationEmail } from "@/src/actions/auth.actions";
-import { cookies } from "next/headers";
-import axios from "axios";
 const Welcome = () => {
   const [seconds, setSeconds] = useState(30);
   const [isClickable, setIsClickable] = useState(false);
-  const [email, setEmail] = useState<string >("");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
-    async function fetchEmail(){
-      console.log('Client: Attempting to fetch email from API...');
+    async function fetchEmail() {
+      console.log("Client: Attempting to fetch email from API...");
       try {
-        const response = await fetch('/api/cookie/get-email');
+        const response = await fetch("/api/cookie/get-email");
         if (response.ok) {
           const data = await response.json();
-          console.log('Client: Email fetched successfully:', data.email);
+          console.log("Client: Email fetched successfully:", data.email);
           setEmail(data.email);
         } else {
-          console.log('Client: Failed to fetch email, status:', response.status);
+          console.log(
+            "Client: Failed to fetch email, status:",
+            response.status,
+          );
         }
       } catch (error) {
-        console.error('Client: Error fetching email:', error);
+        console.error("Client: Error fetching email:", error);
       }
     }
-    fetchEmail()
+    fetchEmail();
   }, []);
 
   // Countdown logic
