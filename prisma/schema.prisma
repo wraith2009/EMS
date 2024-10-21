@@ -172,6 +172,7 @@ model Institute {
   teachers                Teacher[]
   hods                    Hod[]
   admins                  Admin[]
+  batches                 Batch[]
 
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -210,6 +211,8 @@ model Batch {
   end_year       Int
   course         Course        @relation(fields: [course_id], references: [id])
   course_id      String
+  Institute      Institute     @relation(fields: [institute_id], references: [id])
+  institute_id   String
   students       Student[]
   timetables     Timetable[]
   

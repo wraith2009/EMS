@@ -14,10 +14,11 @@ export const StudentSchema = z.object({
   CurrentYear: z.string().optional(),
   CurrentSemester: z.string().optional(),
   department: z.string().min(1, "please Enter your department"),
-  course: z.string().min(1, "please Enter your course"),
+  courseID: z.string().min(1, "please Enter your course"),
   enrollmentNumber: z.string().min(1, "please Enter your enrollment number"),
   rollNumber: z.string().optional(),
   instituteID: z.string().min(1, "please Enter your institute"),
+  BatchId: z.string().cuid(),
 });
 
 export const getStudentByIdSchema = z.object({
@@ -30,14 +31,17 @@ export const getStudentByInstituteSchema = z.object({
 
 export const getStudentByDepartmentSchema = z.object({
   departmentID: z.string().min(1, "Please Enter Your Department ID"),
+  InstituteID: z.string().cuid().min(1, "please provide Institute Id"),
 });
 
 export const getStudentByCourseSchema = z.object({
   courseID: z.string().min(1, "Please Enter Your Course ID"),
+  InstituteID: z.string().cuid().min(1, "please provide Institute Id"),
 });
 
 export const getStudentByBatchSchema = z.object({
-  batchID: z.string().min(1, "Please Enter Your Batch ID"),
+  batchID: z.string().min(1, "Please Enter Your Batch ID").cuid(),
+  InstituteID: z.string().cuid().min(1, "please provide Institute Id"),
 });
 
 export type getStudentByBatchSchemaType = z.infer<
