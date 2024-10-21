@@ -1,6 +1,10 @@
 import DepartmentRegistration from "@/src/components/institute/department/departmentForm";
 
-const RegisterDepartment = ({ params }: { params: { institute_id: string } }) => {
+const RegisterDepartment = ({
+  params,
+}: {
+  params: { institute_id: string };
+}) => {
   const { institute_id } = params;
 
   if (!institute_id) {

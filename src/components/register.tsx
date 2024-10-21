@@ -12,7 +12,7 @@ import {
 import { ResgisterBusiness } from "../actions/auth.actions";
 import { useRouter } from "next/navigation";
 const BusinessRegistration: React.FC = () => {
-  const router=useRouter();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,7 +32,7 @@ const BusinessRegistration: React.FC = () => {
 
     try {
       const response = await ResgisterBusiness(formData);
-      if (response?.success  && response.institute?.id) {
+      if (response?.success && response.institute?.id) {
         console.log("Business registered successfully:", response);
         router.push(`/department/add-department/${response.institute.id}`);
       }

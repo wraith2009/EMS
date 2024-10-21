@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +25,9 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
   });
 
   const [departmentCreated, setDepartmentCreated] = useState(false);
-  const [createdDepartmentId, setCreatedDepartmentId] = useState<string | null>(null);
+  const [createdDepartmentId, setCreatedDepartmentId] = useState<string | null>(
+    null,
+  );
   const router = useRouter();
 
   const onSubmit = async (data: DapartmentSchemaType) => {
@@ -41,7 +43,7 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
       if (response?.success) {
         console.log("Department created successfully:", response);
         setDepartmentCreated(true);
-        setCreatedDepartmentId(response?.department?.id ?? null);  // Assuming you return the ID in response
+        setCreatedDepartmentId(response?.department?.id ?? null); // Assuming you return the ID in response
       } else {
         console.error("Error:", response?.message);
       }
@@ -141,4 +143,3 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
 };
 
 export default DepartmentRegistration;
-

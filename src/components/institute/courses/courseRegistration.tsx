@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import { getAllDepartments } from "../../../actions/department.actions";
 import { RegisterNewCourse } from "../../../actions/course.action";
 
-const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) => {
+const CourseRegistration: React.FC<{ instituteId: string }> = ({
+  instituteId,
+}) => {
   const [departments, setDepartments] = useState<any[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -25,10 +26,10 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
   const handleCourseSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     // Handle course registration
     const response = await RegisterNewCourse(formData);
-    
+
     // Provide feedback to the user
     if (response?.success) {
       setResponseMessage("Course registered successfully!");
@@ -46,11 +47,12 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
         <form onSubmit={handleCourseSubmit} className="space-y-4 mt-6">
           {/* Department Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Select Department</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Select Department
+            </label>
             <select
               name="department_id"
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-              onChange={(e) => setSelectedDepartment(e.target.value)}
             >
               <option value="">Select Department</option>
               {departments.map((department) => (
@@ -63,7 +65,9 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
 
           {/* Course Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Course Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Course Name
+            </label>
             <input
               type="text"
               name="name"
@@ -74,7 +78,9 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
 
           {/* Course Code */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Course Code</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Course Code
+            </label>
             <input
               type="text"
               name="code"
@@ -85,7 +91,9 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description (optional)</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Description (optional)
+            </label>
             <textarea
               name="description"
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"

@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import {
   DepartmentSchema,
   DepartmentByIdSchema,
@@ -12,7 +12,7 @@ import prisma from "../db/db";
 //     const description = formData.get("description") as string;
 //     const institute_id = formData.get("institute_id") as string;
 //     const parent_id = formData.get("parent_id") as string;
-    
+
 //     const isValidated = DepartmentSchema.safeParse({
 //       name,
 //       code,
@@ -104,7 +104,7 @@ export const CreateDepartment = async (formData: FormData) => {
         code,
         description,
         institute_id,
-        ...parentDepartmentData,  // Add parent_id if it's provided
+        ...parentDepartmentData, // Add parent_id if it's provided
       },
       select: {
         id: true,
@@ -125,8 +125,6 @@ export const CreateDepartment = async (formData: FormData) => {
     return { success: false, message: "Server error" };
   }
 };
-
-
 
 export const getAllDepartments = async ({
   instituteId,

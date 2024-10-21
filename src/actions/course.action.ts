@@ -1,6 +1,9 @@
-"use server"
+"use server";
 import prisma from "../db/db";
-import { CourseSchema, GetCourseByDepartmentSchema } from "../lib/validators/course.validator";
+import {
+  CourseSchema,
+  GetCourseByDepartmentSchema,
+} from "../lib/validators/course.validator";
 
 export const RegisterNewCourse = async (formData: FormData) => {
   try {
@@ -17,11 +20,20 @@ export const RegisterNewCourse = async (formData: FormData) => {
     });
 
     if (!isValid.success) {
-      return { success: false, message: "Validation Error", errors: isValid.error.issues };
+      return {
+        success: false,
+        message: "Validation Error",
+        errors: isValid.error.issues,
+      };
     }
 
     // Debugging: log the department ID and code
-    console.log("Checking for existing course with code:", code, "and department_id:", department_id);
+    console.log(
+      "Checking for existing course with code:",
+      code,
+      "and department_id:",
+      department_id,
+    );
 
     const existingCourse = await prisma.course.findFirst({
       where: {
@@ -50,7 +62,6 @@ export const RegisterNewCourse = async (formData: FormData) => {
     return { success: false, message: "Server Error", error };
   }
 };
-
 
 export const getCourseByDepartment = async ({
   departmentId,
