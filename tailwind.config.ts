@@ -117,6 +117,7 @@ const config: Config = {
     },
   },
   plugins: [
+    require("@xpd/tailwind-3dtransforms"),
     addVariablesForColors, // Existing plugin
     require("tailwindcss-animate"),
   ],
