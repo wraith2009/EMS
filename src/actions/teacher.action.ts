@@ -11,14 +11,13 @@ export const RegisterTeacher = async (formData: FormData) => {
     const lastName = formData.get("lastName") as string;
     const qualification = formData.get("qualification") as string;
     const experience = formData.get("experience") as string;
-    const subjectSpecialization = formData.get(
-      "subjectSpecialization",
-    ) as string;
+    const subjectSpecialization = formData.get("subjectSpecialization") as string;
     const employementStartDate = formData.get("employementStartDate") as string;
     const role = formData.get("role") as TeacherRole;
     const instituteID = formData.get("instituteID") as string;
     const subjects_teaching = formData.get("subjects_teaching") as string;
-    const dateOfBirth = formData.get("DateOfBirth");
+    const dateOfBirth = formData.get("dateOfBirth") as string;
+    const parsedDateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined; 
 
     const isValid = TeacherSchema.safeParse({
       firstName,
@@ -30,7 +29,7 @@ export const RegisterTeacher = async (formData: FormData) => {
       role,
       instituteID,
       subjects_teaching,
-      dateOfBirth,
+      dateOfBirth: parsedDateOfBirth,
     });
 
     if (!isValid.success) {
@@ -42,7 +41,7 @@ export const RegisterTeacher = async (formData: FormData) => {
         firstName: firstName,
         lastName: lastName,
         institute_id: instituteID,
-        dateOfBirth: dateOfBirth,
+        dateOfBirth: parsedDateOfBirth,
       },
     });
 
@@ -50,19 +49,24 @@ export const RegisterTeacher = async (formData: FormData) => {
       return { success: false, message: "Teacher already exists" };
     }
 
+    const createData: any = {
+      firstName,
+      lastName,
+      qualification,
+      experience,
+      subjectSpecialization,
+      employementStartDate,
+      role,
+      institute_id: instituteID,
+      subjects_teaching,
+    };
+
+    if (parsedDateOfBirth) {
+      createData.dateOfBirth = parsedDateOfBirth;
+    }
+
     await prisma.teacher.create({
-      data: {
-        firstName,
-        lastName,
-        qualification,
-        experience,
-        subjectSpecialization,
-        employementStartDate,
-        role,
-        institute_id,
-        subjects_teaching,
-        dateOfBirth,
-      },
+      data: createData,
     });
 
     return { success: true, message: "Teacher registered successfully" };
@@ -71,6 +75,7 @@ export const RegisterTeacher = async (formData: FormData) => {
     return { success: false, message: "Server error" };
   }
 };
+
 
 export const TeacherByInstituteID = async ({
   InstituteId,

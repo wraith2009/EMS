@@ -91,17 +91,3 @@ export const getCourseByDepartment = async ({
   }
 };
 
-// model Course {
-//   id             String        @id @default(cuid())
-//   name           String
-//   description    String?
-//   batches        Batch[]?
-//   subjects       Subject[]
-//   students       Student[]
-
-//   department       Department   @relation("DepartmentCourses", fields: [department_id], references: [id])
-//   department_id    String
-
-//   created_at     DateTime      @default(now())
-//   updated_at     DateTime      @updatedAt
-// }
