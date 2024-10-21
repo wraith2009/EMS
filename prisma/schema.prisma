@@ -184,7 +184,7 @@ model Department {
   institute      Institute     @relation(fields: [institute_id], references: [id])
   institute_id   String
   name           String
-  code           String         @unique
+  code           String         
   description    String?
 
   parentDepartment  Department? @relation("ParentDepartment", fields: [parent_id], references:[id])

@@ -1,9 +1,58 @@
+"use server"
 import {
   DepartmentSchema,
   DepartmentByIdSchema,
 } from "../lib/validators/department.validator";
 import prisma from "../db/db";
 
+// export const CreateDepartment = async (formData: FormData) => {
+//   try {
+//     const name = formData.get("name") as string;
+//     const code = formData.get("DepartmentCode") as string;
+//     const description = formData.get("description") as string;
+//     const institute_id = formData.get("institute_id") as string;
+//     const parent_id = formData.get("parent_id") as string;
+    
+//     const isValidated = DepartmentSchema.safeParse({
+//       name,
+//       code,
+//       description,
+//       institute_id,
+//       parent_id,
+//     });
+
+//     if (!isValidated.success) {
+//       return { success: false, message: "Validation Error" };
+//     }
+
+//     // const existingDepartment = await prisma.department.findFirst({
+//     //   where: {
+//     //     AND: [
+//     //       { institute_id: institute_id },
+//     //       { code: code }
+//     //     ]
+//     //   }
+//     // });
+//     // if (existingDepartment) {
+//     //   return { success: false, message: "Department already exists" };
+//     // }
+
+//     await prisma.department.create({
+//       data: {
+//         name,
+//         code,
+//         description,
+//         institute_id,
+//         parent_id,
+//       },
+//     });
+
+//     return { success: true, message: "Department Added Successfully" };
+//   } catch (error) {
+//     console.error(error);
+//     return { success: false, message: "Server error" };
+//   }
+// };
 export const CreateDepartment = async (formData: FormData) => {
   try {
     const name = formData.get("name") as string;
@@ -12,6 +61,30 @@ export const CreateDepartment = async (formData: FormData) => {
     const institute_id = formData.get("institute_id") as string;
     const parent_id = formData.get("parent_id") as string;
 
+    // Step 1: Check if institute exists
+    const existingInstitute = await prisma.institute.findUnique({
+      where: { id: institute_id },
+    });
+
+    if (!existingInstitute) {
+      return { success: false, message: "Institute not found" };
+    }
+
+    // Step 2: Handle parent department if parent_id is provided
+    let parentDepartmentData = {};
+    if (parent_id && parent_id.trim() !== "") {
+      const parentDepartment = await prisma.department.findUnique({
+        where: { id: parent_id },
+      });
+
+      if (!parentDepartment) {
+        return { success: false, message: "Parent department not found" };
+      }
+
+      parentDepartmentData = { parent_id };
+    }
+
+    // Step 3: Validate input using DepartmentSchema
     const isValidated = DepartmentSchema.safeParse({
       name,
       code,
@@ -24,40 +97,43 @@ export const CreateDepartment = async (formData: FormData) => {
       return { success: false, message: "Validation Error" };
     }
 
-    const existingDepartment = await prisma.department.findFirst({
-      where: {
-        code: code,
-        institute_id: institute_id,
-      },
-    });
-
-    if (existingDepartment) {
-      return { success: false, message: "Department already exists" };
-    }
-
-    await prisma.department.create({
+    // Step 4: Create department and return created department data
+    const newDepartment = await prisma.department.create({
       data: {
         name,
         code,
         description,
         institute_id,
-        parent_id,
+        ...parentDepartmentData,  // Add parent_id if it's provided
+      },
+      select: {
+        id: true,
+        name: true,
+        code: true,
+        description: true,
+        parent_id: true,
       },
     });
 
-    return { success: true, message: "Department Added Successfully" };
+    return {
+      success: true,
+      message: "Department Added Successfully",
+      department: newDepartment,
+    };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Server error" };
   }
 };
 
+
+
 export const getAllDepartments = async ({
   instituteId,
 }: {
   instituteId: string;
 }) => {
-  const isValid = DepartmentByIdSchema.safeParse(instituteId);
+  const isValid = DepartmentByIdSchema.safeParse({ id: instituteId });
 
   if (!isValid.success) {
     return {

@@ -310,7 +310,7 @@ export const ResgisterBusiness = async (formData: FormData) => {
     });
 
     if (InstitueData) {
-      return { success: true };
+      return { success: true, institute: InstitueData };
     }
   } catch (error) {
     console.error("business Registration Error", error);

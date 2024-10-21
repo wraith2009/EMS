@@ -1,30 +1,31 @@
+"use server"
 import prisma from "../db/db";
-import {
-  GetCourseByDepartmentSchema,
-  CourseSchema,
-} from "../lib/validators/course.validator";
+import { CourseSchema, GetCourseByDepartmentSchema } from "../lib/validators/course.validator";
 
 export const RegisterNewCourse = async (formData: FormData) => {
   try {
     const name = formData.get("name") as string;
-    const description = formData.get("CourseDescription") as string;
-    const courseCode = formData.get("CourseCode") as string;
-    const department_id = formData.get("departmentID") as string;
+    const description = formData.get("description") as string;
+    const code = formData.get("code") as string;
+    const department_id = formData.get("department_id") as string;
 
     const isValid = CourseSchema.safeParse({
       name,
       description,
-      courseCode,
+      code,
       department_id,
     });
 
     if (!isValid.success) {
-      return { success: false, message: "Validation Error" };
+      return { success: false, message: "Validation Error", errors: isValid.error.issues };
     }
+
+    // Debugging: log the department ID and code
+    console.log("Checking for existing course with code:", code, "and department_id:", department_id);
 
     const existingCourse = await prisma.course.findFirst({
       where: {
-        courseCode: courseCode,
+        courseCode: code,
         department_id: department_id,
       },
     });
@@ -33,21 +34,23 @@ export const RegisterNewCourse = async (formData: FormData) => {
       return { success: false, message: "This Course is already registered" };
     }
 
+    // Create the new course
     await prisma.course.create({
       data: {
         name,
         description,
-        courseCode,
+        courseCode: code,
         department_id,
       },
     });
 
-    return { success: true, message: "Course registered Successfully" };
+    return { success: true, message: "Course registered successfully" };
   } catch (error) {
-    console.error(error);
-    return { success: false, message: "Server error" };
+    console.error("Error occurred during course registration:", error);
+    return { success: false, message: "Server Error", error };
   }
 };
+
 
 export const getCourseByDepartment = async ({
   departmentId,
