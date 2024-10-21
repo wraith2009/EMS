@@ -84,12 +84,13 @@ export const signUp = async (formData: FormData) => {
   }
 };
 
-export const VerifyEmail = async ({ token }: { token: string }) => {
+export const VerifyEmail = async ({ token, email }: { token: string, email: string }) => {
   try {
     const currentTime = new Date();
 
     const user = await prisma.user.findFirst({
       where: {
+        email: email,
         VerificationToken: token,
         VerificationTokenExpiry: {
           gte: currentTime,
@@ -118,6 +119,7 @@ export const VerifyEmail = async ({ token }: { token: string }) => {
     return { success: false, error: "Server Error" };
   }
 };
+
 
 export const ResendVerificationEmail = async ({ email }: { email: string }) => {
   try {
