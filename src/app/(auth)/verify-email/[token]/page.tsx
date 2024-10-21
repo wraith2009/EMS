@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import FooterPage from "@/src/components/auth/footer";
@@ -10,12 +10,30 @@ import { VerifyEmail } from "@/src/actions/auth.actions";
 const Verifymail = ({ params: { token } }: { params: { token: string } }) => {
   const [error, setError] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchEmail() {
+      try {
+        const response = await fetch("/api/cookie/get-email");
+        if (response.ok) {
+          const data = await response.json();
+          setEmail(data.email);
+        } else {
+          console.log("Failed to fetch email, status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching email:", error);
+      }
+    }
+    fetchEmail();
+  }, []);
 
   const handleVerify = async () => {
     setIsVerifying(true);
     try {
-      const res = await VerifyEmail({ token });
+      const res = await VerifyEmail({ token, email });
       if (res?.success) {
         toast.success("Email Verified");
         router.push("/sign-in");
