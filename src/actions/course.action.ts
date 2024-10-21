@@ -90,4 +90,3 @@ export const getCourseByDepartment = async ({
     };
   }
 };
-

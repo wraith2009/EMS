@@ -11,13 +11,15 @@ export const RegisterTeacher = async (formData: FormData) => {
     const lastName = formData.get("lastName") as string;
     const qualification = formData.get("qualification") as string;
     const experience = formData.get("experience") as string;
-    const subjectSpecialization = formData.get("subjectSpecialization") as string;
+    const subjectSpecialization = formData.get(
+      "subjectSpecialization",
+    ) as string;
     const employementStartDate = formData.get("employementStartDate") as string;
     const role = formData.get("role") as TeacherRole;
     const instituteID = formData.get("instituteID") as string;
     const subjects_teaching = formData.get("subjects_teaching") as string;
     const dateOfBirth = formData.get("dateOfBirth") as string;
-    const parsedDateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined; 
+    const parsedDateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
 
     const isValid = TeacherSchema.safeParse({
       firstName,
@@ -75,7 +77,6 @@ export const RegisterTeacher = async (formData: FormData) => {
     return { success: false, message: "Server error" };
   }
 };
-
 
 export const TeacherByInstituteID = async ({
   InstituteId,
