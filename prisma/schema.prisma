@@ -118,10 +118,11 @@ model Student {
 model Teacher {
   id             String        @id @default(cuid())
   user           User          @relation(fields: [id], references: [id])
-  firstName           String
+  firstName      String
   lastName       String
   qualification  String  //highest degree
   experience     String
+  dateOfBirth    DateTime
   subjectSpecialization String
   employementStartDate  String
   role           TeacherRole
