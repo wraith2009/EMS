@@ -84,7 +84,13 @@ export const signUp = async (formData: FormData) => {
   }
 };
 
-export const VerifyEmail = async ({ token, email }: { token: string, email: string }) => {
+export const VerifyEmail = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
   try {
     const currentTime = new Date();
 
@@ -119,7 +125,6 @@ export const VerifyEmail = async ({ token, email }: { token: string, email: stri
     return { success: false, error: "Server Error" };
   }
 };
-
 
 export const ResendVerificationEmail = async ({ email }: { email: string }) => {
   try {
