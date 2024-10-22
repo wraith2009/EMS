@@ -2,32 +2,62 @@ import { z } from "zod";
 import { TeacherRole } from "@prisma/client";
 
 export const TeacherSchema = z.object({
-  firstName: z.string().min(1, "Please Enter Your first Name"),
-  lastName: z.string().min(1, "please Enter your last name"),
-  qualification: z.string().min(1, "please Enter your qualification"),
-  experience: z.string().min(1, "please Enter your experience"),
+  email: z.string().email(),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+  name: z.string().optional(),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  qualification: z.string().min(1, "Qualification is required"),
+  experience: z.string().min(1, "Experience is required"),
+  dateOfBirth: z.preprocess(
+    (arg) => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg);
+    },
+    z
+      .date()
+      .refine(
+        (date) => date <= new Date(),
+        "Date of birth must be in the past",
+      ),
+  ),
   subjectSpecialization: z
     .string()
-    .min(1, "please Enter your subject specialization"),
-  employementStartDate: z
-    .string()
-    .min(1, "please Enter your employement start date"),
+    .min(1, "Subject specialization is required"),
+  employementStartDate: z.string(),
+  instituteId: z.string().cuid("Institute ID must be a valid cuid"),
   role: z.enum([
+    TeacherRole.Lecturer,
     TeacherRole.AssistantProfessor,
     TeacherRole.Professor,
-    TeacherRole.Lecturer,
+    TeacherRole.HOD,
   ]),
-  departments: z.string().min(1, "please Enter your department"),
-  instituteID: z.string().min(1, "please Enter your institute"),
-  subjects_teaching: z.string().min(1, "please Enter your subjects teaching"),
-  dateOfBirth: z.date(),
 });
 
 export const getTeacherByInstituteIDSchema = z.object({
   instituteID: z.string().min(1, "Please Enter Your Institute ID"),
 });
 
+export const RegisterHodSchema = z.object({
+  teacherID: z.string().min(1, "Please Enter Your Teacher ID").cuid(),
+  departmentID: z.string().min(1, "Please Enter Your Department ID").cuid(),
+  instituteID: z.string().min(1, "Please Enter Your Institute ID").cuid(),
+});
+
 export type TeacherSchemaType = z.infer<typeof TeacherSchema>;
 export type getTeacherByInstituteIDSchemaType = z.infer<
   typeof getTeacherByInstituteIDSchema
 >;
+export type RegisterHodSchemaType = z.infer<typeof RegisterHodSchema>;
+
+// model Hod {
+//   id             String        @id @default(cuid())
+//   user           User          @relation(fields: [id], references: [id])
+//   teacher         Teacher      @relation(fields: [teacher_id], references:[id])
+//   teacher_id      String        @unique
+//   department      Department   @relation("HodToDepartment", fields: [department_id], references: [id])
+//   department_id   String       @unique
+//   institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+//   institute_id   String
+//   created_at     DateTime      @default(now())
+//   updated_at     DateTime      @updatedAt
+// }

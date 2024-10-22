@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from "../db/db";
 import {
   TeacherSchema,
   getTeacherByInstituteIDSchema,
+  RegisterHodSchema,
 } from "../lib/validators/teacher.validator";
 import { TeacherRole } from "@prisma/client";
 
@@ -115,5 +117,106 @@ export const TeacherByInstituteID = async ({
   } catch (error) {
     console.error(error);
     return { success: false, message: "Server error" };
+  }
+};
+
+export const RegisterHod = async (formData: FormData) => {
+  try {
+    const data = Object.fromEntries(formData.entries());
+
+    const parsedData = RegisterHodSchema.safeParse(data);
+    if (!parsedData.success) {
+      return {
+        status: 400,
+        message: "Validation Error",
+        error: parsedData.error.errors,
+      };
+    }
+
+    const { instituteID, teacherID, departmentID } = parsedData.data;
+
+    const result = await prisma.$transaction(async (prisma) => {
+      const existingTeacher = await prisma.teacher.findUnique({
+        where: { id: teacherID },
+      });
+
+      if (!existingTeacher) {
+        throw new Error("Teacher not found");
+      }
+
+      const existingHod = await prisma.hod.findFirst({
+        where: { teacher_id: teacherID },
+      });
+
+      if (existingHod) {
+        throw new Error("Teacher is already an HoD");
+      }
+
+      const existingDepartment = await prisma.department.findUnique({
+        where: { id: departmentID },
+      });
+
+      if (!existingDepartment) {
+        throw new Error("Department not found");
+      }
+
+      const existingInstitute = await prisma.institute.findUnique({
+        where: { id: instituteID },
+      });
+
+      if (!existingInstitute) {
+        throw new Error("Institute not found");
+      }
+
+      const newHod = await prisma.hod.create({
+        data: {
+          teacher_id: teacherID,
+          department_id: departmentID,
+          institute_id: instituteID,
+        },
+      });
+
+      return newHod;
+    });
+
+    return {
+      status: 201,
+      message: "HoD successfully registered",
+      data: result,
+    };
+  } catch (error: any) {
+    return {
+      status: 500,
+      message: error.message || "Internal Server Error",
+    };
+  }
+};
+
+export const getHodByInstituteId = async ({
+  instituteID,
+}: {
+  instituteID: string;
+}) => {
+  try {
+    const hods = await prisma.hod.findMany({
+      where: {
+        institute_id: instituteID,
+      },
+      select: {
+        id: true,
+        teacher_id: true,
+        department_id: true,
+      },
+    });
+
+    return {
+      success: true,
+      json: {
+        data: hods,
+        message: "Hods successfully fetched",
+      },
+    };
+  } catch (error: any) {
+    return { success: false, message: error.message || "Server error" };
   }
 };
