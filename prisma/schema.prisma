@@ -11,7 +11,7 @@ datasource db {
 enum Role {
   student
   teacher
-  hod
+  
   admin
 }
 
@@ -47,6 +47,7 @@ enum TeacherRole {
   Lecturer
   AssistantProfessor
   Professor
+  HOD
 }
 
 enum StudentStatus{
@@ -134,7 +135,7 @@ model Teacher {
   institute_id   String
   timetables     Timetable[]
   subjects_teaching Json
-  
+  hod            Hod?
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -142,8 +143,10 @@ model Teacher {
 model Hod {
   id             String        @id @default(cuid())
   user           User          @relation(fields: [id], references: [id])
+  teacher         Teacher      @relation(fields: [teacher_id], references:[id])
+  teacher_id      String        @unique
   department      Department   @relation("HodToDepartment", fields: [department_id], references: [id])
-  department_id    String       @unique
+  department_id   String       @unique
   institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
   institute_id   String
   created_at     DateTime      @default(now())
