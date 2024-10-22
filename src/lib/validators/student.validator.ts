@@ -2,10 +2,16 @@ import { z } from "zod";
 import { StudentStatus } from "@prisma/client";
 
 export const StudentSchema = z.object({
-  firstName: z.string().min(1, "Please Enter Your first Name"),
-  lastName: z.string().min(1, "please Enter your last name"),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+  name: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  avatar: z.string().optional(),
+
+  firstName: z.string().min(1, "Please enter your first name"),
+  lastName: z.string().min(1, "Please enter your last name"),
   address: z.string().optional(),
-  dateOfBirth: z.string().min(1, "please Enter your date of birth"),
+  dateOfBirth: z.string().min(1, "Please enter your date of birth"),
   status: z.enum([
     StudentStatus.Active,
     StudentStatus.Graduated,
@@ -13,12 +19,12 @@ export const StudentSchema = z.object({
   ]),
   CurrentYear: z.string().optional(),
   CurrentSemester: z.string().optional(),
-  department: z.string().min(1, "please Enter your department"),
-  courseID: z.string().min(1, "please Enter your course"),
-  enrollmentNumber: z.string().min(1, "please Enter your enrollment number"),
+  department: z.string().min(1, "Please enter your department"),
+  courseID: z.string().min(1, "Please enter your course"),
+  enrollmentNumber: z.string().min(1, "Please enter your enrollment number"),
   rollNumber: z.string().optional(),
-  instituteID: z.string().min(1, "please Enter your institute"),
-  BatchId: z.string().cuid(),
+  instituteID: z.string().min(1, "Please enter your institute"),
+  BatchId: z.string().cuid("Invalid batch ID format"),
 });
 
 export const getStudentByIdSchema = z.object({
