@@ -1,10 +1,12 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { getAllDepartments } from "../../../actions/department.actions";
 import { RegisterNewCourse } from "../../../actions/course.action";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) => {
+const CourseRegistration: React.FC<{ instituteId: string }> = ({
+  instituteId,
+}) => {
   const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
@@ -51,7 +53,11 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({ instituteId }) 
         <h1 className="text-2xl font-bold text-center text-primary-red">
           Register New Course
         </h1>
-        <form onSubmit={handleCourseSubmit} className="space-y-4 mt-6" ref={formRef}>
+        <form
+          onSubmit={handleCourseSubmit}
+          className="space-y-4 mt-6"
+          ref={formRef}
+        >
           {/* Department Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700">

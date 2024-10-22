@@ -1,17 +1,17 @@
-"use client"
+"use client";
 import React from "react";
 import { RegisterTeacher } from "../../../actions/teacher.action";
 import { TeacherRole } from "@prisma/client";
 import { getAllDepartments } from "@/src/actions/department.actions";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
-    const [departments, setDepartments] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [responseMessage, setResponseMessage] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
 
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   useEffect(() => {
     const fetchDepartments = async () => {
       const response = await getAllDepartments({ instituteId });
@@ -27,20 +27,26 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
   const handleTeacherSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
-    
+
     const formData = new FormData(e.currentTarget);
     formData.set("instituteID", instituteId);
 
     // Validate dates before submission
     const dateOfBirth = formData.get("dateOfBirth") as string;
     if (!dateOfBirth) {
-      setErrors(prev => ({...prev, dateOfBirth: "Date of Birth is required"}));
+      setErrors((prev) => ({
+        ...prev,
+        dateOfBirth: "Date of Birth is required",
+      }));
       return;
     }
 
     const employementStartDate = formData.get("employementStartDate") as string;
     if (!employementStartDate) {
-      setErrors(prev => ({...prev, employementStartDate: "Employment Start Date is required"}));
+      setErrors((prev) => ({
+        ...prev,
+        employementStartDate: "Employment Start Date is required",
+      }));
       return;
     }
 
@@ -49,13 +55,13 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
     if (response.success) {
       setResponseMessage({
         type: "success",
-        message: response.message
+        message: response.message,
       });
       e.currentTarget.reset();
     } else {
       setResponseMessage({
         type: "error",
-        message: response.message
+        message: response.message,
       });
     }
   };
@@ -125,27 +131,29 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-red focus:ring-primary-red"
               />
               {errors.dateOfBirth && (
-                <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.dateOfBirth}
+                </p>
               )}
             </div>
 
             {/* Professional Information */}
             <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Select Department
-            </label>
-            <select
-              name="department_id"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-red focus:ring-primary-red"
-            >
-              <option value="">Select Department</option>
-              {departments.map((department) => (
-                <option key={department.id} value={department.id}>
-                  {department.name}
-                </option>
-              ))}
-            </select>
-          </div>
+              <label className="block text-sm font-medium text-gray-700">
+                Select Department
+              </label>
+              <select
+                name="department_id"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-red focus:ring-primary-red"
+              >
+                <option value="">Select Department</option>
+                {departments.map((department) => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -159,7 +167,9 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
                 placeholder="e.g., M.Ed., Ph.D."
               />
               {errors.qualification && (
-                <p className="mt-1 text-sm text-red-600">{errors.qualification}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.qualification}
+                </p>
               )}
             </div>
 
@@ -191,7 +201,9 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
                 placeholder="e.g., Mathematics"
               />
               {errors.subjectSpecialization && (
-                <p className="mt-1 text-sm text-red-600">{errors.subjectSpecialization}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.subjectSpecialization}
+                </p>
               )}
             </div>
 
@@ -207,7 +219,9 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
                 placeholder="e.g., Math, Physics"
               />
               {errors.subjects_teaching && (
-                <p className="mt-1 text-sm text-red-600">{errors.subjects_teaching}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.subjects_teaching}
+                </p>
               )}
             </div>
 
@@ -222,7 +236,9 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-red focus:ring-primary-red"
               />
               {errors.employementStartDate && (
-                <p className="mt-1 text-sm text-red-600">{errors.employementStartDate}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.employementStartDate}
+                </p>
               )}
             </div>
 

@@ -33,10 +33,9 @@ export const RegisterTeacher = async (formData: FormData) => {
       instituteID,
       subjects_teaching,
       dateOfBirth: parsedDateOfBirth,
-      departments:department_id
-      
+      departments: department_id,
     });
-    console.log("isvalid")
+    console.log("isvalid");
     if (!isValid.success) {
       return { success: false, message: "Validation Error" };
     }
@@ -65,8 +64,8 @@ export const RegisterTeacher = async (formData: FormData) => {
       institute_id: instituteID,
       subjects_teaching,
       departments: {
-        connect: { id: department_id } // Connect to the existing department by ID
-      }
+        connect: { id: department_id }, // Connect to the existing department by ID
+      },
     };
 
     if (parsedDateOfBirth) {
