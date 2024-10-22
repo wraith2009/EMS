@@ -20,6 +20,7 @@ export const RegisterTeacher = async (formData: FormData) => {
     const subjects_teaching = formData.get("subjects_teaching") as string;
     const dateOfBirth = formData.get("dateOfBirth") as string;
     const parsedDateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
+    const department_id = formData.get("department_id") as string;
 
     const isValid = TeacherSchema.safeParse({
       firstName,
@@ -32,8 +33,10 @@ export const RegisterTeacher = async (formData: FormData) => {
       instituteID,
       subjects_teaching,
       dateOfBirth: parsedDateOfBirth,
+      departments:department_id
+      
     });
-
+    console.log("isvalid")
     if (!isValid.success) {
       return { success: false, message: "Validation Error" };
     }
@@ -61,6 +64,9 @@ export const RegisterTeacher = async (formData: FormData) => {
       role,
       institute_id: instituteID,
       subjects_teaching,
+      departments: {
+        connect: { id: department_id } // Connect to the existing department by ID
+      }
     };
 
     if (parsedDateOfBirth) {
