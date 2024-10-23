@@ -1,11 +1,11 @@
-"use server"
+"use server";
 import prisma from "../db/db";
 import { StudentSchema } from "../lib/validators/student.validator";
 import bcryptjs from "bcryptjs";
 export const RegisterStudent = async (formData: FormData) => {
   const data = Object.fromEntries(formData.entries());
   console.log("Received form data:", data); // Log form data
-  
+
   // Validate input data
   const parsedData = StudentSchema.safeParse(data);
   if (!parsedData.success) {

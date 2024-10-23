@@ -32,7 +32,9 @@ interface FormState {
   success: string;
 }
 
-const StudentRegistration: React.FC<StudentRegistrationProps> = ({ instituteId }) => {
+const StudentRegistration: React.FC<StudentRegistrationProps> = ({
+  instituteId,
+}) => {
   const [formState, setFormState] = useState<FormState>({
     loading: false,
     error: "",
@@ -42,15 +44,15 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({ instituteId }
   const [departments, setDepartments] = useState<Department[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
-//   const [loadingDepartments, setLoadingDepartments] = useState(false);
-//   const [loadingCourses, setLoadingCourses] = useState(false);
-// Fetch departments on component mount
-useEffect(() => {
+  //   const [loadingDepartments, setLoadingDepartments] = useState(false);
+  //   const [loadingCourses, setLoadingCourses] = useState(false);
+  // Fetch departments on component mount
+  useEffect(() => {
     const fetchDepartments = async () => {
-    //   setLoadingDepartments(true);
+      //   setLoadingDepartments(true);
       try {
         const response = await getAllDepartments({ instituteId });
-  
+
         // Access json directly, no need for response.json()
         if (response.status === 200 && response.json.success) {
           const departmentsData = response.json.data || [];
@@ -61,19 +63,18 @@ useEffect(() => {
             error: response.json.message || "Failed to fetch departments",
           }));
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error fetching departments:", error);
         setFormState((prev) => ({
           ...prev,
           error: "Failed to fetch departments",
         }));
       }
-      
     };
-  
+
     fetchDepartments();
   }, [instituteId]);
-  
+
   // Fetch courses when department is selected
   useEffect(() => {
     const fetchCourses = async () => {
@@ -81,38 +82,35 @@ useEffect(() => {
         setCourses([]);
         return;
       }
-  
-    //   setLoadingCourses(true);
+
+      //   setLoadingCourses(true);
       try {
-        console.log("selected department",selectedDepartment)
+        console.log("selected department", selectedDepartment);
         const response = await getCourseByDepartment({
-            department_id: selectedDepartment,
+          department_id: selectedDepartment,
         });
-        console.log("response",response)
+        console.log("response", response);
         // Access json directly, no need for response.json()
         if (response.status === 200 && response.json.success) {
           setCourses(response.json.data as Course[]);
-          console.log("courses",courses)
+          console.log("courses", courses);
         } else {
           setFormState((prev) => ({
             ...prev,
             error: response.json?.message || "Failed to fetch courses",
           }));
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error fetching courses:", error);
         setFormState((prev) => ({
           ...prev,
           error: "Failed to fetch courses",
         }));
       }
-      
     };
-  
+
     fetchCourses();
   }, [selectedDepartment]);
-  
-  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -122,9 +120,9 @@ useEffect(() => {
     formData.append("instituteID", instituteId);
 
     try {
-      console.log("sending request to backend")
-      const response = await RegisterStudent(formData); 
-        console.log("response",response)
+      console.log("sending request to backend");
+      const response = await RegisterStudent(formData);
+      console.log("response", response);
       if (response.status === 200 && response.json.success) {
         setFormState({
           loading: false,
@@ -161,7 +159,10 @@ useEffect(() => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* First Name */}
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 First Name *
               </label>
               <input
@@ -176,7 +177,10 @@ useEffect(() => {
 
             {/* Last Name */}
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Last Name *
               </label>
               <input
@@ -189,7 +193,10 @@ useEffect(() => {
               />
             </div>
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email *
               </label>
               <input
@@ -204,7 +211,10 @@ useEffect(() => {
 
             {/* password */}
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password *
               </label>
               <input
@@ -219,7 +229,10 @@ useEffect(() => {
 
             {/* Address */}
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Address
               </label>
               <input
@@ -233,7 +246,10 @@ useEffect(() => {
 
             {/* Date of Birth */}
             <div>
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="dateOfBirth"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Date of Birth *
               </label>
               <input
@@ -246,7 +262,7 @@ useEffect(() => {
             </div>
             {/* status */}
             <div>
-            <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Status *
               </label>
               <select
@@ -268,7 +284,10 @@ useEffect(() => {
             </div>
             {/* Current Year */}
             <div>
-              <label htmlFor="CurrentYear" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="CurrentYear"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Current Year
               </label>
               <input
@@ -282,7 +301,10 @@ useEffect(() => {
 
             {/* Current Semester */}
             <div>
-              <label htmlFor="CurrentSemester" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="CurrentSemester"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Current Semester
               </label>
               <input
@@ -296,7 +318,10 @@ useEffect(() => {
 
             {/* Enrollment Number */}
             <div>
-              <label htmlFor="enrollmentNumber" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="enrollmentNumber"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Enrollment Number *
               </label>
               <input
@@ -311,7 +336,10 @@ useEffect(() => {
 
             {/* Roll Number */}
             <div>
-              <label htmlFor="rollNumber" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="rollNumber"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Roll Number
               </label>
               <input
@@ -322,13 +350,14 @@ useEffect(() => {
                 placeholder="Enter roll number"
               />
             </div>
-
-            
           </div>
 
           {/* Department Dropdown */}
           <div>
-            <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="department"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Department *
             </label>
             <select
@@ -350,7 +379,10 @@ useEffect(() => {
 
           {/* Course Dropdown */}
           <div>
-            <label htmlFor="course" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="course"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Course *
             </label>
             <select
@@ -361,7 +393,7 @@ useEffect(() => {
             >
               <option value="">Select Course</option>
               {courses.map((course) => (
-                <option key={course.id} value={course.id ?? ''}>
+                <option key={course.id} value={course.id ?? ""}>
                   {course.name}
                 </option>
               ))}
@@ -384,7 +416,9 @@ useEffect(() => {
             <div className="text-red-500 text-sm mt-2">{formState.error}</div>
           )}
           {formState.success && (
-            <div className="text-green-500 text-sm mt-2">{formState.success}</div>
+            <div className="text-green-500 text-sm mt-2">
+              {formState.success}
+            </div>
           )}
         </form>
       </div>

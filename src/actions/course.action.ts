@@ -69,9 +69,9 @@ export const getCourseByDepartment = async ({
   department_id: string;
 }) => {
   try {
-    console.log("department id in backend",department_id)
-    const isValid = GetCourseByDepartmentSchema.safeParse({department_id});
-    console.log("isValid",isValid.error)
+    console.log("department id in backend", department_id);
+    const isValid = GetCourseByDepartmentSchema.safeParse({ department_id });
+    console.log("isValid", isValid.error);
     if (!isValid.success) {
       return { success: false, message: "Validation Error" };
     }
@@ -84,7 +84,7 @@ export const getCourseByDepartment = async ({
         name: true,
         description: true,
         courseCode: true,
-        id:true
+        id: true,
       },
     });
 
@@ -118,6 +118,6 @@ export const getCourseByDepartment = async ({
 //       }
 //     }
 //   } catch (error) {
-    
+
 //   }
 // }

@@ -85,7 +85,7 @@ export const RegisterTeacher = async (formData: FormData) => {
       }
 
       const createData: any = {
-        id:existingUser.id,
+        id: existingUser.id,
         firstName,
         lastName,
         qualification,
@@ -117,7 +117,6 @@ export const RegisterTeacher = async (formData: FormData) => {
     return { success: false, message: "Server error" };
   }
 };
-
 
 export const TeacherByInstituteID = async ({
   InstituteId,

@@ -24,14 +24,13 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
 
     fetchDepartments();
   }, [instituteId]);
- 
+
   const handleTeacherSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
 
     const formData = new FormData(e.currentTarget);
     formData.set("instituteID", instituteId);
-    
 
     const dateOfBirth = formData.get("dateOfBirth") as string;
     if (!dateOfBirth) {

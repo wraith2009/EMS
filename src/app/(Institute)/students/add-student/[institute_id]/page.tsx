@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import StudentRegistration from "@/src/components/institute/student/studentRegistration";
 const RegisterStudent = ({ params }: { params: { institute_id: string } }) => {
