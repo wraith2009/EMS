@@ -1,6 +1,10 @@
 "use client";
 
-import { Sidebar, SidebarBody, SidebarLink } from "../../../components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarBody,
+  SidebarLink,
+} from "../../../components/ui/sidebar";
 import {
   IconDashboard,
   IconUsers,
@@ -56,7 +60,9 @@ const TeacherDashboard = () => {
         const user = await getUserById({ userId });
         setUserData({
           name: user?.user?.name || "Teacher",
-          avatar: user?.user?.avatar || "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg", // Default avatar if none exists
+          avatar:
+            user?.user?.avatar ||
+            "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg", // Default avatar if none exists
         });
       }
     };
@@ -95,7 +101,10 @@ const TeacherDashboard = () => {
             <div className="flex items-center gap-2 p-2">
               {/* Avatar */}
               <Image
-                src={userData.avatar || "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"}
+                src={
+                  userData.avatar ||
+                  "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"
+                }
                 alt="User Avatar"
                 height={40}
                 width={40}
@@ -121,12 +130,14 @@ const TeacherDashboard = () => {
               View Notifications
             </button>
           </div>
- {/* Dashboard Grid */}
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Dashboard Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Attendance Card */}
             <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-800">Mark Attendance</h3>
+                <h3 className="text-lg font-bold text-gray-800">
+                  Mark Attendance
+                </h3>
                 <IconUsers className="w-5 h-5 text-gray-500" />
               </div>
               <div className="space-y-4">
@@ -161,7 +172,9 @@ const TeacherDashboard = () => {
             {/* Recent Activity Card */}
             <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-800">Recent Activity</h3>
+                <h3 className="text-lg font-bold text-gray-800">
+                  Recent Activity
+                </h3>
                 <IconCalendar className="w-5 h-5 text-gray-500" />
               </div>
               <div className="space-y-3">

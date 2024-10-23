@@ -3,7 +3,7 @@ import prisma from "../db/db";
 import {
   AuthSchema,
   RegisterBusinessSchema,
-  getUserByIdSchema
+  getUserByIdSchema,
 } from "../lib/validators/auth.validator";
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
@@ -114,11 +114,11 @@ export const VerifyEmail = async ({ token }: { token: string }) => {
   }
 };
 
-export const getUserById=async({userId}:{userId:string})=>{
+export const getUserById = async ({ userId }: { userId: string }) => {
   try {
-    console.log("user id in backend is",userId)
+    console.log("user id in backend is", userId);
     const parsedId = getUserByIdSchema.safeParse({ userId });
-    console.log("parsedId",parsedId.error)
+    console.log("parsedId", parsedId.error);
     if (!parsedId.success) {
       return { success: false, message: "Invalid user ID" };
     }
@@ -132,7 +132,7 @@ export const getUserById=async({userId}:{userId:string})=>{
     console.error("Error getting user by id:", error);
     return { success: false, message: "Server error" };
   }
-}
+};
 
 export const ResendVerificationEmail = async ({ email }: { email: string }) => {
   try {

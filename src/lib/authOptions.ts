@@ -15,11 +15,11 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials): Promise<any> {
         const result = AuthSchema.safeParse(credentials);
-        
+
         if (!result.success) {
           throw new Error("Validation Error");
         }
-        
+
         const { email, password } = result.data;
         try {
           const user = await prisma.user.findUnique({
@@ -60,8 +60,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           // Return user without password
-          
-          
+
           return user;
         } catch (error: any) {
           console.error("Error during authentication:", error);
@@ -142,6 +141,6 @@ declare module "next-auth" {
       role: string;
       email: string;
       name?: string | null;
-    }
+    };
   }
 }
