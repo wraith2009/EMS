@@ -1,15 +1,17 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { getAllDepartments } from "../../../actions/department.actions";
 import { RegisterNewCourse } from "../../../actions/course.action";
-
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
 const CourseRegistration: React.FC<{ instituteId: string }> = ({
   instituteId,
 }) => {
+  const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
-
+  const [courseRegistered, setCourseRegistered] = useState(false); // Track course registration success
+  const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
     const fetchDepartments = async () => {
       const response = await getAllDepartments({ instituteId });
@@ -33,9 +35,16 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
     // Provide feedback to the user
     if (response?.success) {
       setResponseMessage("Course registered successfully!");
+      setCourseRegistered(true); // Set course registration success flag
+      formRef.current?.reset();
     } else {
       setResponseMessage(response?.message || "Error registering course");
+      setCourseRegistered(false); // Reset flag on failure
     }
+  };
+
+  const handleAddTeachers = () => {
+    router.replace(`/teachers/add-teachers/${instituteId}`); // Navigate to the teacher registration page
   };
 
   return (
@@ -44,7 +53,11 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
         <h1 className="text-2xl font-bold text-center text-primary-red">
           Register New Course
         </h1>
-        <form onSubmit={handleCourseSubmit} className="space-y-4 mt-6">
+        <form
+          onSubmit={handleCourseSubmit}
+          className="space-y-4 mt-6"
+          ref={formRef}
+        >
           {/* Department Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -114,6 +127,18 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
         {responseMessage && (
           <div className="mt-4 p-2 bg-gray-200 text-center rounded-md text-gray-700">
             {responseMessage}
+          </div>
+        )}
+
+        {/* Add Teachers Button */}
+        {courseRegistered && (
+          <div className="mt-4">
+            <button
+              onClick={handleAddTeachers}
+              className="w-full bg-primary-blue text-white py-2 px-4 rounded-lg font-semibold"
+            >
+              Add Teachers
+            </button>
           </div>
         )}
       </div>

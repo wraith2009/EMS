@@ -24,7 +24,6 @@ export const StudentSchema = z.object({
   enrollmentNumber: z.string().min(1, "Please enter your enrollment number"),
   rollNumber: z.string().optional(),
   instituteID: z.string().min(1, "Please enter your institute"),
-  BatchId: z.string().cuid("Invalid batch ID format"),
 });
 
 export const getStudentByIdSchema = z.object({

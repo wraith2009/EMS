@@ -322,4 +322,3 @@ model ClassRoom {
   teacher_id     String        @unique  
   created_at     DateTime      @default(now())
 }
-

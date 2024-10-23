@@ -64,25 +64,27 @@ export const RegisterNewCourse = async (formData: FormData) => {
 };
 
 export const getCourseByDepartment = async ({
-  departmentId,
+  department_id,
 }: {
-  departmentId: string;
+  department_id: string;
 }) => {
   try {
-    const isValid = GetCourseByDepartmentSchema.safeParse(departmentId);
-
+    console.log("department id in backend", department_id);
+    const isValid = GetCourseByDepartmentSchema.safeParse({ department_id });
+    console.log("isValid", isValid.error);
     if (!isValid.success) {
       return { success: false, message: "Validation Error" };
     }
 
     const courses = await prisma.course.findMany({
       where: {
-        department_id: departmentId,
+        department_id: department_id,
       },
       select: {
         name: true,
         description: true,
         courseCode: true,
+        id: true,
       },
     });
 
@@ -104,3 +106,18 @@ export const getCourseByDepartment = async ({
     };
   }
 };
+// export const getAllCourses=async({
+//   institute_id,
+// }: {
+//   institute_id: string;
+// }) => {
+//   try {
+//     const courses=await prisma.course.findMany{
+//       where:{
+//         institute_id:institute_id,
+//       }
+//     }
+//   } catch (error) {
+
+//   }
+// }

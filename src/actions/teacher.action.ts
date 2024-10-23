@@ -1,3 +1,4 @@
+"use server";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from "../db/db";
 import {
@@ -6,6 +7,7 @@ import {
   RegisterHodSchema,
 } from "../lib/validators/teacher.validator";
 import { TeacherRole } from "@prisma/client";
+import bcryptjs from "bcryptjs";
 
 export const RegisterTeacher = async (formData: FormData) => {
   try {
@@ -18,11 +20,16 @@ export const RegisterTeacher = async (formData: FormData) => {
     ) as string;
     const employementStartDate = formData.get("employementStartDate") as string;
     const role = formData.get("role") as TeacherRole;
-    const instituteID = formData.get("instituteID") as string;
+    const instituteId = formData.get("instituteID") as string; // Changed variable to match the schema
     const subjects_teaching = formData.get("subjects_teaching") as string;
     const dateOfBirth = formData.get("dateOfBirth") as string;
     const parsedDateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
+    const department_id = formData.get("department_id") as string;
+    const email = formData.get("Email") as string;
+    const password = formData.get("password") as string;
+    console.log("institute id in backend", instituteId);
 
+    // Validation using the correct field name
     const isValid = TeacherSchema.safeParse({
       firstName,
       lastName,
@@ -31,49 +38,80 @@ export const RegisterTeacher = async (formData: FormData) => {
       subjectSpecialization,
       employementStartDate,
       role,
-      instituteID,
+      instituteId, // Updated field to match the schema
       subjects_teaching,
       dateOfBirth: parsedDateOfBirth,
+      departments: department_id,
+      email,
+      password,
     });
 
+    console.log("isValid error:", isValid.error);
     if (!isValid.success) {
       return { success: false, message: "Validation Error" };
     }
 
-    const existingTeacher = await prisma.teacher.findFirst({
+    let existingUser = await prisma.user.findFirst({
       where: {
-        firstName: firstName,
-        lastName: lastName,
-        institute_id: instituteID,
-        dateOfBirth: parsedDateOfBirth,
+        email: email,
       },
     });
 
-    if (existingTeacher) {
-      return { success: false, message: "Teacher already exists" };
+    if (!existingUser) {
+      const hashedPassword = await bcryptjs.hash(password, 10);
+      const name = firstName + " " + lastName;
+      existingUser = await prisma.user.create({
+        data: {
+          name: name,
+          email,
+          password: hashedPassword,
+          role: "teacher",
+        },
+      });
     }
 
-    const createData: any = {
-      firstName,
-      lastName,
-      qualification,
-      experience,
-      subjectSpecialization,
-      employementStartDate,
-      role,
-      institute_id: instituteID,
-      subjects_teaching,
-    };
+    if (existingUser) {
+      const existingTeacher = await prisma.teacher.findFirst({
+        where: {
+          firstName: firstName,
+          lastName: lastName,
+          institute_id: instituteId,
+          dateOfBirth: parsedDateOfBirth,
+        },
+      });
 
-    if (parsedDateOfBirth) {
-      createData.dateOfBirth = parsedDateOfBirth;
+      if (existingTeacher) {
+        return { success: false, message: "Teacher already exists" };
+      }
+
+      const createData: any = {
+        id: existingUser.id,
+        firstName,
+        lastName,
+        qualification,
+        experience,
+        subjectSpecialization,
+        employementStartDate,
+        role,
+        institute_id: instituteId,
+        subjects_teaching,
+        departments: {
+          connect: { id: department_id }, // Connect to the existing department by ID
+        },
+      };
+
+      if (parsedDateOfBirth) {
+        createData.dateOfBirth = parsedDateOfBirth;
+      }
+
+      await prisma.teacher.create({
+        data: createData,
+      });
+
+      return { success: true, message: "Teacher registered successfully" };
     }
 
-    await prisma.teacher.create({
-      data: createData,
-    });
-
-    return { success: true, message: "Teacher registered successfully" };
+    return { success: false, message: "User not defined" };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Server error" };
