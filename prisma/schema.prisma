@@ -92,8 +92,7 @@ model User {
 model Student {
   id             String        @id @default(cuid())
   user           User          @relation(fields: [id], references: [id])
-  batch          Batch         @relation(fields: [batch_id], references: [id])
-  batch_id       String
+
   firstName      String
   lastName       String
   address        String?
@@ -177,7 +176,6 @@ model Institute {
   teachers                Teacher[]
   hods                    Hod[]
   admins                  Admin[]
-  batches                 Batch[]
   classes                 ClassRoom[] 
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -209,28 +207,13 @@ model Department {
   @@unique([institute_id, code])
 }
 
-model Batch {
-  id             String        @id @default(cuid())
-  name           String
-  start_year     Int
-  end_year       Int
-  course         Course        @relation(fields: [course_id], references: [id])
-  course_id      String
-  Institute      Institute     @relation(fields: [institute_id], references: [id])
-  institute_id   String
-  students       Student[]
-  timetables     Timetable[]
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
+
 
 model Course {
   id             String        @id @default(cuid())
   name           String
   courseCode     String        
   description    String?
-  batches        Batch[]
   subjects       Subject[]
   students       Student[]
   classes        ClassRoom[] 
@@ -300,8 +283,7 @@ model LeaveRequest {
 
 model Timetable {
   id             String        @id @default(cuid())
-  batch          Batch         @relation(fields: [batch_id], references: [id])
-  batch_id       String
+ 
   subject        Subject       @relation(fields: [subject_id], references: [id])
   subject_id     String
   teacher        Teacher       @relation(fields: [teacher_id], references: [id])
