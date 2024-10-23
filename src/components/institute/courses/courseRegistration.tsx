@@ -131,16 +131,16 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
         )}
 
         {/* Add Teachers Button */}
-        {courseRegistered && (
+        
           <div className="mt-4">
             <button
               onClick={handleAddTeachers}
-              className="w-full bg-primary-blue text-white py-2 px-4 rounded-lg font-semibold"
+              className="w-full bg-primary-red text-white py-2 px-4 rounded-lg font-semibold"
             >
               Add Teachers
             </button>
           </div>
-        )}
+        
       </div>
     </div>
   );

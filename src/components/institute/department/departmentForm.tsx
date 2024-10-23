@@ -127,7 +127,7 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
           </button>
         </form>
 
-        {departmentCreated && (
+        
           <div className="mt-6">
             <button
               onClick={handleAddCourse}
@@ -136,7 +136,6 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
               Add Courses to Department
             </button>
           </div>
-        )}
       </div>
     </div>
   );

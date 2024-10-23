@@ -119,22 +119,28 @@ export const RegisterTeacher = async (formData: FormData) => {
 };
 
 export const TeacherByInstituteID = async ({
-  InstituteId,
+  instituteId, // Changed to camelCase to match schema
 }: {
-  InstituteId: string;
+  instituteId: string;
 }) => {
   try {
-    const isValid = getTeacherByInstituteIDSchema.safeParse(InstituteId);
+    console.log("Fetching teachers for institute", instituteId);
+
+    // Pass 'instituteId' correctly for validation
+    const isValid = getTeacherByInstituteIDSchema.safeParse({ instituteId });
+    console.log("Validation result:", isValid);
 
     if (!isValid.success) {
+      console.log("Validation Error:", isValid.error);
       return { success: false, message: "Validation Error" };
     }
 
     const teachers = await prisma.teacher.findMany({
       where: {
-        institute_id: InstituteId,
+        institute_id: instituteId, // Matching Prisma model field
       },
       select: {
+        id: true,
         firstName: true,
         lastName: true,
         qualification: true,
@@ -148,10 +154,11 @@ export const TeacherByInstituteID = async ({
 
     return { success: true, data: teachers };
   } catch (error) {
-    console.error(error);
+    console.error("Server Error:", error);
     return { success: false, message: "Server error" };
   }
 };
+
 
 export const RegisterHod = async (formData: FormData) => {
   try {

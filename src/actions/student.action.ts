@@ -2,6 +2,7 @@
 import prisma from "../db/db";
 import { StudentSchema } from "../lib/validators/student.validator";
 import bcryptjs from "bcryptjs";
+
 export const RegisterStudent = async (formData: FormData) => {
   const data = Object.fromEntries(formData.entries());
   console.log("Received form data:", data); // Log form data
@@ -25,6 +26,7 @@ export const RegisterStudent = async (formData: FormData) => {
     CurrentYear,
     CurrentSemester,
     courseID,
+    classID,          // Add classId to be extracted from parsedData
     enrollmentNumber,
     rollNumber,
     instituteID,
@@ -81,6 +83,7 @@ export const RegisterStudent = async (formData: FormData) => {
     try {
       const newStudent = await prisma.student.create({
         data: {
+          id: existingUser.id, 
           firstName,
           lastName,
           address: address || null,
@@ -92,6 +95,9 @@ export const RegisterStudent = async (formData: FormData) => {
           rollNumber: rollNumber || null,
           institute_id: instituteID,
           course_id: courseID,
+          classes: {
+            connect: classID ? { id: classID } : [], // Connect the class if classId is provided
+          },
         },
       });
       console.log("New student created:", newStudent); // Log the newly registered student

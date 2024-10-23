@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation";
 import { getAllDepartments } from "@/src/actions/department.actions";
 import { getCourseByDepartment } from "@/src/actions/course.action";
-import { RegisterStudent } from "@/src/actions/student.action"; // Assuming you have this action.
-// import { StudentSchema } from "@/src/validation/studentSchema"; // Zod validation schema
-// import { RegisterStudent } from "@/src/actions/student.action";
+import { RegisterStudent } from "@/src/actions/student.action";
+import { getClassByCourse } from "@/src/actions/classRoom.action";
 import { StudentStatus } from "@prisma/client";
+
 interface StudentRegistrationProps {
   instituteId: string;
 }
@@ -24,6 +23,12 @@ interface Course {
   name: string;
   description: string;
   courseCode: string;
+}
+
+interface ClassRoom {
+  id: string;
+  name: string;
+  // Add other class properties as needed
 }
 
 interface FormState {
@@ -43,17 +48,15 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
 
   const [departments, setDepartments] = useState<Department[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [classes, setClasses] = useState<ClassRoom[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
-  //   const [loadingDepartments, setLoadingDepartments] = useState(false);
-  //   const [loadingCourses, setLoadingCourses] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<string>("");
+
   // Fetch departments on component mount
   useEffect(() => {
     const fetchDepartments = async () => {
-      //   setLoadingDepartments(true);
       try {
         const response = await getAllDepartments({ instituteId });
-
-        // Access json directly, no need for response.json()
         if (response.status === 200 && response.json.success) {
           const departmentsData = response.json.data || [];
           setDepartments(departmentsData);
@@ -80,20 +83,17 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
     const fetchCourses = async () => {
       if (!selectedDepartment) {
         setCourses([]);
+        setSelectedCourse("");
+        setClasses([]);
         return;
       }
 
-      //   setLoadingCourses(true);
       try {
-        console.log("selected department", selectedDepartment);
         const response = await getCourseByDepartment({
           department_id: selectedDepartment,
         });
-        console.log("response", response);
-        // Access json directly, no need for response.json()
         if (response.status === 200 && response.json.success) {
           setCourses(response.json.data as Course[]);
-          console.log("courses", courses);
         } else {
           setFormState((prev) => ({
             ...prev,
@@ -112,6 +112,38 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
     fetchCourses();
   }, [selectedDepartment]);
 
+  // Fetch classes when course is selected
+  useEffect(() => {
+    const fetchClasses = async () => {
+      if (!selectedCourse) {
+        setClasses([]);
+        return;
+      }
+
+      try {
+        const response = await getClassByCourse({
+          courseId: selectedCourse,
+        });
+        if (response.success) {
+          setClasses(response.data ?? []);
+        } else {
+          setFormState((prev) => ({
+            ...prev,
+            error: response?.message || "Failed to fetch classes",
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+        setFormState((prev) => ({
+          ...prev,
+          error: "Failed to fetch classes",
+        }));
+      }
+    };
+
+    fetchClasses();
+  }, [selectedCourse]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormState({ loading: true, error: "", success: "" });
@@ -120,9 +152,7 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
     formData.append("instituteID", instituteId);
 
     try {
-      console.log("sending request to backend");
       const response = await RegisterStudent(formData);
-      console.log("response", response);
       if (response.status === 200 && response.json.success) {
         setFormState({
           loading: false,
@@ -131,7 +161,9 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
         });
         (event.target as HTMLFormElement).reset();
         setSelectedDepartment("");
+        setSelectedCourse("");
         setCourses([]);
+        setClasses([]);
       } else {
         setFormState({
           loading: false,
@@ -156,6 +188,9 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Previous form fields remain the same until the Course dropdown */}
+          
+          {/* Department Dropdown */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* First Name */}
             <div>
@@ -351,8 +386,6 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
               />
             </div>
           </div>
-
-          {/* Department Dropdown */}
           <div>
             <label
               htmlFor="department"
@@ -380,7 +413,7 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
           {/* Course Dropdown */}
           <div>
             <label
-              htmlFor="course"
+              htmlFor="courseID"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Course *
@@ -389,12 +422,37 @@ const StudentRegistration: React.FC<StudentRegistrationProps> = ({
               id="courseID"
               name="courseID"
               required
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-red"
             >
               <option value="">Select Course</option>
               {courses.map((course) => (
                 <option key={course.id} value={course.id ?? ""}>
                   {course.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Class Dropdown */}
+          <div>
+            <label
+              htmlFor="classID"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Class *
+            </label>
+            <select
+              id="classID"
+              name="classID"
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-red"
+            >
+              <option value="">Select Class</option>
+              {classes.map((classRoom) => (
+                <option key={classRoom.id} value={classRoom.id}>
+                  {classRoom.name}
                 </option>
               ))}
             </select>
