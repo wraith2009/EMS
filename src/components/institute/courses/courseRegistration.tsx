@@ -10,7 +10,7 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
   const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
-  const [courseRegistered, setCourseRegistered] = useState(false); // Track course registration success
+  // const [courseRegistered, setCourseRegistered] = useState(false); // Track course registration success
   const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -35,11 +35,11 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
     // Provide feedback to the user
     if (response?.success) {
       setResponseMessage("Course registered successfully!");
-      setCourseRegistered(true); // Set course registration success flag
+      // setCourseRegistered(true); // Set course registration success flag
       formRef.current?.reset();
     } else {
       setResponseMessage(response?.message || "Error registering course");
-      setCourseRegistered(false); // Reset flag on failure
+      // setCourseRegistered(false); // Reset flag on failure
     }
   };
 
@@ -131,16 +131,15 @@ const CourseRegistration: React.FC<{ instituteId: string }> = ({
         )}
 
         {/* Add Teachers Button */}
-        
-          <div className="mt-4">
-            <button
-              onClick={handleAddTeachers}
-              className="w-full bg-primary-red text-white py-2 px-4 rounded-lg font-semibold"
-            >
-              Add Teachers
-            </button>
-          </div>
-        
+
+        <div className="mt-4">
+          <button
+            onClick={handleAddTeachers}
+            className="w-full bg-primary-red text-white py-2 px-4 rounded-lg font-semibold"
+          >
+            Add Teachers
+          </button>
+        </div>
       </div>
     </div>
   );

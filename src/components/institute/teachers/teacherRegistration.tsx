@@ -6,7 +6,7 @@ import { getAllDepartments } from "@/src/actions/department.actions";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
-  const router=useRouter()
+  const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [responseMessage, setResponseMessage] = useState<{
     type: "success" | "error";
@@ -67,10 +67,9 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
       });
     }
   };
-  const handleAddClasses=()=>{
+  const handleAddClasses = () => {
     router.replace(`/classroom/add-class/${instituteId}`); // Navigate to the teacher registration page
-  
-  }
+  };
   return (
     <div className="min-h-screen bg-[#F0F0F5] flex items-center justify-center p-4">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-lg p-8">
@@ -314,13 +313,13 @@ const TeacherRegistration = ({ instituteId }: { instituteId: string }) => {
           </div>
         </form>
         <div className="mt-4">
-            <button
-              onClick={handleAddClasses}
-              className="w-full bg-primary-red text-white py-2 px-4 rounded-lg font-semibold"
-            >
-              Add Classes
-            </button>
-          </div>
+          <button
+            onClick={handleAddClasses}
+            className="w-full bg-primary-red text-white py-2 px-4 rounded-lg font-semibold"
+          >
+            Add Classes
+          </button>
+        </div>
       </div>
     </div>
   );

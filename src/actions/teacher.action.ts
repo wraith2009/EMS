@@ -159,7 +159,6 @@ export const TeacherByInstituteID = async ({
   }
 };
 
-
 export const RegisterHod = async (formData: FormData) => {
   try {
     const data = Object.fromEntries(formData.entries());

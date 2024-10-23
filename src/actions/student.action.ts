@@ -26,7 +26,7 @@ export const RegisterStudent = async (formData: FormData) => {
     CurrentYear,
     CurrentSemester,
     courseID,
-    classID,          // Add classId to be extracted from parsedData
+    classID, // Add classId to be extracted from parsedData
     enrollmentNumber,
     rollNumber,
     instituteID,
@@ -83,7 +83,7 @@ export const RegisterStudent = async (formData: FormData) => {
     try {
       const newStudent = await prisma.student.create({
         data: {
-          id: existingUser.id, 
+          id: existingUser.id,
           firstName,
           lastName,
           address: address || null,

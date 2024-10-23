@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server"
+"use server";
 import prisma from "../db/db";
 import { ClassRoomSchema } from "../lib/validators/classRoom.validator";
 import { getClassByCourseSchema } from "../lib/validators/classRoom.validator";
@@ -61,22 +61,20 @@ export const RegisterClassRoom = async (formData: FormData) => {
   }
 };
 
-export const getClassByCourse=async ({
-  courseId,
-} :{courseId:string})=>{
+export const getClassByCourse = async ({ courseId }: { courseId: string }) => {
   try {
-    const parseResult=getClassByCourseSchema.safeParse({courseId})
+    const parseResult = getClassByCourseSchema.safeParse({ courseId });
     if (!parseResult.success) {
       return { success: false, message: "Validation Error" };
     }
-    const classes=await prisma.classRoom.findMany({
-      where:{
-        course_id:courseId
-      }
-    })
+    const classes = await prisma.classRoom.findMany({
+      where: {
+        course_id: courseId,
+      },
+    });
     return { success: true, data: classes };
   } catch (error) {
     console.error("Server Error:", error);
     return { success: false, message: "Server error" };
   }
-}
+};

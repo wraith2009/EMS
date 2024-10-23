@@ -24,7 +24,7 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
     },
   });
 
-  const [departmentCreated, setDepartmentCreated] = useState(false);
+  // const [departmentCreated, setDepartmentCreated] = useState(false);
   const [createdDepartmentId, setCreatedDepartmentId] = useState<string | null>(
     null,
   );
@@ -42,7 +42,7 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
       const response = await CreateDepartment(formData);
       if (response?.success) {
         console.log("Department created successfully:", response);
-        setDepartmentCreated(true);
+        // setDepartmentCreated(true);
         setCreatedDepartmentId(response?.department?.id ?? null); // Assuming you return the ID in response
       } else {
         console.error("Error:", response?.message);
@@ -127,15 +127,14 @@ const DepartmentRegistration: React.FC<{ instituteId: string }> = ({
           </button>
         </form>
 
-        
-          <div className="mt-6">
-            <button
-              onClick={handleAddCourse}
-              className="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-semibold"
-            >
-              Add Courses to Department
-            </button>
-          </div>
+        <div className="mt-6">
+          <button
+            onClick={handleAddCourse}
+            className="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-semibold"
+          >
+            Add Courses to Department
+          </button>
+        </div>
       </div>
     </div>
   );
