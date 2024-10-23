@@ -102,7 +102,9 @@ model Student {
   CurrentYear     String?
   CurrentSemester String?
   departments    Department[]  @relation("StudentDepartments")
-
+  
+   classes        ClassRoom[]   @relation("ClassRoomStudents")
+  
   course          Course        @relation(fields: [course_id], references: [id])
   course_id        String
   enrollmentNumber String
@@ -130,7 +132,7 @@ model Teacher {
 
   departments    Department[]  @relation("TeacherDepartments")
 
-
+  classes          ClassRoom?        @relation("ClassTeacher")
   institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
   institute_id   String
   timetables     Timetable[]
@@ -176,7 +178,7 @@ model Institute {
   hods                    Hod[]
   admins                  Admin[]
   batches                 Batch[]
-
+  classes                 ClassRoom[] 
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
 }
@@ -198,7 +200,7 @@ model Department {
   students         Student[]    @relation("StudentDepartments")
   teachers         Teacher[]    @relation("TeacherDepartments")
   courses          Course[]     @relation("DepartmentCourses")
-
+  classes           ClassRoom[] 
 
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -231,7 +233,7 @@ model Course {
   batches        Batch[]
   subjects       Subject[]
   students       Student[]
-
+  classes        ClassRoom[] 
   department       Department   @relation("DepartmentCourses", fields: [department_id], references: [id])
   department_id    String
 
@@ -320,6 +322,22 @@ model Notification {
   message        String
   read_status    Boolean       @default(false)
   
+  created_at     DateTime      @default(now())
+}
+
+model ClassRoom {
+  id             String        @id @default(cuid())
+  name           String
+  students       Student[]     @relation("ClassRoomStudents")
+  year           String? 
+  department     Department    @relation(fields: [department_id], references: [id])
+  department_id  String
+  institute      Institute     @relation(fields: [institute_id], references: [id])
+  institute_id   String
+  course         Course        @relation( fields: [course_id], references: [id])
+  course_id      String        
+  class_teacher  Teacher       @relation("ClassTeacher",fields: [teacher_id], references: [id]) 
+  teacher_id     String        @unique  
   created_at     DateTime      @default(now())
 }
 
