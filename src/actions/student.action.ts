@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import prisma from "../db/db";
 import { StudentSchema } from "../lib/validators/student.validator";
@@ -39,10 +40,10 @@ export const RegisterStudent = async (formData: FormData) => {
   // If user doesn't exist, create a new one
   if (!existingUser) {
     const hashedPassword = await bcryptjs.hash(password, 10);
-    console.log("Hashed password generated:", hashedPassword); // Log hashed password
+    console.log("Hashed password generated:", hashedPassword);
 
     const name = `${firstName} ${lastName}`;
-    console.log("Generated full name:", name); // Log the full name of the user
+    console.log("Generated full name:", name);
 
     existingUser = await prisma.user.create({
       data: {
@@ -52,12 +53,10 @@ export const RegisterStudent = async (formData: FormData) => {
         role: "student",
       },
     });
-    console.log("New user created:", existingUser); // Log the newly created user
+    console.log("New user created:", existingUser);
   }
 
-  // Proceed if user exists
   if (existingUser) {
-    // Check if student already exists
     const existingStudent = await prisma.student.findFirst({
       where: {
         enrollmentNumber,
@@ -77,7 +76,6 @@ export const RegisterStudent = async (formData: FormData) => {
       };
     }
 
-    // Try to register the student
     try {
       const newStudent = await prisma.student.create({
         data: {
@@ -94,7 +92,7 @@ export const RegisterStudent = async (formData: FormData) => {
           course_id: courseID,
         },
       });
-      console.log("New student created:", newStudent); // Log the newly registered student
+      console.log("New student created:", newStudent);
 
       return {
         status: 200,
@@ -117,5 +115,35 @@ export const RegisterStudent = async (formData: FormData) => {
   } else {
     console.log("User not found after creation attempt."); // Log user creation failure
     return { success: false, message: "User not defined" };
+  }
+};
+
+export const getStudentsByClass = async ({ classId }: { classId: string }) => {
+  try {
+    const result = await prisma.$transaction(async (prisma) => {
+      const ClassStudent = await prisma.classRoom.findMany({
+        where: {
+          id: classId,
+        },
+        select: {
+          students: true,
+        },
+      });
+
+      return ClassStudent;
+    });
+
+    return {
+      status: 201,
+      message: "Class students Fetched successfully",
+      json: {
+        data: result,
+      },
+    };
+  } catch (error: any) {
+    return {
+      status: 500,
+      message: error.message || "Server error",
+    };
   }
 };
