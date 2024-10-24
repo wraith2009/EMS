@@ -15,13 +15,15 @@ cloudinary.config({
 export const POST = async (req: NextRequest) => {
   try {
     // Verify Cloudinary configuration
-    if (!process.env.CLOUDINARY_CLOUD_NAME || 
-        !process.env.CLOUDINARY_API_KEY || 
-        !process.env.CLOUDINARY_API_SECRET) {
+    if (
+      !process.env.CLOUDINARY_CLOUD_NAME ||
+      !process.env.CLOUDINARY_API_KEY ||
+      !process.env.CLOUDINARY_API_SECRET
+    ) {
       console.error("Missing Cloudinary credentials");
       return NextResponse.json(
         { message: "Server configuration error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -30,7 +32,7 @@ export const POST = async (req: NextRequest) => {
     if (!session) {
       return NextResponse.json(
         { message: "You must be logged in." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -46,7 +48,7 @@ export const POST = async (req: NextRequest) => {
     if (!existingUser) {
       return NextResponse.json(
         { message: "User does not exist" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -76,7 +78,7 @@ export const POST = async (req: NextRequest) => {
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json(
           { message: "File size exceeds 5MB limit" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -98,8 +100,11 @@ export const POST = async (req: NextRequest) => {
         avatarUrl = uploadResult.secure_url;
 
         // Optional: Delete old avatar from Cloudinary if it exists
-        if (existingUser.avatar && existingUser.avatar.includes('cloudinary')) {
-          const oldPublicId = existingUser.avatar.split('/').pop()?.split('.')[0];
+        if (existingUser.avatar && existingUser.avatar.includes("cloudinary")) {
+          const oldPublicId = existingUser.avatar
+            .split("/")
+            .pop()
+            ?.split(".")[0];
           if (oldPublicId) {
             await cloudinary.uploader.destroy(`user_avatars/${oldPublicId}`);
           }
@@ -107,8 +112,11 @@ export const POST = async (req: NextRequest) => {
       } catch (cloudinaryError) {
         console.error("Error uploading avatar to Cloudinary:", cloudinaryError);
         return NextResponse.json(
-          { message: "Error uploading avatar: " + (cloudinaryError as Error).message },
-          { status: 500 }
+          {
+            message:
+              "Error uploading avatar: " + (cloudinaryError as Error).message,
+          },
+          { status: 500 },
         );
       }
     }
@@ -130,13 +138,13 @@ export const POST = async (req: NextRequest) => {
         message: "User updated successfully",
         user: updatedUser,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error updating user:", error);
     return NextResponse.json(
       { message: "Error updating user: " + (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
