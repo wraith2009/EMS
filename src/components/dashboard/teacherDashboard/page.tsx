@@ -53,8 +53,8 @@ const TeacherDashboard = () => {
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
-
-  useEffect(() => {
+  console.log("user id:",userId)
+  useEffect(() => { 
     const getUser = async () => {
       if (userId) {
         const user = await getUserById({ userId });
