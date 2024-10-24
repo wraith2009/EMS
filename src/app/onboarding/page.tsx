@@ -46,7 +46,7 @@ const Onboarding: React.FC = () => {
     },
   ];
   const router = useRouter();
-  
+
   const handleDashboardSubmit = () => {
     router.push("/dashboard");
   };
@@ -92,12 +92,12 @@ const Onboarding: React.FC = () => {
           Congratulations!
         </h2>
         <p className="text-lg md:text-xl mb-4 text-[#676767] font-semibold">
-          All set! You&apos;ve completed the setup. It&apos;s time to dive in and
-          make your organisation management easy.
+          All set! You&apos;ve completed the setup. It&apos;s time to dive in
+          and make your organisation management easy.
         </p>
-        <button 
+        <button
           className="py-2 px-4 bg-primary-red text-slate-200 hover:text-white rounded-3xl border-gray-600"
-          onClick={handleDashboardSubmit}  // Changed from onSubmit to onClick
+          onClick={handleDashboardSubmit} // Changed from onSubmit to onClick
         >
           Dashboard
         </button>

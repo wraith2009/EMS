@@ -283,7 +283,7 @@ export const getTeacherByUserId = async ({ userId }: { userId: string }) => {
       return {
         status: 201,
         message: "Teacher data fetched successfully",
-        data: existingUser.teacher,  // Removed the nested json structure
+        data: existingUser.teacher, // Removed the nested json structure
       };
     }
 

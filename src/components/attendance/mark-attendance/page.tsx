@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useSession } from "next-auth/react";
 import { getTeacherByUserId } from "@/src/actions/teacher.action";
@@ -23,7 +23,7 @@ interface Student {
   enrollmentNumber: string;
 }
 
-type AttendanceStatus = 'present' | 'absent' | 'review' | null;
+type AttendanceStatus = "present" | "absent" | "review" | null;
 
 interface AttendanceRecord {
   [studentId: string]: AttendanceStatus;
@@ -47,7 +47,7 @@ const RegisterAttendance = () => {
 
       try {
         const response = await getTeacherByUserId({
-          userId: session.user.id
+          userId: session.user.id,
         });
 
         if (response.status === 201 && response.data) {
@@ -72,7 +72,7 @@ const RegisterAttendance = () => {
       setLoading(true);
       try {
         const response = await getClassByTeacher({ teacherId });
-        
+
         if (response.success && response.data) {
           setClasses(response.data);
         } else {
@@ -97,13 +97,15 @@ const RegisterAttendance = () => {
       setStudentsLoading(true);
       try {
         const response = await getStudentsByClass({ classId: selectedClassId });
-        
+
         if (response.status === 201 && response.json && response.json.data) {
-          setStudents(response.json.data[0].students.map((student: any) => ({
-            id: student.id,
-            name: `${student.firstName} ${student.lastName}`,
-            enrollmentNumber: student.enrollmentNumber
-          })));
+          setStudents(
+            response.json.data[0].students.map((student: any) => ({
+              id: student.id,
+              name: `${student.firstName} ${student.lastName}`,
+              enrollmentNumber: student.enrollmentNumber,
+            })),
+          );
         } else {
           setError("Failed to fetch students");
         }
@@ -123,10 +125,13 @@ const RegisterAttendance = () => {
     setAttendance({}); // Reset attendance when class changes
   };
 
-  const handleAttendanceChange = (studentId: string, status: AttendanceStatus) => {
-    setAttendance(prev => ({
+  const handleAttendanceChange = (
+    studentId: string,
+    status: AttendanceStatus,
+  ) => {
+    setAttendance((prev) => ({
       ...prev,
-      [studentId]: status
+      [studentId]: status,
     }));
   };
 
@@ -149,7 +154,7 @@ const RegisterAttendance = () => {
         <div className="space-y-6">
           <div className="space-y-4">
             <h2 className="text-lg font-semibold">Select Class</h2>
-            <select 
+            <select
               value={selectedClassId}
               onChange={handleClassChange}
               className="w-full max-w-xs p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -157,7 +162,7 @@ const RegisterAttendance = () => {
               <option value="">Select a class</option>
               {classes.map((classRoom) => (
                 <option key={classRoom.id} value={classRoom.id}>
-                  {classRoom.name} ({classRoom.year || 'N/A'})
+                  {classRoom.name} ({classRoom.year || "N/A"})
                 </option>
               ))}
             </select>
@@ -172,42 +177,59 @@ const RegisterAttendance = () => {
                 <>
                   <div className="grid gap-4">
                     {students.map((student) => (
-                      <div key={student.id} className="p-4 bg-white rounded-lg shadow">
+                      <div
+                        key={student.id}
+                        className="p-4 bg-white rounded-lg shadow"
+                      >
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
                             <h3 className="font-medium">{student.name}</h3>
-                            <p className="text-sm text-gray-600">Enrollment Number: {student.enrollmentNumber}</p>
+                            <p className="text-sm text-gray-600">
+                              Enrollment Number: {student.enrollmentNumber}
+                            </p>
                           </div>
                           <div className="flex gap-4 items-center">
                             <label className="flex items-center gap-2">
                               <input
                                 type="radio"
                                 name={`attendance-${student.id}`}
-                                checked={attendance[student.id] === 'present'}
-                                onChange={() => handleAttendanceChange(student.id, 'present')}
+                                checked={attendance[student.id] === "present"}
+                                onChange={() =>
+                                  handleAttendanceChange(student.id, "present")
+                                }
                                 className="h-4 w-4 text-green-600 focus:ring-green-500"
                               />
-                              <span className="text-sm text-green-600">Present</span>
+                              <span className="text-sm text-green-600">
+                                Present
+                              </span>
                             </label>
                             <label className="flex items-center gap-2">
                               <input
                                 type="radio"
                                 name={`attendance-${student.id}`}
-                                checked={attendance[student.id] === 'absent'}
-                                onChange={() => handleAttendanceChange(student.id, 'absent')}
+                                checked={attendance[student.id] === "absent"}
+                                onChange={() =>
+                                  handleAttendanceChange(student.id, "absent")
+                                }
                                 className="h-4 w-4 text-red-600 focus:ring-red-500"
                               />
-                              <span className="text-sm text-red-600">Absent</span>
+                              <span className="text-sm text-red-600">
+                                Absent
+                              </span>
                             </label>
                             <label className="flex items-center gap-2">
                               <input
                                 type="radio"
                                 name={`attendance-${student.id}`}
-                                checked={attendance[student.id] === 'review'}
-                                onChange={() => handleAttendanceChange(student.id, 'review')}
+                                checked={attendance[student.id] === "review"}
+                                onChange={() =>
+                                  handleAttendanceChange(student.id, "review")
+                                }
                                 className="h-4 w-4 text-yellow-600 focus:ring-yellow-500"
                               />
-                              <span className="text-sm text-yellow-600">Review</span>
+                              <span className="text-sm text-yellow-600">
+                                Review
+                              </span>
                             </label>
                           </div>
                         </div>
