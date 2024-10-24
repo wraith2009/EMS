@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { isValid } from "zod";
 import prisma from "../db/db";
 import {
   ClassRoomSchema,
@@ -88,8 +87,8 @@ export const getClassByTeacher = async ({
   teacherId: string;
 }) => {
   try {
-    const isvalid = getClassByTeacherSchema.safeParse({ teacherId });
-    if (!isValid) {
+    const parseResult = getClassByTeacherSchema.safeParse({ teacherId });
+    if (!parseResult.success) {
       return { success: false, message: "Validation Error" };
     }
     const classes = await prisma.classRoom.findMany({
