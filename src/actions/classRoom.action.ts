@@ -88,6 +88,8 @@ export const getClassByTeacher = async ({
 }) => {
   try {
     const parseResult = getClassByTeacherSchema.safeParse({ teacherId });
+    console.log("teacher id here:",teacherId)
+    console.log("get class:",parseResult.error)
     if (!parseResult.success) {
       return { success: false, message: "Validation Error" };
     }

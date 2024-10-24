@@ -4,6 +4,7 @@ import { Timeline } from "@/src/components/ui/timeline";
 import Particles from "@/src/components/ui/particles";
 import Header from "@/src/components/auth/Header";
 import FooterPage from "@/src/components/auth/footer";
+import { useRouter } from "next/navigation";
 
 const Onboarding: React.FC = () => {
   const timelineData = [
@@ -44,6 +45,11 @@ const Onboarding: React.FC = () => {
       ),
     },
   ];
+  const router = useRouter();
+  
+  const handleDashboardSubmit = () => {
+    router.push("/dashboard");
+  };
 
   return (
     <div className="bg-[#f3f7f9] h-full">
@@ -81,15 +87,18 @@ const Onboarding: React.FC = () => {
         </div>
       </div>
       <Timeline data={timelineData} />
-      <div className="py-10  text-center">
-        <h2 className="text-3xl md:text-4xl  my-4 font-bold text-primary-red">
+      <div className="py-10 text-center">
+        <h2 className="text-3xl md:text-4xl my-4 font-bold text-primary-red">
           Congratulations!
         </h2>
-        <p className="text-lg md:text-xl  mb-4 text-[#676767] font-semibold">
-          All set! You&apos;ve completed the setup.It&apos;s time to dive in and
+        <p className="text-lg md:text-xl mb-4 text-[#676767] font-semibold">
+          All set! You&apos;ve completed the setup. It&apos;s time to dive in and
           make your organisation management easy.
         </p>
-        <button className="py-2 px-4 bg-primary-red text-slate-200 hover:text-white rounded-3xl border-gray-600">
+        <button 
+          className="py-2 px-4 bg-primary-red text-slate-200 hover:text-white rounded-3xl border-gray-600"
+          onClick={handleDashboardSubmit}  // Changed from onSubmit to onClick
+        >
           Dashboard
         </button>
       </div>
