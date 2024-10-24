@@ -19,7 +19,8 @@ import {
 } from "@tabler/icons-react";
 import { getUserById } from "@/src/actions/auth.actions";
 
-const DEFAULT_AVATAR = "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg";
+const DEFAULT_AVATAR =
+  "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg";
 
 const navigationLinks = [
   {
@@ -54,7 +55,7 @@ const TeacherDashboard = () => {
     name: "Teacher",
     avatar: DEFAULT_AVATAR,
   });
-  
+
   const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -88,7 +89,11 @@ const TeacherDashboard = () => {
     children: React.ReactNode;
   }
 
-  const DashboardCard: React.FC<DashboardCardProps> = ({ title, icon, children }) => (
+  const DashboardCard: React.FC<DashboardCardProps> = ({
+    title,
+    icon,
+    children,
+  }) => (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-gray-800">{title}</h3>
@@ -152,8 +157,8 @@ const TeacherDashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <DashboardCard 
-              title="Mark Attendance" 
+            <DashboardCard
+              title="Mark Attendance"
               icon={<IconUsers className="w-5 h-5 text-gray-500" />}
             >
               <div className="space-y-4">
@@ -161,7 +166,7 @@ const TeacherDashboard = () => {
                   <span className="text-gray-600">Today&apos;s Classes</span>
                   <span className="font-medium">3 Pending</span>
                 </div>
-                <button 
+                <button
                   onClick={handleTakeAttendance}
                   className="w-full bg-primary-red hover:bg-red-700 text-white py-2 rounded-lg transition-colors"
                 >
@@ -170,8 +175,8 @@ const TeacherDashboard = () => {
               </div>
             </DashboardCard>
 
-            <DashboardCard 
-              title="Quick Stats" 
+            <DashboardCard
+              title="Quick Stats"
               icon={<IconBook className="w-5 h-5 text-gray-500" />}
             >
               <div className="grid grid-cols-2 gap-4 text-sm">
@@ -186,8 +191,8 @@ const TeacherDashboard = () => {
               </div>
             </DashboardCard>
 
-            <DashboardCard 
-              title="Recent Activity" 
+            <DashboardCard
+              title="Recent Activity"
               icon={<IconCalendar className="w-5 h-5 text-gray-500" />}
             >
               <div className="space-y-3">

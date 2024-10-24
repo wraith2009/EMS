@@ -1,6 +1,4 @@
-const RegisterAttendance=()=>{
-    return(
-        <div>Mark attendance here</div>
-    )
-}
+const RegisterAttendance = () => {
+  return <div>Mark attendance here</div>;
+};
 export default RegisterAttendance;
