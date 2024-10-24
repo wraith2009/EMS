@@ -34,7 +34,7 @@ export const TeacherSchema = z.object({
 });
 
 export const getTeacherByInstituteIDSchema = z.object({
-  instituteID: z.string().min(1, "Please Enter Your Institute ID"),
+  instituteId: z.string().min(1, "Please Enter Your Institute ID"),
 });
 
 export const RegisterHodSchema = z.object({

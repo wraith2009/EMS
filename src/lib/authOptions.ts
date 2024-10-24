@@ -13,7 +13,6 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text", placeholder: "demo@demo.com" },
         password: { label: "Password", type: "password" },
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async authorize(credentials): Promise<any> {
         const result = AuthSchema.safeParse(credentials);
 
@@ -27,7 +26,17 @@ export const authOptions: NextAuthOptions = {
             where: {
               email: email,
             },
+            // Select specific fields you want to include in the session
+            select: {
+              id: true,
+              email: true,
+              name: true,
+              role: true,
+              isvarified: true,
+              password: true,
+            },
           });
+
           if (!user) {
             throw new Error("No user found");
           }
@@ -47,12 +56,12 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordCorrect) {
-            console.log("Incorrect password");
             throw new Error("Incorrect Password");
           }
 
+          // Return user without password
+
           return user;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
           console.error("Error during authentication:", error);
           throw new Error(error);
@@ -86,22 +95,25 @@ export const authOptions: NextAuthOptions = {
           });
         }
       }
-
       return true;
     },
 
     async jwt({ token, user }) {
+      // Persist the user id and role to the token
       if (user) {
-        token.id = user.id?.toString();
-        token.role = user.role?.toString();
+        token.id = user.id;
+        token.role = user.role;
+        token.email = user.email;
       }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async session({ session, token }: any) {
-      if (token) {
-        session.user.id = token.id;
-        session.user.role = token.role;
+
+    async session({ session, token }) {
+      // Add user id and role to the session
+      if (token && session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+        session.user.email = token.email ?? "";
       }
       return session;
     },
@@ -109,12 +121,26 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/sign-in",
   },
+  // Configure session handling
   session: {
     strategy: "jwt" as SessionStrategy,
-    maxAge: 20 * 60 * 60,
+    maxAge: 20 * 60 * 60, // 20 hours
   },
+  // Configure JWT options
   jwt: {
-    maxAge: 24 * 60 * 60,
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+// Add this type declaration to ensure TypeScript recognizes the additional properties
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      role: string;
+      email: string;
+      name?: string | null;
+    };
+  }
+}

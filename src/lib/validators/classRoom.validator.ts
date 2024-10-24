@@ -8,5 +8,8 @@ export const ClassRoomSchema = z.object({
   courseId: z.string().min(1, "Please enter a course ID").cuid(),
   teacherId: z.string().min(1, "Please enter a teacher ID").cuid(),
 });
+export const getClassByCourseSchema = z.object({
+  courseId: z.string().min(1, "Please Enter Your Course ID"),
+});
 
 export type ClassRoomSchemaType = z.infer<typeof ClassRoomSchema>;
