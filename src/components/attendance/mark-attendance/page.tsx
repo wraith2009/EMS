@@ -5,6 +5,8 @@ import { getTeacherByUserId } from "@/src/actions/teacher.action";
 import { getClassByTeacher } from "@/src/actions/classRoom.action";
 import { getStudentsByClass } from "@/src/actions/student.action";
 import { useEffect, useState } from "react";
+import ImageUploader from "../../ImageUploader.tsx/page";
+import { getUserAvatarByStudentId } from "@/src/actions/auth.actions";
 
 interface ClassRoom {
   id: string;
@@ -21,6 +23,7 @@ interface Student {
   id: string;
   name: string;
   enrollmentNumber: string;
+  avatar?: string; // Added avatar field
 }
 
 type AttendanceStatus = "present" | "absent" | "review" | null;
@@ -39,6 +42,7 @@ const RegisterAttendance = () => {
   const [loading, setLoading] = useState(true);
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [groupImage, setGroupImage] = useState<string>("");
 
   // Fetch teacher data
   useEffect(() => {
@@ -90,6 +94,9 @@ const RegisterAttendance = () => {
   }, [teacherId]);
 
   // Fetch students when a class is selected
+  // In your RegisterAttendance component
+
+  // Update the fetchStudents function in your useEffect
   useEffect(() => {
     const fetchStudents = async () => {
       if (!selectedClassId) return;
@@ -99,13 +106,23 @@ const RegisterAttendance = () => {
         const response = await getStudentsByClass({ classId: selectedClassId });
 
         if (response.status === 201 && response.json && response.json.data) {
-          setStudents(
-            response.json.data[0].students.map((student: any) => ({
-              id: student.id,
-              name: `${student.firstName} ${student.lastName}`,
-              enrollmentNumber: student.enrollmentNumber,
-            })),
+          // Fetch avatars for each student
+          const studentsWithAvatars = await Promise.all(
+            response.json.data[0].students.map(async (student: any) => {
+              const avatarResponse = await getUserAvatarByStudentId({
+                studentId: student.id,
+              });
+
+              return {
+                id: student.id,
+                name: `${student.firstName} ${student.lastName}`,
+                enrollmentNumber: student.enrollmentNumber,
+                avatar: avatarResponse.data?.avatar || "", // Use the avatar from the user profile
+              };
+            }),
           );
+
+          setStudents(studentsWithAvatars);
         } else {
           setError("Failed to fetch students");
         }
@@ -125,6 +142,11 @@ const RegisterAttendance = () => {
     setAttendance({}); // Reset attendance when class changes
   };
 
+  const handleImageUploaded = (url: string) => {
+    setGroupImage(url);
+    console.log("Group image uploaded:", url);
+  };
+
   const handleAttendanceChange = (
     studentId: string,
     status: AttendanceStatus,
@@ -135,9 +157,99 @@ const RegisterAttendance = () => {
     }));
   };
 
+  // const handleSubmitAttendance = async () => {
+  //   // Prepare the dataset in the required format
+  //   const dataset = students
+  //     .filter((student) => student.avatar) // Only include students with avatars
+  //     .map((student) => ({
+  //       id: parseInt(student.enrollmentNumber),
+  //       imglink: student.avatar,
+  //     }));
+  //   console.log("dataset:", dataset);
+
+  //   const requestData = {
+  //     dataset,
+  //     group_img: groupImage,
+  //   };
+  //   console.log("requestData:", requestData);
+
+  //   try {
+  //     const response = await fetch("http://localhost:4000/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(requestData),
+  //     });
+
+  //     const result = await response.json();
+  //     console.log("API Response:", result);
+
+  //     // Handle the response as needed
+  //     if (response.ok) {
+  //       // Handle successful response
+  //       console.log("Successfully processed attendance with images");
+  //     } else {
+  //       // Handle error response
+  //       console.error("Failed to process attendance with images");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting attendance with images:", error);
+  //   }
+  // };
   const handleSubmitAttendance = async () => {
-    // TODO: Implement the API call to save attendance
-    console.log("Attendance data:", attendance);
+    // Prepare the dataset in the required format
+    const dataset = students
+      .filter((student) => student.avatar) // Only include students with avatars
+      .map((student) => ({
+        id: parseInt(student.enrollmentNumber),
+        imglink: student.avatar,
+      }));
+
+    const requestData = {
+      dataset,
+      group_img: groupImage,
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const result = await response.json();
+      console.log("API Response:", result);
+
+      if (response.ok) {
+        // Loop through matches and mark attendance dynamically
+        const updatedAttendance = { ...attendance };
+
+        result.matches.forEach((match: any) => {
+          const { label, confidence } = match;
+
+          // Set a threshold for confidence, e.g., 60%
+          const confidenceValue = parseFloat(confidence.replace("%", ""));
+          if (confidenceValue > 60) {
+            const matchingStudent = students.find(
+              (student) => student.enrollmentNumber === label,
+            );
+            if (matchingStudent) {
+              updatedAttendance[matchingStudent.id] = "present";
+            }
+          }
+        });
+
+        setAttendance(updatedAttendance);
+        console.log("Attendance marked successfully", updatedAttendance);
+      } else {
+        console.error("Failed to process attendance with images");
+      }
+    } catch (error) {
+      console.error("Error submitting attendance with images:", error);
+    }
   };
 
   if (loading) {
@@ -150,6 +262,11 @@ const RegisterAttendance = () => {
 
   return (
     <div className="bg-[#f3f7f9] p-4">
+      <ImageUploader
+        onImageUploaded={handleImageUploaded}
+        maxSizeInMB={5}
+        allowedFileTypes={["image/jpeg", "image/png", "image/webp"]}
+      />
       {teacherId ? (
         <div className="space-y-6">
           <div className="space-y-4">
@@ -187,6 +304,11 @@ const RegisterAttendance = () => {
                             <p className="text-sm text-gray-600">
                               Enrollment Number: {student.enrollmentNumber}
                             </p>
+                            {student.avatar && (
+                              <p className="text-sm text-gray-600">
+                                Avatar: {student.avatar}
+                              </p>
+                            )}
                           </div>
                           <div className="flex gap-4 items-center">
                             <label className="flex items-center gap-2">
@@ -240,6 +362,7 @@ const RegisterAttendance = () => {
                     <button
                       onClick={handleSubmitAttendance}
                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      disabled={!groupImage}
                     >
                       Submit Attendance
                     </button>
