@@ -40,7 +40,7 @@ const SigninPage: FC = () => {
         toast.error(response?.error);
       } else {
         toast.success("Sign-in successful!. Redirecting...");
-        setTimeout(() => router.push("/onboarding"), 1000);
+        setTimeout(() => router.push("/"), 1000);
       }
     } catch (error) {
       console.error(error);

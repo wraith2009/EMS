@@ -1,4 +1,4 @@
-// import ClassR from "@/src/components/institute/courses/courseRegistration";
+import React from "react";
 import ClassRegistration from "@/src/components/institute/classroom/classRegistration";
 const RegisterClass = ({ params }: { params: { institute_id: string } }) => {
   const { institute_id } = params;

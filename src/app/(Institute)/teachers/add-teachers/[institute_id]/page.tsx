@@ -1,3 +1,4 @@
+import React from "react";
 import TeacherRegistration from "@/src/components/institute/teachers/teacherRegistration";
 const RegisterTeacher = ({ params }: { params: { institute_id: string } }) => {
   const { institute_id } = params;

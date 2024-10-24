@@ -1,3 +1,4 @@
+import React from "react";
 import DepartmentRegistration from "@/src/components/institute/department/departmentForm";
 
 const RegisterDepartment = ({
