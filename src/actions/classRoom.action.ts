@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import prisma from "../db/db";
-import { ClassRoomSchema } from "../lib/validators/classRoom.validator";
+import {
+  ClassRoomSchema,
+  getClassByTeacherSchema,
+} from "../lib/validators/classRoom.validator";
 import { getClassByCourseSchema } from "../lib/validators/classRoom.validator";
 export const RegisterClassRoom = async (formData: FormData) => {
   try {
@@ -78,3 +81,47 @@ export const getClassByCourse = async ({ courseId }: { courseId: string }) => {
     return { success: false, message: "Server error" };
   }
 };
+export const getClassByTeacher = async ({
+  teacherId,
+}: {
+  teacherId: string;
+}) => {
+  try {
+    const parseResult = getClassByTeacherSchema.safeParse({ teacherId });
+    if (!parseResult.success) {
+      return { success: false, message: "Validation Error" };
+    }
+    const classes = await prisma.classRoom.findMany({
+      where: {
+        teacher_id: teacherId,
+      },
+    });
+    if (!classes) {
+      return { success: false, message: "No classes found" };
+    }
+    return {
+      success: true,
+      data: classes,
+      message: "Classes found by teacher id",
+    };
+  } catch (error) {
+    console.error("Server Error:", error);
+    return { success: false, message: "Server error" };
+  }
+};
+
+// model ClassRoom {
+//   id             String        @id @default(cuid())
+//   name           String
+//   students       Student[]     @relation("ClassRoomStudents")
+//   year           String?
+//   department     Department    @relation(fields: [department_id], references: [id])
+//   department_id  String
+//   institute      Institute     @relation(fields: [institute_id], references: [id])
+//   institute_id   String
+//   course         Course        @relation( fields: [course_id], references: [id])
+//   course_id      String
+//   class_teacher  Teacher       @relation("ClassTeacher",fields: [teacher_id], references: [id])
+//   teacher_id     String        @unique
+//   created_at     DateTime      @default(now())
+// }
