@@ -259,3 +259,48 @@ export const getHodByInstituteId = async ({
     return { success: false, message: error.message || "Server error" };
   }
 };
+
+export const getTeacherByUserId = async ({ userId }: { userId: string }) => {
+  try {
+    const result = await prisma.$transaction(async (prisma) => {
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          teacher: true,
+          role: true,
+        },
+      });
+
+      if (!existingUser) {
+        return {
+          status: 400,
+          message: "User doesn't exist",
+        };
+      }
+
+      if (existingUser.role === "teacher") {
+        return {
+          status: 201,
+          message: "Teacher data fetched successfully",
+          json: {
+            data: existingUser.teacher,
+          },
+        };
+      } else {
+        return {
+          status: 400,
+          message: "User is not registered as a teacher",
+        };
+      }
+    });
+
+    return result;
+  } catch (error: any) {
+    return {
+      status: 500,
+      message: error.message || "Server Error",
+    };
+  }
+};
