@@ -90,31 +90,29 @@ model User {
 }
 
 model Student {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [id], references: [id])
+   id              String        @id @default(cuid())
+   user            User          @relation(fields: [id], references: [id])
+   firstName       String
+   lastName        String
+   address         String?
+   dateOfBirth     DateTime
+   status          StudentStatus
+   CurrentYear     String?
+   CurrentSemester String?
+   departments     Department[]  @relation("StudentDepartments")
+   classes         ClassRoom[]   @relation("ClassRoomStudents")
+   course          Course        @relation(fields: [course_id], references: [id])
+   course_id       String
+   enrollmentNumber String
+   rollNumber      String?
+   marks           Mark[]
+   institute       Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
+   institute_id    String
+   avatar          String?       // New avatar field for student
+   created_at      DateTime      @default(now())
+   updated_at      DateTime      @updatedAt
 
-  firstName      String
-  lastName       String
-  address        String?
-  dateOfBirth    DateTime
-  status          StudentStatus
-  CurrentYear     String?
-  CurrentSemester String?
-  departments    Department[]  @relation("StudentDepartments")
-  
-   classes        ClassRoom[]   @relation("ClassRoomStudents")
-  
-  course          Course        @relation(fields: [course_id], references: [id])
-  course_id        String
-  enrollmentNumber String
-  rollNumber       String?
-  marks           Mark[]
-  institute       Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
-  institute_id    String
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
-
-  @@unique([enrollmentNumber, institute_id])
+   @@unique([enrollmentNumber, institute_id])
 }
 
 model Teacher {

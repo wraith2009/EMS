@@ -11,6 +11,59 @@ import APP_PATH from "@/src/config/path.config";
 import { sendConfirmationEmail } from "../lib/sendConfirmationEmail";
 
 // Signup server action
+// src/actions/user.action.ts
+
+interface GetUserAvatarResponse {
+  status: number;
+  message: string;
+  data?: {
+    avatar: string | null;
+  };
+}
+
+export async function getUserAvatarByStudentId({
+  studentId,
+}: {
+  studentId: string;
+}): Promise<GetUserAvatarResponse> {
+  try {
+    // Find the student and include their associated user
+    const studentWithUser = await prisma.student.findUnique({
+      where: {
+        id: studentId,
+      },
+      include: {
+        user: {
+          select: {
+            avatar: true,
+          },
+        },
+      },
+    });
+
+    if (!studentWithUser || !studentWithUser.user) {
+      return {
+        status: 404,
+        message: "Student or associated user not found",
+      };
+    }
+
+    return {
+      status: 200,
+      message: "Avatar fetched successfully",
+      data: {
+        avatar: studentWithUser.user.avatar,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching user avatar:", error);
+    return {
+      status: 500,
+      message: "Failed to fetch user avatar",
+    };
+  }
+}
+
 export const signUp = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
