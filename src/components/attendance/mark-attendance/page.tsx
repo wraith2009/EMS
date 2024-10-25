@@ -232,7 +232,7 @@ const RegisterAttendance = () => {
 
           // Set a threshold for confidence, e.g., 60%
           const confidenceValue = parseFloat(confidence.replace("%", ""));
-          if (confidenceValue > 60) {
+          if (confidenceValue > 50) {
             const matchingStudent = students.find(
               (student) => student.enrollmentNumber === label,
             );
