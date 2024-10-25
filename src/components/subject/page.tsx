@@ -28,6 +28,7 @@ const AddSubject: React.FC<{ course_id: string }> = ({ course_id }) => {
         (event.target as HTMLFormElement).reset();
       }
     } catch (err) {
+      console.log(err);
       setError("Failed to add subject. Please try again.");
     } finally {
       setIsLoading(false);
