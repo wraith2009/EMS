@@ -8,7 +8,8 @@ import { getStudentsByClass } from "@/src/actions/student.action";
 import { useEffect, useState } from "react";
 import ImageUploader from "../../ImageUploader.tsx/page";
 import { getUserAvatarByStudentId } from "@/src/actions/auth.actions";
-
+import { getSubjectByCourse } from "@/src/actions/subject.action";
+import { MarkAttendence } from "@/src/actions/attendence.action";
 interface ClassRoom {
   id: string;
   name: string;
@@ -36,6 +37,7 @@ interface AttendanceRecord {
 const RegisterAttendance = () => {
   const { data: session } = useSession();
   const [teacherId, setTeacherId] = useState<string>("");
+  const [courseId, setCourseId] = useState<string>("");
   const [classes, setClasses] = useState<ClassRoom[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string>("");
   const [students, setStudents] = useState<Student[]>([]);
@@ -80,6 +82,7 @@ const RegisterAttendance = () => {
 
         if (response.success && response.data) {
           setClasses(response.data);
+          console.log("class fetched");
         } else {
           setError("Failed to fetch classes");
         }
@@ -93,6 +96,36 @@ const RegisterAttendance = () => {
 
     fetchClasses();
   }, [teacherId]);
+  console.log("class is,", classes);
+  let Course = classes[0]?.course_id;
+  const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
+
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
+
+  // Fetch subjects when a class
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!Course) return;
+      try {
+        const response = await getSubjectByCourse({
+          course_id: Course,
+        });
+        if (response.success && response.data) {
+          setSubjects(response.data); // This should now work without type issues
+        } else {
+          console.error("No subjects found for the given course.");
+        }
+      } catch (error) {
+        console.error("Server error", error);
+      }
+    };
+    fetchSubjects();
+  }, [Course]);
+
+  // Handle subject selection
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubjectId(event.target.value);
+  };
 
   // Fetch students when a class is selected
   // In your RegisterAttendance component
@@ -240,6 +273,13 @@ const RegisterAttendance = () => {
             if (matchingStudent) {
               updatedAttendance[matchingStudent.id] = "present";
             }
+          } else if (confidenceValue < 50) {
+            const matchingStudent = students.find(
+              (student) => student.enrollmentNumber === label,
+            );
+            if (matchingStudent) {
+              updatedAttendance[matchingStudent.id] = "review";
+            }
           }
         });
 
@@ -285,6 +325,23 @@ const RegisterAttendance = () => {
               ))}
             </select>
           </div>
+          {subjects.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold">Select Subject</h2>
+              <select
+                value={selectedSubjectId}
+                onChange={handleSubjectChange}
+                className="w-full max-w-xs p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select a subject</option>
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {selectedClassId && (
             <div className="space-y-4">
