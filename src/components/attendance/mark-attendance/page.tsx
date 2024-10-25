@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import React from "react";
 import { useSession } from "next-auth/react";
 import { getTeacherByUserId } from "@/src/actions/teacher.action";
 import { getClassByTeacher } from "@/src/actions/classRoom.action";
@@ -358,13 +359,16 @@ const RegisterAttendance = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-end mt-6">
+                  <div className="flex justify-end gap-2 mt-6">
                     <button
                       onClick={handleSubmitAttendance}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-4 py-2 bg-primary-red text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       disabled={!groupImage}
                     >
-                      Submit Attendance
+                      Evaluate
+                    </button>
+                    <button className="px-4 py-2 bg-primary-red text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      Mark Attendence
                     </button>
                   </div>
                 </>

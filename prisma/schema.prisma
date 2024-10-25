@@ -7,11 +7,251 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Enums
+model User {
+  email                    String         @unique
+  password                 String?
+  role                     Role?
+  created_at               DateTime       @default(now())
+  updated_at               DateTime       @updatedAt
+  isvarified               Boolean        @default(false)
+  name                     String?
+  oauthId                  String?
+  gender                   String?
+  id                       String         @id @default(cuid())
+  avatar                   String?
+  phoneNumber              String?
+  ResetPasswordToken       String?
+  VerificationToken        String?
+  ResetPasswordTokenExpiry DateTime?
+  VerificationTokenExpiry  DateTime?
+  admin                    Admin?
+  attendances              Attendance[]
+  hod                      Hod?
+  leaveRequests            LeaveRequest[]
+  notifications            Notification[]
+  student                  Student?
+  teacher                  Teacher?
+}
+
+model Student {
+  id               String        @id @default(cuid())
+  course_id        String
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+  institute_id     String
+  CurrentSemester  String?
+  CurrentYear      String?
+  address          String?
+  dateOfBirth      DateTime
+  enrollmentNumber String
+  firstName        String
+  lastName         String
+  rollNumber       String?
+  status           StudentStatus
+  avatar           String?       @db.VarChar(255)
+  marks            Mark[]
+  course           Course        @relation(fields: [course_id], references: [id])
+  user             User          @relation(fields: [id], references: [id])
+  institute        Institute     @relation(fields: [institute_id], references: [id])
+  classes          ClassRoom[]   @relation("ClassRoomStudents")
+  departments      Department[]  @relation("StudentDepartments")
+
+  @@unique([enrollmentNumber, institute_id])
+}
+
+model Teacher {
+  id                    String       @id @default(cuid())
+  subjects_teaching     Json
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @updatedAt
+  institute_id          String
+  employementStartDate  String
+  experience            String
+  firstName             String
+  lastName              String
+  qualification         String
+  role                  TeacherRole
+  subjectSpecialization String
+  dateOfBirth           DateTime
+  classes               ClassRoom?   @relation("ClassTeacher")
+  hod                   Hod?
+  user                  User         @relation(fields: [id], references: [id])
+  institute             Institute    @relation(fields: [institute_id], references: [id])
+  timetables            Timetable[]
+  departments           Department[] @relation("TeacherDepartments")
+}
+
+model Hod {
+  id            String     @id @default(cuid())
+  department_id String     @unique
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  institute_id  String
+  teacher_id    String     @unique
+  department    Department @relation("HodToDepartment", fields: [department_id], references: [id])
+  user          User       @relation(fields: [id], references: [id])
+  institute     Institute  @relation(fields: [institute_id], references: [id])
+  teacher       Teacher    @relation(fields: [teacher_id], references: [id])
+}
+
+model Admin {
+  id           String      @id @default(cuid())
+  access_level AccessLevel
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  institute_id String
+  user         User        @relation(fields: [id], references: [id])
+  institute    Institute   @relation(fields: [institute_id], references: [id])
+}
+
+model Institute {
+  id                 String       @id @default(cuid())
+  created_at         DateTime     @default(now())
+  updated_at         DateTime     @updatedAt
+  contactNumber      String
+  businessName       String
+  businessaddress    String?
+  email              String
+  registrationNumber String       @unique
+  admins             Admin[]
+  classes            ClassRoom[]
+  departments        Department[]
+  hods               Hod[]
+  students           Student[]
+  teachers           Teacher[]
+}
+
+model Department {
+  id               String       @id @default(cuid())
+  institute_id     String
+  name             String
+  created_at       DateTime     @default(now())
+  updated_at       DateTime     @updatedAt
+  code             String
+  description      String?
+  parent_id        String?
+  classes          ClassRoom[]
+  courses          Course[]     @relation("DepartmentCourses")
+  institute        Institute    @relation(fields: [institute_id], references: [id])
+  parentDepartment Department?  @relation("ParentDepartment", fields: [parent_id], references: [id])
+  subDepartments   Department[] @relation("ParentDepartment")
+  hod              Hod?         @relation("HodToDepartment")
+  students         Student[]    @relation("StudentDepartments")
+  teachers         Teacher[]    @relation("TeacherDepartments")
+
+  @@unique([institute_id, code])
+}
+
+model Course {
+  id            String      @id @default(cuid())
+  name          String
+  description   String?
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  department_id String
+  courseCode    String
+  classes       ClassRoom[]
+  department    Department  @relation("DepartmentCourses", fields: [department_id], references: [id])
+  students      Student[]
+  subjects      Subject[]
+
+  @@unique([courseCode, department_id])
+}
+
+model Subject {
+  id          String       @id @default(cuid())
+  name        String
+  course_id   String
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  attendances Attendance[]
+  marks       Mark[]
+  course      Course       @relation(fields: [course_id], references: [id])
+  timetables  Timetable[]
+}
+
+model Attendance {
+  id         String           @id @default(cuid())
+  user_id    String
+  subject_id String
+  date       DateTime
+  status     AttendanceStatus
+  remarks    String?
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+  subject    Subject          @relation(fields: [subject_id], references: [id])
+  user       User             @relation(fields: [user_id], references: [id])
+}
+
+model Mark {
+  id             String   @id @default(cuid())
+  student_id     String
+  subject_id     String
+  marks_obtained Float
+  total_marks    Float
+  exam_date      DateTime
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  student        Student  @relation(fields: [student_id], references: [id])
+  subject        Subject  @relation(fields: [subject_id], references: [id])
+}
+
+model LeaveRequest {
+  id         String      @id @default(cuid())
+  user_id    String
+  start_date DateTime
+  end_date   DateTime
+  reason     String?
+  status     LeaveStatus @default(pending)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  user       User        @relation(fields: [user_id], references: [id])
+}
+
+model Timetable {
+  id          String    @id @default(cuid())
+  subject_id  String
+  teacher_id  String
+  day_of_week DayOfWeek
+  start_time  DateTime
+  end_time    DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  subject     Subject   @relation(fields: [subject_id], references: [id])
+  teacher     Teacher   @relation(fields: [teacher_id], references: [id])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  user_id     String?
+  title       String
+  message     String
+  read_status Boolean  @default(false)
+  created_at  DateTime @default(now())
+  user        User?    @relation(fields: [user_id], references: [id])
+}
+
+model ClassRoom {
+  id            String     @id @default(cuid())
+  name          String
+  department_id String
+  institute_id  String
+  course_id     String
+  teacher_id    String     @unique
+  created_at    DateTime   @default(now())
+  year          String?
+  course        Course     @relation(fields: [course_id], references: [id])
+  department    Department @relation(fields: [department_id], references: [id])
+  institute     Institute  @relation(fields: [institute_id], references: [id])
+  class_teacher Teacher    @relation("ClassTeacher", fields: [teacher_id], references: [id])
+  students      Student[]  @relation("ClassRoomStudents")
+}
+
+
+
 enum Role {
   student
   teacher
-  
   admin
 }
 
@@ -50,275 +290,8 @@ enum TeacherRole {
   HOD
 }
 
-enum StudentStatus{
+enum StudentStatus {
   Active
   Graduated
   Dropped_Out
-}
-
-
-// Models
-model User {
-  id             String        @id @default(cuid()) 
-  email          String        @unique
-  password       String?
-  name           String?
-  isvarified     Boolean       @default(false) 
-  role           Role?
-  oauthId        String?
-  gender         String?
-  phoneNumber    String?
-  avatar         String?
-  // Relations
-  student        Student?
-  teacher        Teacher?
-  hod            Hod?
-  admin          Admin?
-
-  //  Token
-  VerificationToken           String?
-  VerificationTokenExpiry     DateTime?
-  ResetPasswordToken          String?
-  ResetPasswordTokenExpiry    DateTime?
-
-  attendances    Attendance[]
-  leaveRequests  LeaveRequest[]
-  notifications  Notification[]
-
-  created_at     DateTime   @default(now())
-  updated_at     DateTime   @updatedAt
-}
-
-model Student {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [id], references: [id])
-
-  firstName      String
-  lastName       String
-  address        String?
-  dateOfBirth    DateTime
-  status          StudentStatus
-  CurrentYear     String?
-  CurrentSemester String?
-  departments    Department[]  @relation("StudentDepartments")
-  
-   classes        ClassRoom[]   @relation("ClassRoomStudents")
-  
-  course          Course        @relation(fields: [course_id], references: [id])
-  course_id        String
-  enrollmentNumber String
-  rollNumber       String?
-  marks           Mark[]
-  institute       Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
-  institute_id    String
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
-
-  @@unique([enrollmentNumber, institute_id])
-}
-
-model Teacher {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [id], references: [id])
-  firstName      String
-  lastName       String
-  qualification  String  //highest degree
-  experience     String
-  dateOfBirth    DateTime
-  subjectSpecialization String
-  employementStartDate  String
-  role           TeacherRole
-
-  departments    Department[]  @relation("TeacherDepartments")
-
-  classes          ClassRoom?        @relation("ClassTeacher")
-  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
-  institute_id   String
-  timetables     Timetable[]
-  subjects_teaching Json
-  hod            Hod?
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Hod {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [id], references: [id])
-  teacher         Teacher      @relation(fields: [teacher_id], references:[id])
-  teacher_id      String        @unique
-  department      Department   @relation("HodToDepartment", fields: [department_id], references: [id])
-  department_id   String       @unique
-  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
-  institute_id   String
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Admin {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [id], references: [id])
-  access_level   AccessLevel
-  institute      Institute     @relation(fields: [institute_id], references: [id]) // Institute reference
-  institute_id   String
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Institute {
-  id             String        @id @default(cuid())
-  registrationNumber      String           @unique
-  businessName            String
-  businessaddress         String?
-  contactNumber           String        
-  email                   String
-  departments             Department[]
-  students                Student[]
-  teachers                Teacher[]
-  hods                    Hod[]
-  admins                  Admin[]
-  classes                 ClassRoom[] 
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-
-model Department {
-  id             String        @id @default(cuid())
-  institute      Institute     @relation(fields: [institute_id], references: [id])
-  institute_id   String
-  name           String
-  code           String         
-  description    String?
-
-  parentDepartment  Department? @relation("ParentDepartment", fields: [parent_id], references:[id])
-  parent_id      String?
-
-  subDepartments   Department[] @relation("ParentDepartment")
-  hod              Hod?         @relation("HodToDepartment")
-  students         Student[]    @relation("StudentDepartments")
-  teachers         Teacher[]    @relation("TeacherDepartments")
-  courses          Course[]     @relation("DepartmentCourses")
-  classes           ClassRoom[] 
-
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-
-
-  @@unique([institute_id, code])
-}
-
-
-
-model Course {
-  id             String        @id @default(cuid())
-  name           String
-  courseCode     String        
-  description    String?
-  subjects       Subject[]
-  students       Student[]
-  classes        ClassRoom[] 
-  department       Department   @relation("DepartmentCourses", fields: [department_id], references: [id])
-  department_id    String
-
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-
-  @@unique([courseCode, department_id])
-}
-
-model Subject {
-  id             String        @id @default(cuid())
-  name           String
-  course         Course        @relation(fields: [course_id], references: [id])
-  course_id      String
-  attendances    Attendance[]
-  marks          Mark[]
-  timetables     Timetable[]
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Attendance {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [id])
-  user_id        String
-  subject        Subject       @relation(fields: [subject_id], references: [id])
-  subject_id     String
-  date           DateTime
-  status         AttendanceStatus
-  remarks        String?
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Mark {
-  id             String        @id @default(cuid())
-  student        Student       @relation(fields: [student_id], references: [id])
-  student_id     String
-  subject        Subject       @relation(fields: [subject_id], references: [id])
-  subject_id     String
-  marks_obtained Float
-  total_marks    Float
-  exam_date      DateTime
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model LeaveRequest {
-  id             String        @id @default(cuid())
-  user           User          @relation(fields: [user_id], references: [id])
-  user_id        String
-  start_date     DateTime
-  end_date       DateTime
-  reason         String?
-  status         LeaveStatus   @default(pending)
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Timetable {
-  id             String        @id @default(cuid())
- 
-  subject        Subject       @relation(fields: [subject_id], references: [id])
-  subject_id     String
-  teacher        Teacher       @relation(fields: [teacher_id], references: [id])
-  teacher_id     String
-  day_of_week    DayOfWeek
-  start_time     DateTime
-  end_time       DateTime
-  
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
-}
-
-model Notification {
-  id             String        @id @default(cuid())
-  user           User?         @relation(fields: [user_id], references: [id])
-  user_id        String?
-  title          String
-  message        String
-  read_status    Boolean       @default(false)
-  
-  created_at     DateTime      @default(now())
-}
-
-model ClassRoom {
-  id             String        @id @default(cuid())
-  name           String
-  students       Student[]     @relation("ClassRoomStudents")
-  year           String? 
-  department     Department    @relation(fields: [department_id], references: [id])
-  department_id  String
-  institute      Institute     @relation(fields: [institute_id], references: [id])
-  institute_id   String
-  course         Course        @relation( fields: [course_id], references: [id])
-  course_id      String        
-  class_teacher  Teacher       @relation("ClassTeacher",fields: [teacher_id], references: [id]) 
-  teacher_id     String        @unique  
-  created_at     DateTime      @default(now())
 }
