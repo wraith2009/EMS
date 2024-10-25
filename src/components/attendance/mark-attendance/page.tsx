@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import React from "react";
 import { useSession } from "next-auth/react";
 import { getTeacherByUserId } from "@/src/actions/teacher.action";
 import { getClassByTeacher } from "@/src/actions/classRoom.action";

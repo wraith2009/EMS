@@ -111,19 +111,3 @@ export const getClassByTeacher = async ({
     return { success: false, message: "Server error" };
   }
 };
-
-// model ClassRoom {
-//   id             String        @id @default(cuid())
-//   name           String
-//   students       Student[]     @relation("ClassRoomStudents")
-//   year           String?
-//   department     Department    @relation(fields: [department_id], references: [id])
-//   department_id  String
-//   institute      Institute     @relation(fields: [institute_id], references: [id])
-//   institute_id   String
-//   course         Course        @relation( fields: [course_id], references: [id])
-//   course_id      String
-//   class_teacher  Teacher       @relation("ClassTeacher",fields: [teacher_id], references: [id])
-//   teacher_id     String        @unique
-//   created_at     DateTime      @default(now())
-// }

@@ -1,3 +1,4 @@
+import React from "react";
 import RegisterAttendance from "@/src/components/attendance/mark-attendance/page";
 const MarkAttendance = () => {
   return (
