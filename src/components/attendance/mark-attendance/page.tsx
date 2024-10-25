@@ -158,48 +158,7 @@ const RegisterAttendance = () => {
     }));
   };
 
-  // const handleSubmitAttendance = async () => {
-  //   // Prepare the dataset in the required format
-  //   const dataset = students
-  //     .filter((student) => student.avatar) // Only include students with avatars
-  //     .map((student) => ({
-  //       id: parseInt(student.enrollmentNumber),
-  //       imglink: student.avatar,
-  //     }));
-  //   console.log("dataset:", dataset);
-
-  //   const requestData = {
-  //     dataset,
-  //     group_img: groupImage,
-  //   };
-  //   console.log("requestData:", requestData);
-
-  //   try {
-  //     const response = await fetch("http://localhost:4000/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-  //     const result = await response.json();
-  //     console.log("API Response:", result);
-
-  //     // Handle the response as needed
-  //     if (response.ok) {
-  //       // Handle successful response
-  //       console.log("Successfully processed attendance with images");
-  //     } else {
-  //       // Handle error response
-  //       console.error("Failed to process attendance with images");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting attendance with images:", error);
-  //   }
-  // };
   const handleSubmitAttendance = async () => {
-    // Prepare the dataset in the required format
     const dataset = students
       .filter((student) => student.avatar) // Only include students with avatars
       .map((student) => ({
@@ -253,6 +212,10 @@ const RegisterAttendance = () => {
     }
   };
 
+  // const handleMarkAttendance = async() => {
+
+  // }
+
   if (loading) {
     return <div className="p-4">Loading...</div>;
   }
@@ -305,11 +268,6 @@ const RegisterAttendance = () => {
                             <p className="text-sm text-gray-600">
                               Enrollment Number: {student.enrollmentNumber}
                             </p>
-                            {student.avatar && (
-                              <p className="text-sm text-gray-600">
-                                Avatar: {student.avatar}
-                              </p>
-                            )}
                           </div>
                           <div className="flex gap-4 items-center">
                             <label className="flex items-center gap-2">
@@ -359,13 +317,16 @@ const RegisterAttendance = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-end mt-6">
+                  <div className="flex justify-end gap-2 mt-6">
                     <button
                       onClick={handleSubmitAttendance}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-4 py-2 bg-primary-red text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       disabled={!groupImage}
                     >
-                      Submit Attendance
+                      Evaluate
+                    </button>
+                    <button className="px-4 py-2 bg-primary-red text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      Mark Attendence
                     </button>
                   </div>
                 </>
