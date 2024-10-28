@@ -9,7 +9,7 @@ import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import APP_PATH from "@/src/config/path.config";
 import { sendConfirmationEmail } from "../lib/sendConfirmationEmail";
-
+import { cookies } from "next/headers";
 // Signup server action
 // src/actions/user.action.ts
 
@@ -96,6 +96,13 @@ export const signUp = async (formData: FormData) => {
     });
 
     if (user) {
+      cookies().set("userEmail", email, {
+        maxAge: 60 * 5,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+      console.log("Server: Cookie set for email:", email); // Log cookie setting
       const VerificationToken = uuidv4();
       const TokenExpiry = new Date(Date.now() + 3 * 60 * 1000);
       await prisma.user.update({
@@ -124,7 +131,6 @@ export const signUp = async (formData: FormData) => {
         };
       }
     }
-
     return { success: true };
   } catch (error) {
     console.error("Server error:", error);
@@ -132,12 +138,19 @@ export const signUp = async (formData: FormData) => {
   }
 };
 
-export const VerifyEmail = async ({ token }: { token: string }) => {
+export const VerifyEmail = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
   try {
     const currentTime = new Date();
 
     const user = await prisma.user.findFirst({
       where: {
+        email: email,
         VerificationToken: token,
         VerificationTokenExpiry: {
           gte: currentTime,

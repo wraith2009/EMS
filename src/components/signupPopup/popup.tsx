@@ -45,7 +45,6 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
       if (response?.success) {
         toast.success("Signup successful!");
         setSuccess("Signup successful! Redirecting...");
-
         setTimeout(() => {
           onClose();
           router.push("/welcome");

@@ -33,8 +33,13 @@ const Header: React.FC = () => {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <div className="w-full md:w-2/3 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14 px-4 z-10 bg-[#f3f7f9]">
-      <Image src="/logo-campus.png" height={50} width={50} alt="logo" />
+    <div className="w-full py-1 flex items-center justify-between mx-auto border-b-2 border-gray-300 h-14  z-10 bg-[#f3f7f9]">
+      <Image
+        src="https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"
+        height={50}
+        width={50}
+        alt="logo"
+      />
 
       <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
         {menuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
@@ -51,7 +56,7 @@ const Header: React.FC = () => {
         >
           About
         </span>
-        <span
+        {/* <span
           className={`cursor-pointer font-sans ${
             isActive("/business")
               ? "text-primary-red"
@@ -60,28 +65,27 @@ const Header: React.FC = () => {
           onClick={() => router.push("/business")}
         >
           For Business
-        </span>
+        </span> */}
         <span
           className={`cursor-pointer font-sans ${
-            isActive("/Information/demo")
+            isActive("/demo")
               ? "text-primary-red"
               : "text-[#8f9ca3] hover:text-primary-red"
           }`}
-          onClick={() => router.push("/try-for-free")}
+          onClick={() => router.push("/demo")}
         >
           Try for free
         </span>
-        <a href="/Information/Pricing">
-          <span
-            className={`cursor-pointer font-sans ${
-              isActive("/Information/Pricing")
-                ? "text-primary-red"
-                : "text-[#8f9ca3] hover:text-primary-red"
-            }`}
-          >
-            Pricing
-          </span>
-        </a>
+        <span
+          className={`cursor-pointer font-sans ${
+            isActive("/Pricing")
+              ? "text-primary-red"
+              : "text-[#8f9ca3] hover:text-primary-red"
+          }`}
+          onClick={() => router.push("/Pricing")}
+        >
+          Pricing
+        </span>
       </div>
 
       <div className="hidden md:flex gap-2">
@@ -114,7 +118,7 @@ const Header: React.FC = () => {
           >
             About
           </span>
-          <span
+          {/* <span
             className={`cursor-pointer font-sans ${
               isActive("/business")
                 ? "text-primary-red"
@@ -123,28 +127,27 @@ const Header: React.FC = () => {
             onClick={() => router.push("/business")}
           >
             For Business
-          </span>
+          </span> */}
           <span
             className={`cursor-pointer font-sans ${
-              isActive("/Information/demo")
+              isActive("/demo")
                 ? "text-primary-red"
                 : "text-[#8f9ca3] hover:text-primary-red"
             } py-2`}
-            onClick={() => router.push("/try-for-free")}
+            onClick={() => router.push("/demo")}
           >
             Try for free
           </span>
-          <a href="/Information/Pricing">
-            <span
-              className={`cursor-pointer font-sans ${
-                isActive("/Information/Pricing")
-                  ? "text-primary-red"
-                  : "text-[#8f9ca3] hover:text-primary-red"
-              } py-2`}
-            >
-              Pricing
-            </span>
-          </a>
+          <span
+            className={`cursor-pointer font-sans ${
+              isActive("/Information/Pricing")
+                ? "text-primary-red"
+                : "text-[#8f9ca3] hover:text-primary-red"
+            } py-2`}
+            onClick={() => router.push("/Pricing")}
+          >
+            Pricing
+          </span>
         </div>
       )}
     </div>

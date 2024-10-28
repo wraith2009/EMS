@@ -92,7 +92,7 @@ export default function LandingPage() {
             >
               About
             </span>
-            <span
+            {/* <span
               className={`cursor-pointer font-sans ${
                 isActive("/business")
                   ? "text-primary-red"
@@ -101,28 +101,27 @@ export default function LandingPage() {
               onClick={() => router.push("/business")}
             >
               For Business
-            </span>
+            </span> */}
             <span
               className={`cursor-pointer font-sans ${
                 isActive("/Information/demo")
                   ? "text-primary-red"
                   : "text-[#8f9ca3] hover:text-primary-red"
               }`}
-              onClick={() => router.push("/try-for-free")}
+              onClick={() => router.push("/demo")}
             >
               Try for free
             </span>
-            <a href="/Information/Pricing">
-              <span
-                className={`cursor-pointer font-sans ${
-                  isActive("/Information/Pricing")
-                    ? "text-primary-red"
-                    : "text-[#8f9ca3] hover:text-primary-red"
-                }`}
-              >
-                Pricing
-              </span>
-            </a>
+            <span
+              className={`cursor-pointer font-sans ${
+                isActive("/Information/Pricing")
+                  ? "text-primary-red"
+                  : "text-[#8f9ca3] hover:text-primary-red"
+              }`}
+              onClick={() => router.push("/Pricing")}
+            >
+              Pricing
+            </span>
           </div>
 
           {/* Signup Button (Desktop) */}
@@ -142,15 +141,15 @@ export default function LandingPage() {
             <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
               About
             </span>
-            <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
+            {/* <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
               For Business
-            </span>
-            <a href="/Information/demo">
+            </span> */}
+            <a href="/demo">
               <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
                 Try for free
               </span>
             </a>
-            <a href="/Information/Pricing">
+            <a href="/Pricing">
               <span className="text-[#8f9ca3] cursor-pointer font-sans hover:text-primary-red py-2">
                 Pricing
               </span>

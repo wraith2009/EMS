@@ -2,13 +2,8 @@
 import FooterPage from "@/src/components/auth/footer";
 import Header from "@/src/components/auth/Header";
 import React, { useState } from "react";
-import {
-  FaCheckCircle,
-  FaTwitter,
-  FaLinkedin,
-  FaEnvelope,
-} from "react-icons/fa";
-
+import { FaTwitter, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import FreeTrealBenefits from "@/src/components/demo/FreeTrialBenifits";
 const Demo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -34,33 +29,7 @@ const Demo = () => {
         <button className="bg-primary-red text-white py-2 px-6 mt-4 rounded-3xl shadow-lg hover:bg-red-600">
           Start Free Trial
         </button>
-
-        <div className="flex justify-center mt-20">
-          <div className="md:w-2/3">
-            <h2 className="text-[#23333e] text-2xl md:text-3xl font-bold text-center">
-              What You Get with Your Free Trial
-            </h2>
-            <ul className="list-none mt-6 text-[#8c9499]">
-              <li className="flex justify-center items-center gap-2">
-                <FaCheckCircle className="text-primary-red" />
-                Full access to all premium features
-              </li>
-              <li className="flex justify-center items-center gap-2">
-                <FaCheckCircle className="text-primary-red" />
-                Unlimited user accounts
-              </li>
-              <li className="flex justify-center items-center gap-2">
-                <FaCheckCircle className="text-primary-red" />
-                24/7 support during your trial
-              </li>
-              <li className="flex justify-center items-center gap-2">
-                <FaCheckCircle className="text-primary-red" />
-                No credit card required
-              </li>
-            </ul>
-          </div>
-        </div>
-
+        <FreeTrealBenefits />
         {/* Query Section */}
         <div className="mt-16 flex flex-col items-center">
           <h2 className="text-[#23333e] text-2xl md:text-3xl font-bold text-center">
