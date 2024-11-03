@@ -3,7 +3,6 @@
 
 import prisma from "../db/db";
 import { subjectSchema } from "../lib/validators/subject.validator";
-import { subjectByCourseSchema } from "../lib/validators/subject.validator";
 export const RegisterSubject = async (formData: FormData) => {
   const data = Object.fromEntries(formData.entries());
   console.log("data is:", data);

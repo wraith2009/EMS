@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import ImageUploader from "../../ImageUploader.tsx/page";
 import { getUserAvatarByStudentId } from "@/src/actions/auth.actions";
 import { getSubjectByCourse } from "@/src/actions/subject.action";
-import { MarkAttendence } from "@/src/actions/attendence.action";
 interface ClassRoom {
   id: string;
   name: string;
@@ -37,7 +36,6 @@ interface AttendanceRecord {
 const RegisterAttendance = () => {
   const { data: session } = useSession();
   const [teacherId, setTeacherId] = useState<string>("");
-  const [courseId, setCourseId] = useState<string>("");
   const [classes, setClasses] = useState<ClassRoom[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string>("");
   const [students, setStudents] = useState<Student[]>([]);
@@ -97,7 +95,7 @@ const RegisterAttendance = () => {
     fetchClasses();
   }, [teacherId]);
   console.log("class is,", classes);
-  let Course = classes[0]?.course_id;
+  const Course = classes[0]?.course_id;
   const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
 
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");

@@ -198,7 +198,7 @@ const Demo = () => {
           {/* Contact Section */}
           <div className="py-8 text-center">
             <h2 className="text-[#23333e] text-3xl font-bold mb-6">
-              Have Questions? We're Here to Help!
+              Have Questions? We&apos;re Here to Help!
             </h2>
             <p className="text-[#8c9499] mb-8">
               Reach out via email or connect with us on social media.
