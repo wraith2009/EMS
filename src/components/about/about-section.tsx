@@ -3,11 +3,10 @@ import Particles from "../ui/particles";
 import Header from "../auth/Header";
 import Image from "next/image";
 import Footer from "../landing/footer";
-import AboutUS from "../../../public/aboutUsBg.svg";
 const AboutSection = () => {
   return (
     <div className="h-full w-full">
-      <div className="bg-[#f3f7f9] flex flex-col gap-8 items-center md:px-32 ">
+      <div className="bg-[#f3f7f9] flex flex-col gap-6 items-center md:px-32 ">
         <Particles
           className="absolute inset-0"
           quantity={500}
@@ -38,13 +37,13 @@ const AboutSection = () => {
             </div>
           </div>
         </div>
-        <div className="max-h-[500px] min-w-[600px] overflow-hidden ">
+        <div className="max-h-[550px] min-w-[600px] overflow-hidden z-10">
           <Image
-            src={AboutUS}
+            src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730644332/Macbook_Mockup_Front_View_UV_wk2oyr.png"}
             alt="about us bg"
-            height={400}
-            width={600}
-            className="-skew-y-12 perspective-400"
+            height={550}
+            width={800}
+            className=""
           />
         </div>
         {/* Who we Are */}
@@ -54,7 +53,7 @@ const AboutSection = () => {
             <h1 className="text-3xl font-bold text-[#23333e]">Who we are</h1>
             <div className="text-[#8c9499] text-lg flex flex-col gap-2">
               <p>
-                We’re your partner in smarter, simpler education management.
+                We&apos;re your partner in smarter, simpler education management.
               </p>
               <p>
                 <span className="font-semibold">CampusSync</span> is a
@@ -75,7 +74,15 @@ const AboutSection = () => {
             </div>
           </div>
           {/* image */}
-          <div className="w-1/3 border-4"></div>
+          <div className="w-[40%]">
+            <Image
+              src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"}
+              alt="who we are logo"
+              height={400}
+              width={400}
+              className=""
+            />
+            </div>
         </div>
 
         {/* Cards Section */}
