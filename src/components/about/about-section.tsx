@@ -39,7 +39,9 @@ const AboutSection = () => {
         </div>
         <div className="max-h-[550px] min-w-[600px] overflow-hidden z-10">
           <Image
-            src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730644332/Macbook_Mockup_Front_View_UV_wk2oyr.png"}
+            src={
+              "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730644332/Macbook_Mockup_Front_View_UV_wk2oyr.png"
+            }
             alt="about us bg"
             height={550}
             width={800}
@@ -53,7 +55,8 @@ const AboutSection = () => {
             <h1 className="text-3xl font-bold text-[#23333e]">Who we are</h1>
             <div className="text-[#8c9499] text-lg flex flex-col gap-2">
               <p>
-                We&apos;re your partner in smarter, simpler education management.
+                We&apos;re your partner in smarter, simpler education
+                management.
               </p>
               <p>
                 <span className="font-semibold">CampusSync</span> is a
@@ -76,13 +79,15 @@ const AboutSection = () => {
           {/* image */}
           <div className="w-[40%]">
             <Image
-              src={"https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"}
+              src={
+                "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"
+              }
               alt="who we are logo"
               height={400}
               width={400}
               className=""
             />
-            </div>
+          </div>
         </div>
 
         {/* Cards Section */}
