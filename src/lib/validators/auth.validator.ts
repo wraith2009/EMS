@@ -44,5 +44,7 @@ export const RegisterBusinessSchema = z.object({
     .string({ message: "Registration Number is mendatory" })
     .min(1, "Required"),
 });
-
+export const getUserByIdSchema = z.object({
+  userId: z.string().min(1, "Please Enter Your ID"),
+});
 export type BusinessRegistrationType = z.infer<typeof RegisterBusinessSchema>;
