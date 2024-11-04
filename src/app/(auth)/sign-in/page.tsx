@@ -42,7 +42,7 @@ const SigninPage: FC = () => {
         setError("Sign-in failed. Please check your credentials.");
       } else {
         setSuccess("Sign-in successful! Redirecting...");
-        setTimeout(() => router.push("/onboarding"), 1000);
+        setTimeout(() => router.push("/"), 1000);
       }
     } catch (error) {
       console.error(error);

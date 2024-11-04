@@ -3,6 +3,7 @@ import prisma from "../db/db";
 import {
   AuthSchema,
   RegisterBusinessSchema,
+  getUserByIdSchema,
 } from "../lib/validators/auth.validator";
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
@@ -327,5 +328,24 @@ export const ResgisterBusiness = async (formData: FormData) => {
     }
   } catch (error) {
     console.error("business Registration Error", error);
+  }
+};
+export const getUserById = async ({ userId }: { userId: string }) => {
+  try {
+    console.log("user id in backend is", userId);
+    const parsedId = getUserByIdSchema.safeParse({ userId });
+    console.log("parsedId", parsedId.error);
+    if (!parsedId.success) {
+      return { success: false, message: "Invalid user ID" };
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parsedId.data.userId,
+      },
+    });
+    return { success: true, user: user };
+  } catch (error) {
+    console.error("Error getting user by id:", error);
+    return { success: false, message: "Server error" };
   }
 };
