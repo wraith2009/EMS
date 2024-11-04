@@ -8,7 +8,7 @@ type Role = "teacher" | "student" | "admin" | "hod" | "other";
 interface UserData {
   name: string;
   avatar: string;
-  role:Role;
+  role: Role;
   email: string;
   id: string;
   // Add other user properties as needed
