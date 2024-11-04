@@ -168,6 +168,105 @@ const StudentDashboard = () => {
     </div>
   );
 };
+const AdminDashboard = () => {
+  const router = useRouter();
+
+  const handleManageUsers = () => {
+    router.push("/admin/users");
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <DashboardCard
+        title="System Overview"
+        icon={<IconChartBar className="w-6 h-6" />}
+      >
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 text-sm">Total Users</p>
+            <p className="text-2xl font-bold text-gray-800">487</p>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 text-sm">Active Courses</p>
+            <p className="text-2xl font-bold text-gray-800">24</p>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 text-sm">Teachers</p>
+            <p className="text-2xl font-bold text-gray-800">32</p>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 text-sm">Students</p>
+            <p className="text-2xl font-bold text-gray-800">455</p>
+          </div>
+        </div>
+      </DashboardCard>
+
+      <DashboardCard
+        title="User Management"
+        icon={<IconUsers className="w-6 h-6" />}
+      >
+        <div className="space-y-4">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-600">New Registration Requests</span>
+            <span className="font-medium text-primary-red">5 Pending</span>
+          </div>
+          <button
+            onClick={handleManageUsers}
+            className="w-full bg-primary-red hover:bg-red-700 text-white py-2 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Manage Users
+          </button>
+          <div className="p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Recent Registrations</span>
+              <span className="text-xs text-gray-500">Last 24h</span>
+            </div>
+            <p className="text-2xl font-bold text-gray-800 mt-2">12</p>
+          </div>
+        </div>
+      </DashboardCard>
+
+      <DashboardCard
+        title="System Alerts"
+        icon={<IconBell className="w-6 h-6" />}
+      >
+        <div className="space-y-3">
+          {[
+            {
+              type: "Server Load",
+              status: "Normal",
+              time: "2m ago",
+              color: "text-green-600",
+            },
+            {
+              type: "Storage Usage",
+              status: "75%",
+              time: "1h ago",
+              color: "text-yellow-600",
+            },
+            {
+              type: "Backup Status",
+              status: "Completed",
+              time: "6h ago",
+              color: "text-green-600",
+            },
+          ].map((alert, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <div className="flex flex-col">
+                <span className="font-medium">{alert.type}</span>
+                <span className={`text-sm ${alert.color}`}>{alert.status}</span>
+              </div>
+              <span className="text-xs text-gray-500">{alert.time}</span>
+            </div>
+          ))}
+        </div>
+      </DashboardCard>
+    </div>
+  );
+};
 
 const DashboardComponent = () => {
   const { userData, isLoading } = useUser();
@@ -202,6 +301,8 @@ const DashboardComponent = () => {
 
         {userData?.role === "teacher" ? (
           <TeacherDashboard />
+        ) : userData?.role === "admin" ? (
+          <AdminDashboard />
         ) : (
           <StudentDashboard />
         )}
