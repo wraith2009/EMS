@@ -4,14 +4,13 @@ import { getServerSession, Session } from "next-auth";
 import { authOptions } from "../lib/authOptions";
 import Onboarding from "./onboarding/page";
 import Dashboard from "./dashboard/page";
+import SidebarLayout from "../components/layouts/sideBarLayout";
 
 export default async function Home() {
-  console.log("Home");
   const session = (await getServerSession(authOptions)) as Session & {
     user: { role?: string | null };
   };
 
-  console.log("serverSession", session?.user);
   if (!session?.user) {
     return (
       <main>
@@ -29,9 +28,9 @@ export default async function Home() {
     );
   } else {
     return (
-      <main>
+      <SidebarLayout>
         <Dashboard />
-      </main>
+      </SidebarLayout>
     );
   }
 }
