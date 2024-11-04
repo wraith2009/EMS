@@ -4,11 +4,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { getUserById } from "@/src/actions/auth.actions";
-
+type Role = "teacher" | "student" | "admin" | "hod" | "other";
 interface UserData {
   name: string;
   avatar: string;
-  role: "teacher" | "student" | "admin";
+  role:Role;
   email: string;
   id: string;
   // Add other user properties as needed
