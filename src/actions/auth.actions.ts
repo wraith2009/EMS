@@ -330,6 +330,7 @@ export const ResgisterBusiness = async (formData: FormData) => {
     console.error("business Registration Error", error);
   }
 };
+
 export const getUserById = async ({ userId }: { userId: string }) => {
   try {
     console.log("user id in backend is", userId);

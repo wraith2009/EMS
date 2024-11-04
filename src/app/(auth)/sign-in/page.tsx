@@ -52,9 +52,40 @@ const SigninPage: FC = () => {
     }
   };
 
+  const handlegooglelogin = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await signIn("google", {
+        redirect: false,
+        callbackUrl: "/",
+      });
+      console.log("res", response);
+
+      if (response?.error) {
+        console.log("Google sign-in error:", response.error);
+        setError("Google sign-in failed. Please try again.");
+      } else if (response?.ok) {
+        setSuccess("Google sign-in successful! Redirecting...");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-[#f3f7f9]  flex flex-col justify-between">
-      <Header />
+      <div className="w-full flex justify-center items-center lg:w-2/3 lg:mx-auto">
+        <Header />
+      </div>
+
       <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
         <div className="w-full md:w-1/2 p-8 hidden md:block">
           <img
@@ -72,6 +103,32 @@ const SigninPage: FC = () => {
             Enter your email and password to Sign In
           </p>
 
+          <button
+            className="bg-primary-red text-white rounded-3xl py-2 px-4 w-full flex items-center justify-center"
+            onClick={handlegooglelogin}
+            disabled={loading}
+          >
+            <div className="flex gap-2 items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="17"
+                viewBox="0 0 30 30"
+              >
+                <path
+                  fill="white"
+                  d="M 15.003906 3 C 8.3749062 3 3 8.373 3 15 C 3 21.627 8.3749062 27 15.003906 27 C 25.013906 27 27.269078 17.707 26.330078 13 L 25 13 L 22.732422 13 L 15 13 L 15 17 L 22.738281 17 C 21.848702 20.448251 18.725955 23 15 23 C 10.582 23 7 19.418 7 15 C 7 10.582 10.582 7 15 7 C 17.009 7 18.839141 7.74575 20.244141 8.96875 L 23.085938 6.1289062 C 20.951937 4.1849063 18.116906 3 15.003906 3 z"
+                ></path>
+              </svg>
+              <p>Continue with Google</p>
+            </div>
+          </button>
+
+          <div className="my-4 text-[#676767] text-sm text-center">
+            <p>----------------- Continue with credentials -----------------</p>
+          </div>
+
           <form
             onSubmit={handleSubmit(handleSignin)}
             className="flex flex-col w-full"
@@ -81,7 +138,7 @@ const SigninPage: FC = () => {
               type="email"
               placeholder="Your email"
               {...register("email")}
-              className="mb-2 p-2 border border-gray-300 rounded-lg"
+              className="mb-2 p-2 border border-gray-300 rounded-3xl"
             />
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
@@ -92,7 +149,7 @@ const SigninPage: FC = () => {
               type="password"
               placeholder="Your password"
               {...register("password")}
-              className="mb-4 p-2 border border-gray-300 rounded-lg"
+              className="mb-4 p-2 border border-gray-300 rounded-3xl"
             />
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>
@@ -106,7 +163,7 @@ const SigninPage: FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-primary-red text-white py-2 rounded-lg"
+              className="bg-primary-red text-white py-2 rounded-3xl"
             >
               {loading ? "Signing in..." : "Continue with email"}
             </button>
