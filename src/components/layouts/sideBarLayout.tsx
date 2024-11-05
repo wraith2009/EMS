@@ -14,6 +14,7 @@ import {
   IconReportAnalytics,
 } from "@tabler/icons-react";
 import { useUser } from "../../context/UserContext";
+import Link from "next/link";
 
 const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg";
@@ -164,18 +165,20 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
             ))}
           </div>
           <div className="flex flex-col justify-end flex-1 mt-10">
-            <div className="flex items-center gap-2 p-2">
-              <Image
-                src={userData.avatar || DEFAULT_AVATAR}
-                alt="User Avatar"
-                height={40}
-                width={40}
-                className="rounded-full"
-              />
-              <span className="text-white font-semibold text-lg sidebar-open:block sidebar-closed:hidden">
-                {userData.name}
-              </span>
-            </div>
+            <Link href="/userProfile">
+              <div className="flex items-center gap-2 p-2">
+                <Image
+                  src={userData.avatar || DEFAULT_AVATAR}
+                  alt="User Avatar"
+                  height={40}
+                  width={40}
+                  className="rounded-full"
+                />
+                <span className="text-white font-semibold text-lg sidebar-open:block sidebar-closed:hidden">
+                  {userData.name}
+                </span>
+              </div>
+            </Link>
           </div>
         </SidebarBody>
       </Sidebar>
