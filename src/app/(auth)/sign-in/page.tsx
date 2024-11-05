@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import Header from "@/src/components/auth/Header";
 import FooterPage from "@/src/components/auth/footer";
-
+import Image from "next/image";
 const SigninPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -55,72 +55,99 @@ const SigninPage: FC = () => {
   return (
     <div className="bg-[#f3f7f9]  flex flex-col justify-between">
       <Header />
-      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
-        <div className="w-full md:w-1/2 p-8 hidden md:block">
-          <img
-            src="/loginPageimage.webp"
+      <div className=" flex  gap-10">
+        {/* Left side - Image */}
+        <div className="hidden lg:block w-1/2 relative min-h-screen">
+          <Image
+            src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730783755/Square_Outdoor_Sign_Mockup_kopzjx.png"
             alt="Login"
-            className="w-full h-auto rounded-lg object-cover"
+            fill
+            className="object-cover "
+            priority
           />
         </div>
 
-        <div className="w-full md:w-1/2 bg-[#f3f7f9] rounded-lg p-6 max-w-md mx-auto">
-          <h2 className="text-4xl text-center text-primary-red font-bold mb-4">
-            Welcome Back
-          </h2>
-          <p className="text-lg text-center text-[#676767] pb-8">
-            Enter your email and password to Sign In
-          </p>
-
-          <form
-            onSubmit={handleSubmit(handleSignin)}
-            className="flex flex-col w-full"
-          >
-            <label className="text-gray-500 py-2">Email</label>
-            <input
-              type="email"
-              placeholder="Your email"
-              {...register("email")}
-              className="mb-2 p-2 border border-gray-300 rounded-lg"
-            />
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
-
-            <label className="text-gray-500 py-2">Password</label>
-            <input
-              type="password"
-              placeholder="Your password"
-              {...register("password")}
-              className="mb-4 p-2 border border-gray-300 rounded-lg"
-            />
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
-            <a href="/forget-password">
-              <p className="text-red-500 mb-2 cursor-pointer hover:text-red-700">
-                forget password ?
+        {/* Right side - Form */}
+        <div className="w-full lg:w-1/2 bg-[#f3f7f9] flex flex-col justify-center ">
+          <div className="max-w-md w-full mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-primary-red mb-3">
+                Welcome Back
+              </h2>
+              <p className="text-lg text-[#676767]">
+                Enter your email and password to Sign In
               </p>
-            </a>
+            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-primary-red text-white py-2 rounded-lg"
-            >
-              {loading ? "Signing in..." : "Continue with email"}
-            </button>
-          </form>
+            <form onSubmit={handleSubmit(handleSignin)} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-gray-700 font-medium">Email</label>
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  {...register("email")}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-red focus:border-transparent outline-none transition-all"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
+              </div>
 
-          {error && <p className="mt-2 text-red-500">{error}</p>}
-          {success && <p className="mt-2 text-green-500">{success}</p>}
-          <div>
-            <p className="text-[#676767] py-2">
-              Don&apos;t have an account ?{" "}
-              <span className="text-red-500 hover:text-red-700 cursor-pointer hover:underline">
-                Homepage
-              </span>{" "}
-            </p>
+              <div className="space-y-2">
+                <label className="text-gray-700 font-medium">Password</label>
+                <input
+                  type="password"
+                  placeholder="Your password"
+                  {...register("password")}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-red focus:border-transparent outline-none transition-all"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex justify-end">
+                <a
+                  href="/forget-password"
+                  className="text-primary-red hover:text-red-700 text-sm font-medium transition-colors"
+                >
+                  Forgot password?
+                </a>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary-red hover:bg-red-700 text-white py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Signing in..." : "Continue with email"}
+              </button>
+            </form>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 text-red-500 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mt-4 p-3 bg-green-50 text-green-500 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
+
+            <div className="mt-8 text-center">
+              <p className="text-[#676767]">
+                Don&apos;t have an account?{" "}
+                <a
+                  href="/"
+                  className="text-primary-red hover:text-red-700 font-medium hover:underline"
+                >
+                  Homepage
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
