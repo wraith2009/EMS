@@ -9,6 +9,7 @@ import {
   IconNotebook,
   IconChartBar,
   IconClock,
+  IconBriefcase,
 } from "@tabler/icons-react";
 import { useUser } from "@/src/context/UserContext";
 
@@ -174,6 +175,9 @@ const AdminDashboard = () => {
   const handleManageUsers = () => {
     router.push("/admin/users");
   };
+  const handleManageEmployees = () => {
+    router.push("/admin/employees");
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -262,6 +266,33 @@ const AdminDashboard = () => {
               <span className="text-xs text-gray-500">{alert.time}</span>
             </div>
           ))}
+        </div>
+      </DashboardCard>
+      <DashboardCard
+        title="Employee Management"
+        icon={<IconBriefcase className="w-6 h-6" />}
+      >
+        <div className="space-y-4">
+          <button
+            onClick={handleManageEmployees}
+            className="w-full bg-primary-blue bg-primary-red hover:bg-red-700 focus:ring-red-500  text-white py-2 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2  focus:ring-offset-2"
+          >
+            View and Manage Employees
+          </button>
+          <div className="p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Total Employees</span>
+              <span className="text-xs text-gray-500">Updated 1h ago</span>
+            </div>
+            <p className="text-2xl font-bold text-gray-800 mt-2">78</p>
+          </div>
+          <div className="p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">New Hires</span>
+              <span className="text-xs text-gray-500">This Month</span>
+            </div>
+            <p className="text-2xl font-bold text-gray-800 mt-2">5</p>
+          </div>
         </div>
       </DashboardCard>
     </div>

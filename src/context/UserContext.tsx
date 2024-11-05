@@ -43,6 +43,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setIsLoading(true);
       const response = await getUserById({ userId });
+      console.log(response);
       if (response?.user) {
         setUserData({
           name: response.user.name || "User",
