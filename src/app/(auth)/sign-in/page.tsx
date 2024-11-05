@@ -2,7 +2,10 @@
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { AuthSchema, AuthSchemaType } from "@/src/lib/validators/auth.validator";
+import {
+  AuthSchema,
+  AuthSchemaType,
+} from "@/src/lib/validators/auth.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import React from "react";
@@ -156,7 +159,9 @@ const SigninPage: FC = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-gray-700 font-medium block">Password</label>
+                <label className="text-gray-700 font-medium block">
+                  Password
+                </label>
                 <input
                   type="password"
                   placeholder="Your password"
@@ -164,7 +169,9 @@ const SigninPage: FC = () => {
                   className="w-full p-3 border border-gray-300 rounded-3xl focus:ring-2 focus:ring-primary-red focus:border-transparent outline-none transition-all"
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password.message}</p>
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
