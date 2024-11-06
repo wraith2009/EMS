@@ -6,8 +6,8 @@ import Footer from "../landing/footer";
 
 const AboutSection = () => {
   return (
-    <div className="h-full w-full overflow-x-hidden">
-      <div className="bg-[#f3f7f9] flex flex-col gap-6 items-center px-4 md:px-16 lg:px-32">
+    <div className="bg-[#f3f7f9] ">
+      <div className="flex flex-col gap-6 items-center  mx-auto px-4 sm:px-6 md:px-20  max-w-7xl">
         <Particles
           className="absolute inset-0"
           quantity={500}
