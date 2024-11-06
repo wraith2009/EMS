@@ -4,7 +4,6 @@ import { getServerSession, Session } from "next-auth";
 import { authOptions } from "../lib/authOptions";
 import Onboarding from "./onboarding/page";
 import Dashboard from "./dashboard/page";
-import SidebarLayout from "../components/layouts/sideBarLayout";
 
 export default async function Home() {
   const session = (await getServerSession(authOptions)) as Session & {
@@ -27,10 +26,6 @@ export default async function Home() {
       </main>
     );
   } else {
-    return (
-      <SidebarLayout>
-        <Dashboard />
-      </SidebarLayout>
-    );
+    return <Dashboard />;
   }
 }
