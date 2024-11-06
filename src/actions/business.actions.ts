@@ -1,3 +1,4 @@
+"use server";
 import { RegisterBusinessSchema } from "../lib/validators/auth.validator";
 import prisma from "../db/db";
 

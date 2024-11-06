@@ -1,15 +1,12 @@
 "use server";
 import prisma from "../db/db";
-import {
-  AuthSchema,
-  getUserByIdSchema,
-} from "../lib/validators/auth.validator";
+import { AuthSchema } from "../lib/validators/auth.validator";
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import APP_PATH from "@/src/config/path.config";
 import { sendConfirmationEmail } from "../lib/sendConfirmationEmail";
 import { cookies } from "next/headers";
-// Signup server action
+
 export const signUp = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -290,26 +287,6 @@ export const ResetPassword = async ({
     return { success: true, message: "Password reset successfully" };
   } catch (error) {
     console.error("Error resetting password:", error);
-    return { success: false, message: "Server error" };
-  }
-};
-
-export const getUserById = async ({ userId }: { userId: string }) => {
-  try {
-    console.log("user id in backend is", userId);
-    const parsedId = getUserByIdSchema.safeParse({ userId });
-    console.log("parsedId", parsedId.error);
-    if (!parsedId.success) {
-      return { success: false, message: "Invalid user ID" };
-    }
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parsedId.data.userId,
-      },
-    });
-    return { success: true, user: user };
-  } catch (error) {
-    console.error("Error getting user by id:", error);
     return { success: false, message: "Server error" };
   }
 };

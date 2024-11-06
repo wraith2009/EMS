@@ -1,10 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { fetchUserdetails } from "@/src/actions/user.actions";
+import { useUser } from "@/src/context/UserContext";
 
 const UserProfileComponent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { register, handleSubmit } = useForm();
+  const userData = useUser();
+  console.log(userData);
+  const userId = userData?.userData?.id;
 
   const user = {
     name: "Edward Larry",
@@ -16,7 +22,17 @@ const UserProfileComponent = () => {
     role: "Senior Designer",
   };
 
-  const onSubmit = (formData) => {
+  const userDetails = async () => {
+    if (userId) {
+      const response = await fetchUserdetails({ userid: userId });
+      console.log(response);
+    } else {
+      console.error("User ID is undefined");
+    }
+  };
+  userDetails();
+
+  const onSubmit = (formData: any) => {
     console.log("Updated user data:", formData);
     setIsEditing(false);
   };

@@ -1,4 +1,6 @@
+"use server";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import prisma from "../db/db";
 import { TeacherSchema } from "../lib/validators/teacher.validator";
 import bcrypt from "bcryptjs";
