@@ -2,8 +2,9 @@
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import {  motion } from "framer-motion";
+// import { AnimatePresence } from "framer-motion";
+import {  IconX } from "@tabler/icons-react";
 
 interface Links {
   label: string;
@@ -111,45 +112,33 @@ export const MobileSidebar = ({
   ...props
 }: React.ComponentProps<"div">) => {
   const { open, setOpen } = useSidebar();
+
   return (
     <>
+      {/* Overlay for backdrop when sidebar is open */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[99]"
+          onClick={() => setOpen(false)}
+        ></div>
+      )}
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full",
+          "fixed top-0 left-0 h-full w-3/4 max-w-[300px] bg-neutral-100 dark:bg-neutral-800 z-[100] flex flex-col justify-start md:hidden transition-transform duration-300",
+          className,
         )}
+        style={{
+          transform: open ? "translateX(0)" : "translateX(-100%)",
+        }}
         {...props}
       >
-        <div className="flex justify-end z-20 w-full">
-          <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
+        <div className="h-10 px-4 py-4 flex flex-row items-center justify-between">
+          <IconX
+            className="text-neutral-800 dark:text-neutral-200 cursor-pointer"
+            onClick={() => setOpen(false)}
           />
         </div>
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ x: "-100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "-100%", opacity: 0 }}
-              transition={{
-                duration: 0.3,
-                ease: "easeInOut",
-              }}
-              className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
-                className,
-              )}
-            >
-              <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
-                onClick={() => setOpen(!open)}
-              >
-                <IconX />
-              </div>
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
       </div>
     </>
   );

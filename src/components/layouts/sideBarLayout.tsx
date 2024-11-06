@@ -15,7 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { useUser } from "../../context/UserContext";
 import Link from "next/link";
-
+import { IconMenu2 } from "@tabler/icons-react";
 const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg";
 
@@ -144,7 +144,10 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const navigationLinks = getNavigationLinks(userData.role);
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="md:flex h-screen bg-gray-50 ">
+      <button className="md:hidden p-4" onClick={() => setIsSidebarOpen(true)}>
+        <IconMenu2 className="text-primary-red w-8 h-8" />
+      </button>
       <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen}>
         <SidebarBody className="!bg-primary-red shadow-lg">
           <Image
