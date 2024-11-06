@@ -5,7 +5,7 @@ import FooterPage from "@/src/components/auth/footer";
 import Header from "@/src/components/auth/Header";
 import FreeTrealBenefits from "@/src/components/demo/FreeTrialBenifits";
 import Particles from "@/src/components/ui/particles";
-import Marquee from "@/src/components/magicui/marquee";
+import { Marquee } from "@/src/components/magicui/marquee";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 const reviews = [
@@ -61,10 +61,8 @@ const ReviewCard = ({
   return (
     <figure
       className={cn(
-        "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        // light styles
+        "relative w-fullcursor-pointer overflow-hidden rounded-xl border p-4",
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-        // dark styles
         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
       )}
     >
@@ -81,7 +79,6 @@ const ReviewCard = ({
     </figure>
   );
 };
-
 const Demo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -95,7 +92,7 @@ const Demo = () => {
 
   return (
     <div>
-      <div className="bg-[#f3f7f9]  no-scrollbar flex flex-col justify-between px-32">
+      <div className="bg-[#f3f7f9] no-scrollbar flex flex-col justify-between">
         <Particles
           className="absolute inset-0 min-h-full"
           quantity={300}
@@ -105,11 +102,11 @@ const Demo = () => {
           refresh
         />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6  relative md:px-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 relative">
           <Header />
 
           {/* Hero Section */}
-          <div className="flex flex-col md:flex-row items-center justify-between py-8 gap-8 ">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between py-2 md:py-8 gap-2 md:gap-8">
             <div className="md:w-1/2">
               <h1 className="text-[#23333e] text-4xl md:text-5xl font-bold leading-tight">
                 Transform Your Business with Our
@@ -120,17 +117,17 @@ const Demo = () => {
                 thousands of satisfied users who have revolutionized their
                 workflow.
               </p>
-              <div className="mt-8 space-y-4">
-                <button className="bg-primary-red text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-red-600 transform transition hover:scale-105">
+              <div className="md:mt-8 mt-2 md:space-y-4 space-y-2">
+                <button className="bg-primary-red text-white md:py-3 py-1 md:px-8 px-2 rounded-full text-lg font-semibold shadow-lg hover:bg-red-600 transform transition hover:scale-105">
                   Start Free Trial
                 </button>
-                <div className="flex items-center gap-2 text-sm text-[#8c9499]">
+                <div className="flex items-center md:gap-2 text-sm text-[#8c9499]">
                   <FaCheck className="text-primary-red" />
                   <span>No credit card required</span>
                 </div>
               </div>
             </div>
-            <div className="">
+            <div className="w-1/2 md:flex hidden border-black justify-end">
               <Image
                 src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730119632/iPhone_15_Mockup_Perspective_fvgtpj.png"
                 alt="demo screen"
@@ -138,10 +135,21 @@ const Demo = () => {
                 height={550}
               />
             </div>
+            <div className="h-[500px] md:hidden flex border-black justify-end">
+              <Image
+                src="https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730119632/iPhone_15_Mockup_Perspective_fvgtpj.png"
+                alt="demo screen"
+                width={400}
+                height={400}
+              />
+            </div>
           </div>
 
-          <div className="py-6">
-            <Marquee pauseOnHover className="[--duration:20s]">
+          <div className="py-6 hidden md:flex">
+            <Marquee
+              pauseOnHover
+              className="[--duration:20s] grid grid-cols-3 md:grid-cols-none md:flex gap-4"
+            >
               {reviews.map((review) => (
                 <ReviewCard key={review.username} {...review} />
               ))}

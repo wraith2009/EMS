@@ -2,9 +2,9 @@
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
-import {  motion } from "framer-motion";
+import { motion } from "framer-motion";
 // import { AnimatePresence } from "framer-motion";
-import {  IconX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 
 interface Links {
   label: string;
