@@ -35,7 +35,10 @@ export default async function RootLayout({
     user: { role?: string | null };
   };
 
-  const shouldShowSidebar = session?.user && session.user.role !== null && session.user.role !== undefined;
+  const shouldShowSidebar =
+    session?.user &&
+    session.user.role !== null &&
+    session.user.role !== undefined;
 
   return (
     <html lang="en">
