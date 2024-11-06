@@ -102,6 +102,7 @@ const adminNavigationLinks = [
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const { userData, isLoading, error } = useUser();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   if (isLoading) {
     return (
@@ -144,17 +145,19 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar>
+      <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen}>
         <SidebarBody className="!bg-primary-red shadow-lg">
-          <div className="mb-8">
-            <Image
-              src={userData.avatar || DEFAULT_AVATAR}
-              height={50}
-              width={50}
-              alt="logo"
-              className="rounded-lg shadow-md"
-            />
-          </div>
+          <Image
+            src={
+              "https://res.cloudinary.com/dhrbg2jbi/image/upload/t_square/v1730783753/Untitled_design_1__page-0001_bngic2_c_pad_ar_9_16-removebg-preview_yjhgbf.png"
+            }
+            height={isSidebarOpen ? 50 : 40}
+            width={isSidebarOpen ? 50 : 40}
+            alt="logo"
+            className={`rounded-lg shadow-md bg-[#f3f7f9] transition-all duration-300 ${
+              isSidebarOpen ? "w-[50px] h-[50px]" : "w-[40px] h-[40px] "
+            }`}
+          />
           <div className="flex flex-col gap-2">
             {navigationLinks.map((link) => (
               <SidebarLink
@@ -166,15 +169,21 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="flex flex-col justify-end flex-1 mt-10">
             <Link href="/userProfile">
-              <div className="flex items-center gap-2 p-2">
+              <div className="flex items-center gap-2 p-2 hover:bg-primary-red-dark rounded-lg">
                 <Image
                   src={userData.avatar || DEFAULT_AVATAR}
                   alt="User Avatar"
-                  height={40}
-                  width={40}
-                  className="rounded-full"
+                  height={isSidebarOpen ? 50 : 40}
+                  width={isSidebarOpen ? 50 : 40}
+                  className={`rounded-full transition-all duration-300 ${
+                    isSidebarOpen ? "w-[50px] h-[50px]" : "w-[40px] h-[40px] "
+                  }`}
                 />
-                <span className="text-white font-semibold text-lg sidebar-open:block sidebar-closed:hidden">
+                <span
+                  className={`text-white font-semibold text-lg ${
+                    isSidebarOpen ? "block" : "hidden"
+                  }`}
+                >
                   {userData.name}
                 </span>
               </div>
@@ -186,5 +195,4 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
-
 export default SidebarLayout;
