@@ -150,25 +150,31 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
       </button>
       <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen}>
         <SidebarBody className="!bg-primary-red shadow-lg">
-          <Image
-            src={
-              "https://res.cloudinary.com/dhrbg2jbi/image/upload/t_square/v1730783753/Untitled_design_1__page-0001_bngic2_c_pad_ar_9_16-removebg-preview_yjhgbf.png"
-            }
-            height={isSidebarOpen ? 50 : 40}
-            width={isSidebarOpen ? 50 : 40}
-            alt="logo"
-            className={`rounded-lg shadow-md bg-[#f3f7f9] transition-all duration-300 ${
-              isSidebarOpen ? "w-[50px] h-[50px]" : "w-[40px] h-[40px] "
-            }`}
-          />
-          <div className="flex flex-col gap-2">
-            {navigationLinks.map((link) => (
-              <SidebarLink
-                key={link.href}
-                link={link}
-                className="rounded-lg py-2 transition-colors flex items-center justify-start text-white font-bold text-xl"
-              />
-            ))}
+          <div
+            className={`${isSidebarOpen}?'justify-start':'justify-center' md:flex md:flex-col `}
+          >
+            <Image
+              src={
+                "https://res.cloudinary.com/dhrbg2jbi/image/upload/t_square/v1730783753/Untitled_design_1__page-0001_bngic2_c_pad_ar_9_16-removebg-preview_yjhgbf.png"
+              }
+              height={isSidebarOpen ? 50 : 40}
+              width={isSidebarOpen ? 50 : 40}
+              alt="logo"
+              className={`rounded-lg duration-500 shadow-md bg-[#f3f7f9] transition-all  ${
+                isSidebarOpen
+                  ? "w-[50px] h-[50px] mx-4"
+                  : "w-[40px] h-[40px] mx-auto"
+              }`}
+            />
+            <div className="flex flex-col gap-2 px-4">
+              {navigationLinks.map((link) => (
+                <SidebarLink
+                  key={link.href}
+                  link={link}
+                  className="rounded-lg py-2 transition-colors flex  justify-start text-white font-bold text-xl"
+                />
+              ))}
+            </div>
           </div>
           <div className="flex flex-col justify-end flex-1 mt-10">
             <Link href="/userProfile">
