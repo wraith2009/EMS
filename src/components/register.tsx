@@ -9,7 +9,7 @@ import {
   RegisterBusinessSchema,
   BusinessRegistrationType,
 } from "../lib/validators/auth.validator";
-import { ResgisterBusiness } from "../actions/auth.actions";
+import { ResgisterBusiness } from "../actions/business.actions";
 
 const BusinessRegistration: React.FC = () => {
   const {

@@ -67,7 +67,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
     try {
       const response = await signIn("google", {
         redirect: false,
-        callbackUrl: "/profile",
+        callbackUrl: "/",
       });
       console.log("res", response);
 
@@ -78,7 +78,7 @@ const SignupPopup: FC<SignupPopupProps> = ({ onClose }) => {
         setSuccess("Google sign-in successful! Redirecting...");
         setTimeout(() => {
           onClose();
-          router.push("/profile");
+          router.push("/");
         }, 2000);
       }
     } catch (error) {

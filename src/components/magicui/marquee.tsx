@@ -1,18 +1,7 @@
 import { cn } from "@/src/lib/utils";
 import React from "react";
 
-interface MarqueeProps {
-  className?: string;
-  reverse?: boolean;
-  pauseOnHover?: boolean;
-  children?: React.ReactNode;
-  vertical?: boolean;
-  repeat?: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
-
-export default function Marquee({
+export const Marquee = ({
   className,
   reverse,
   pauseOnHover = false,
@@ -20,7 +9,15 @@ export default function Marquee({
   vertical = false,
   repeat = 4,
   ...props
-}: MarqueeProps) {
+}: {
+  className?: string;
+  reverse?: boolean;
+  pauseOnHover?: boolean;
+  children?: React.ReactNode;
+  vertical?: boolean;
+  repeat?: number;
+  [key: string]: any;
+}) => {
   return (
     <div
       {...props}
@@ -50,4 +47,4 @@ export default function Marquee({
         ))}
     </div>
   );
-}
+};

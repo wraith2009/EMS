@@ -3,10 +3,11 @@ import Particles from "../ui/particles";
 import Header from "../auth/Header";
 import Image from "next/image";
 import Footer from "../landing/footer";
+
 const AboutSection = () => {
   return (
-    <div className="h-full w-full">
-      <div className="bg-[#f3f7f9] flex flex-col gap-6 items-center md:px-32 ">
+    <div className="bg-[#f3f7f9] ">
+      <div className="flex flex-col gap-6 items-center  mx-auto px-4 sm:px-6 md:px-20  max-w-7xl">
         <Particles
           className="absolute inset-0"
           quantity={500}
@@ -15,19 +16,19 @@ const AboutSection = () => {
           size={0.8}
           refresh
         />
-        <div className="md:px-20 w-full">
+        <div className="w-full">
           <Header />
         </div>
-        <div className="px-4 md:px-40 flex flex-col gap-6 justify-center animate-slide-fade">
-          <h1 className="text-primary-red md:text-4xl text-xl text-center font-bold">
+        <div className="flex flex-col md:gap-6 justify-center animate-slide-fade">
+          <h1 className="text-primary-red text-xl sm:text-2xl md:text-4xl text-center font-bold">
             Because managing schools shouldn’t
           </h1>
-          <div className="flex justify-center gap-2">
-            <h1 className="text-primary-red md:text-4xl text-xl text-center font-bold animate-slide-fade">
+          <div className="flex flex-col sm:flex-row justify-center md:gap-2 gap-4">
+            <h1 className="text-primary-red text-xl sm:text-2xl md:text-4xl text-center font-bold animate-slide-fade">
               require magic, just
             </h1>
-            <div className="relative inline-block text-center">
-              <span className="relative z-10 md:text-4xl text-xl font-bold px-4 text-white pb-8">
+            <div className="relative inline-block text-center ">
+              <span className="relative z-10 text-xl sm:text-2xl md:text-4xl font-bold px-4 text-white pb-8">
                 smart tech
               </span>
               <span
@@ -37,23 +38,24 @@ const AboutSection = () => {
             </div>
           </div>
         </div>
-        <div className="max-h-[550px] min-w-[600px] overflow-hidden z-10">
+        <div className="max-h-[400px] sm:max-h-[500px] w-full sm:w-auto overflow-hidden z-10  ">
           <Image
             src={
               "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1730644332/Macbook_Mockup_Front_View_UV_wk2oyr.png"
             }
             alt="about us bg"
-            height={550}
+            height={400}
             width={800}
-            className=""
+            className="w-full"
           />
         </div>
         {/* Who we Are */}
-        <div className="flex justify-between mt-16 md:px-20 gap-8  w-full">
-          {/* title and description */}
-          <div className="max-w-2/3 w-full flex flex-col gap-4">
-            <h1 className="text-3xl font-bold text-[#23333e]">Who we are</h1>
-            <div className="text-[#8c9499] text-lg flex flex-col gap-2">
+        <div className="flex flex-col md:flex-row justify-between md:mt-16 gap-8 w-full">
+          <div className="flex-1 flex flex-col gap-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#23333e]">
+              Who we are
+            </h1>
+            <div className="text-[#8c9499] text-base sm:text-lg flex flex-col gap-2">
               <p>
                 We&apos;re your partner in smarter, simpler education
                 management.
@@ -76,25 +78,24 @@ const AboutSection = () => {
               </p>
             </div>
           </div>
-          {/* image */}
-          <div className="w-[40%]">
+          <div className="md:flex hidden ">
             <Image
               src={
                 "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_600,h_650,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg"
               }
               alt="who we are logo"
-              height={400}
-              width={400}
-              className=""
+              height={200}
+              width={200}
+              className="w-full"
             />
           </div>
         </div>
 
         {/* Cards Section */}
-        <div className="flex flex-col md:flex-row justify-center gap-6 mt-10 px-20">
+        <div className=" md:flex flex-col md:flex-row justify-center gap-6 mt-10 w-full">
           {/* Card 1 */}
-          <div className=" p-6 shadow-lg rounded-lg flex flex-col items-center text-center max-w-sm">
-            <div className="flex justify-center items-center  mb-4">
+          <div className="flex-1 p-6 shadow-lg rounded-lg flex flex-col items-center text-center ">
+            <div className="flex justify-center items-center mb-4">
               <Image
                 src={
                   "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,ar_1:1/v1729236377/Lzk1eyfNSt-Vb7GR5Ae3Rw_xr8iuv.webp"
@@ -102,7 +103,16 @@ const AboutSection = () => {
                 alt="Our mission compass"
                 width={150}
                 height={150}
-                className="rounded-xl"
+                className="rounded-xl md:block hidden"
+              />
+              <Image
+                src={
+                  "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,ar_1:1/v1729236377/Lzk1eyfNSt-Vb7GR5Ae3Rw_xr8iuv.webp"
+                }
+                alt="Our mission compass"
+                width={80}
+                height={80}
+                className="rounded-xl md:hidden "
               />
             </div>
             <h3 className="text-xl font-bold text-[#23333e]">Our Mission</h3>
@@ -113,8 +123,8 @@ const AboutSection = () => {
           </div>
 
           {/* Card 2 */}
-          <div className=" p-6 shadow-lg rounded-lg flex flex-col items-center text-center max-w-sm">
-            <div className="flex justify-center items-center  mb-4">
+          <div className="flex-1 p-6 shadow-lg rounded-lg flex flex-col items-center text-center ">
+            <div className="flex justify-center items-center mb-4">
               <Image
                 src={
                   "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1729236376/7SSVEU2pTJysRumggC5WkA_clzxrw.jpg"
@@ -122,7 +132,16 @@ const AboutSection = () => {
                 alt="Our mission compass"
                 width={150}
                 height={150}
-                className="rounded-xl"
+                className="rounded-xl hidden md:block"
+              />
+              <Image
+                src={
+                  "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1729236376/7SSVEU2pTJysRumggC5WkA_clzxrw.jpg"
+                }
+                alt="Our mission compass"
+                width={80}
+                height={80}
+                className="rounded-xl md:hidden "
               />
             </div>
             <h3 className="text-xl font-bold text-[#23333e]">Our Vision</h3>
@@ -133,8 +152,8 @@ const AboutSection = () => {
           </div>
 
           {/* Card 3 */}
-          <div className=" p-6 shadow-lg rounded-lg flex flex-col items-center text-center max-w-sm">
-            <div className="flex justify-center items-center  mb-4">
+          <div className="flex-1 p-6 shadow-lg rounded-lg flex flex-col items-center text-center ">
+            <div className="flex justify-center items-center mb-4">
               <Image
                 src={
                   "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1729237215/Y19jcm9wLGFyXzE6MSxlX2ltcHJvdmUsZV9zaGFycGVu-removebg-preview_ajbla3.png"
@@ -142,7 +161,16 @@ const AboutSection = () => {
                 alt="Our mission compass"
                 width={150}
                 height={150}
-                className="rounded-xl"
+                className="rounded-xl hidden md:block"
+              />
+              <Image
+                src={
+                  "https://res.cloudinary.com/dhrbg2jbi/image/upload/v1729237215/Y19jcm9wLGFyXzE6MSxlX2ltcHJvdmUsZV9zaGFycGVu-removebg-preview_ajbla3.png"
+                }
+                alt="Our mission compass"
+                width={80}
+                height={80}
+                className="rounded-xl md:hidden "
               />
             </div>
             <h3 className="text-xl font-bold text-[#23333e]">Our Promise</h3>
@@ -152,18 +180,18 @@ const AboutSection = () => {
             </p>
           </div>
         </div>
+
         {/* Team */}
-        <div className="w-full px-20">
-          <div className="flex  min-w-full justify-start border-b-2">
-            {/* <p className="text-2xl  font-bold text-[#23333e]">Team</p> */}
+        <div className="w-full mt-10">
+          <div className="flex justify-start border-b-2 mb-4">
+            {/* Placeholder for section title */}
           </div>
-          <div className="flex justify-between py-10 gap-8">
-            {/* left */}
-            <div className=" flex flex-col gap-4 w-[60%]">
-              <h1 className="text-3xl  font-bold text-[#23333e]">
+          <div className="flex flex-col md:flex-row justify-between py-10 gap-8">
+            <div className="flex-1 flex flex-col gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#23333e]">
                 Meet the Team
               </h1>
-              <p className="text-[#8c9499] text-lg">
+              <p className="text-[#8c9499] text-base sm:text-lg">
                 Our small but dedicated team consists of two passionate
                 individuals with complementary skills. As college friends turned
                 co-founders, we bring together our diverse expertise in
@@ -172,12 +200,14 @@ const AboutSection = () => {
                 world.
               </p>
             </div>
-            <div className="border-4 w-[40%]">An image of rahul and mayank</div>
+            <div className="border-4 flex-1">
+              {/* Placeholder for image */}
+              An image of Rahul and Mayank
+            </div>
           </div>
         </div>
-        {/* footer */}
       </div>
-      <div className="w-full">
+      <div className="w-full ">
         <Footer />
       </div>
     </div>

@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { getUserById } from "@/src/actions/auth.actions";
+import { getUserById } from "../actions/user.actions";
 type Role = "teacher" | "student" | "admin" | "hod" | "other";
 interface UserData {
   name: string;
@@ -43,6 +43,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setIsLoading(true);
       const response = await getUserById({ userId });
+      console.log(response);
       if (response?.user) {
         setUserData({
           name: response.user.name || "User",

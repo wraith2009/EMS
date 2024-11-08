@@ -14,7 +14,8 @@ import {
   IconReportAnalytics,
 } from "@tabler/icons-react";
 import { useUser } from "../../context/UserContext";
-
+import Link from "next/link";
+import { IconMenu2 } from "@tabler/icons-react";
 const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dhrbg2jbi/image/upload/c_crop,w_700,h_700,g_auto/v1729231721/Untitled_design_1__page-0001_bngic2.jpg";
 
@@ -101,6 +102,7 @@ const adminNavigationLinks = [
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const { userData, isLoading, error } = useUser();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   if (isLoading) {
     return (
@@ -142,40 +144,59 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const navigationLinks = getNavigationLinks(userData.role);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar>
+    <div className="md:flex h-screen bg-gray-50 ">
+      <button className="md:hidden p-4" onClick={() => setIsSidebarOpen(true)}>
+        <IconMenu2 className="text-primary-red w-8 h-8" />
+      </button>
+      <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen}>
         <SidebarBody className="!bg-primary-red shadow-lg">
-          <div className="mb-8">
+          <div
+            className={`${isSidebarOpen}?'justify-start':'justify-center' md:flex md:flex-col `}
+          >
             <Image
-              src={userData.avatar || DEFAULT_AVATAR}
-              height={50}
-              width={50}
+              src={
+                "https://res.cloudinary.com/dhrbg2jbi/image/upload/t_square/v1730783753/Untitled_design_1__page-0001_bngic2_c_pad_ar_9_16-removebg-preview_yjhgbf.png"
+              }
+              height={isSidebarOpen ? 50 : 40}
+              width={isSidebarOpen ? 50 : 40}
               alt="logo"
-              className="rounded-lg shadow-md"
+              className={`rounded-lg duration-500 shadow-md bg-[#f3f7f9] transition-all  ${
+                isSidebarOpen
+                  ? "w-[50px] h-[50px] mx-4"
+                  : "w-[40px] h-[40px] mx-auto"
+              }`}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            {navigationLinks.map((link) => (
-              <SidebarLink
-                key={link.href}
-                link={link}
-                className="rounded-lg py-2 transition-colors flex items-center justify-start text-white font-bold text-xl"
-              />
-            ))}
+            <div className="flex flex-col gap-2 px-4">
+              {navigationLinks.map((link) => (
+                <SidebarLink
+                  key={link.href}
+                  link={link}
+                  className="rounded-lg py-2 transition-colors flex  justify-start text-white font-bold text-xl"
+                />
+              ))}
+            </div>
           </div>
           <div className="flex flex-col justify-end flex-1 mt-10">
-            <div className="flex items-center gap-2 p-2">
-              <Image
-                src={userData.avatar || DEFAULT_AVATAR}
-                alt="User Avatar"
-                height={40}
-                width={40}
-                className="rounded-full"
-              />
-              <span className="text-white font-semibold text-lg sidebar-open:block sidebar-closed:hidden">
-                {userData.name}
-              </span>
-            </div>
+            <Link href="/userProfile">
+              <div className="flex items-center gap-2 p-2 hover:bg-primary-red-dark rounded-lg">
+                <Image
+                  src={userData.avatar || DEFAULT_AVATAR}
+                  alt="User Avatar"
+                  height={isSidebarOpen ? 50 : 40}
+                  width={isSidebarOpen ? 50 : 40}
+                  className={`rounded-full transition-all duration-300 ${
+                    isSidebarOpen ? "w-[50px] h-[50px]" : "w-[40px] h-[40px] "
+                  }`}
+                />
+                <span
+                  className={`text-white font-semibold text-lg ${
+                    isSidebarOpen ? "block" : "hidden"
+                  }`}
+                >
+                  {userData.name}
+                </span>
+              </div>
+            </Link>
           </div>
         </SidebarBody>
       </Sidebar>
@@ -183,5 +204,4 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
-
 export default SidebarLayout;

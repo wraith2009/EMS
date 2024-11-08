@@ -1,16 +1,12 @@
 "use server";
 import prisma from "../db/db";
-import {
-  AuthSchema,
-  RegisterBusinessSchema,
-  getUserByIdSchema,
-} from "../lib/validators/auth.validator";
+import { AuthSchema } from "../lib/validators/auth.validator";
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import APP_PATH from "@/src/config/path.config";
 import { sendConfirmationEmail } from "../lib/sendConfirmationEmail";
 import { cookies } from "next/headers";
-// Signup server action
+
 export const signUp = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -291,61 +287,6 @@ export const ResetPassword = async ({
     return { success: true, message: "Password reset successfully" };
   } catch (error) {
     console.error("Error resetting password:", error);
-    return { success: false, message: "Server error" };
-  }
-};
-
-export const ResgisterBusiness = async (formData: FormData) => {
-  const registrationNumber = formData.get("registrationNumber") as string;
-  const businessName = formData.get("name") as string;
-  const businessAddress = formData.get("address") as string;
-  const contactNumber = formData.get("institueContactNumber") as string; // This should match the model
-  const email = formData.get("institueEmail") as string;
-
-  try {
-    const validateData = RegisterBusinessSchema.safeParse({
-      registrationNumber,
-      businessAddress,
-      businessName,
-      contactNumber,
-      email,
-    });
-    if (!validateData.success) {
-      return { error: "validation Error" };
-    }
-    const InstitueData = await prisma.institute.create({
-      data: {
-        registrationNumber: registrationNumber,
-        businessName: businessName,
-        businessaddress: businessAddress,
-        contactNumber: contactNumber,
-        email: email,
-      },
-    });
-
-    if (InstitueData) {
-      return { success: true };
-    }
-  } catch (error) {
-    console.error("business Registration Error", error);
-  }
-};
-export const getUserById = async ({ userId }: { userId: string }) => {
-  try {
-    console.log("user id in backend is", userId);
-    const parsedId = getUserByIdSchema.safeParse({ userId });
-    console.log("parsedId", parsedId.error);
-    if (!parsedId.success) {
-      return { success: false, message: "Invalid user ID" };
-    }
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parsedId.data.userId,
-      },
-    });
-    return { success: true, user: user };
-  } catch (error) {
-    console.error("Error getting user by id:", error);
     return { success: false, message: "Server error" };
   }
 };

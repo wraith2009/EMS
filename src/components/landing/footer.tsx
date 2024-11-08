@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0"></div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+          <div className="flex gap-6 items-start">
             <div>
               <h2 className="mb-6 font-semibold text-black">Resources</h2>
               <ul className="te-2-slate-300 text-sm dark:text-gray-400 font-medium">
@@ -51,7 +51,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-black">Legal</h2>
+              <h2 className="mb-6 font-semibold text-black">Legal</h2>
               <ul className="text-slate-200 text-sm dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link href="#" className="hover:underline">
