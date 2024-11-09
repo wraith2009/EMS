@@ -9,7 +9,7 @@ export default async function Home() {
   const session = (await getServerSession(authOptions)) as Session & {
     user: { role?: string | null };
   };
-
+  console.log("session", session);
   if (!session?.user) {
     return (
       <main>

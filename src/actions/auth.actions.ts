@@ -37,7 +37,7 @@ export const signUp = async (formData: FormData) => {
         password: hashedPassword,
       },
     });
-
+    // const adminUser = await prisma.admin.create({
     if (user) {
       cookies().set("userEmail", email, {
         maxAge: 60 * 5,

@@ -9,9 +9,15 @@ import {
   RegisterBusinessSchema,
   BusinessRegistrationType,
 } from "../lib/validators/auth.validator";
-import { ResgisterBusiness } from "../actions/business.actions";
+import { RegisterBusiness } from "../actions/business.actions";
 
-const BusinessRegistration: React.FC = () => {
+interface BusinessRegistrationProps {
+  userId: string;
+}
+
+const BusinessRegistration: React.FC<BusinessRegistrationProps> = ({
+  userId,
+}) => {
   const {
     register,
     handleSubmit,
@@ -30,7 +36,7 @@ const BusinessRegistration: React.FC = () => {
     formData.append("institueEmail", data.email);
 
     try {
-      const response = await ResgisterBusiness(formData);
+      const response = await RegisterBusiness(formData, userId);
       if (response?.success) {
         console.log("Business registered successfully:", response);
       }
