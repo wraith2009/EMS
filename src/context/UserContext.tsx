@@ -13,9 +13,16 @@ interface UserData {
   id: string;
   // Add other user properties as needed
 }
+interface adminData {
+  access_level: string;
+  institute_id: string;
+  admin_id: string;
+  // Add other user properties as needed
+}
 
 interface UserContextType {
   userData: UserData | null;
+  adminData: adminData | null;
   isLoading: boolean;
   error: Error | null;
   refetchUser: () => Promise<void>;
@@ -28,6 +35,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [adminData, setAdminData] = useState<adminData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -53,6 +61,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           id: response.user.id,
         });
       }
+      if (response?.user?.role === "admin" && response.admin) {
+        setAdminData({
+          admin_id: response.admin.id,
+          access_level: response.admin.access_level,
+          institute_id: response.admin.institute_id,
+        });
+      }
     } catch (err) {
       setError(err as Error);
       console.error("Failed to fetch user data:", err);
@@ -69,6 +84,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     <UserContext.Provider
       value={{
         userData,
+        adminData,
         isLoading,
         error,
         refetchUser: fetchUserData,
