@@ -2,11 +2,14 @@
 import { RegisterBusinessSchema } from "../lib/validators/auth.validator";
 import prisma from "../db/db";
 
-export const ResgisterBusiness = async (formData: FormData) => {
+export const RegisterBusiness = async (
+  formData: FormData,
+  currentUserId: string,
+) => {
   const registrationNumber = formData.get("registrationNumber") as string;
   const businessName = formData.get("name") as string;
   const businessAddress = formData.get("address") as string;
-  const contactNumber = formData.get("institueContactNumber") as string; // This should match the model
+  const contactNumber = formData.get("institueContactNumber") as string; // Ensure it matches the model
   const email = formData.get("institueEmail") as string;
 
   try {
@@ -17,10 +20,13 @@ export const ResgisterBusiness = async (formData: FormData) => {
       contactNumber,
       email,
     });
+
     if (!validateData.success) {
-      return { error: "validation Error" };
+      return { error: "Validation Error" };
     }
-    const InstitueData = await prisma.institute.create({
+
+    // Create the institute
+    const instituteData = await prisma.institute.create({
       data: {
         registrationNumber: registrationNumber,
         businessName: businessName,
@@ -30,10 +36,24 @@ export const ResgisterBusiness = async (formData: FormData) => {
       },
     });
 
-    if (InstitueData) {
+    if (instituteData) {
+      await prisma.user.update({
+        where: { id: currentUserId },
+        data: { role: "admin" },
+      });
+      await prisma.admin.create({
+        data: {
+          id: currentUserId,
+          access_level: "superadmin",
+          institute_id: instituteData.id,
+        },
+      });
       return { success: true };
     }
+
+    return { error: "Institute creation failed." };
   } catch (error) {
-    console.error("business Registration Error", error);
+    console.error("Business Registration Error:", error);
+    return { error: "An error occurred during business registration." };
   }
 };

@@ -232,7 +232,7 @@ model Notification {
 }
 
 model ClassRoom {
-  id            String     @id
+  id            String      @id @default(cuid())
   name          String
   department_id String
   institute_id  String
