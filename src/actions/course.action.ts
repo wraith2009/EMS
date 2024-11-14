@@ -106,18 +106,3 @@ export const getCourseByDepartment = async ({
     };
   }
 };
-// export const getAllCourses=async({
-//   institute_id,
-// }: {
-//   institute_id: string;
-// }) => {
-//   try {
-//     const courses=await prisma.course.findMany{
-//       where:{
-//         institute_id:institute_id,
-//       }
-//     }
-//   } catch (error) {
-
-//   }
-// }
