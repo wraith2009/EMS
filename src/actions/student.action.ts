@@ -93,7 +93,7 @@ export const RegisterStudent = async (formData: FormData) => {
           rollNumber: rollNumber || null,
           institute_id: instituteID,
           course_id: courseId,
-          classes: {
+          ClassRoom: {
             connect: classID ? { id: classID } : [], // Connect the class if classId is provided
           },
         },
@@ -132,7 +132,7 @@ export const getStudentsByClass = async ({ classId }: { classId: string }) => {
           id: classId,
         },
         select: {
-          students: true,
+          Student: true,
         },
       });
 
