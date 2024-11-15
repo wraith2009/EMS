@@ -5,12 +5,14 @@ import { redirect } from "next/navigation";
 import React from "react";
 const Register = async () => {
   const session = await getServerSession(authOptions);
-
+  console.log("session", session);
   if (!session) {
     redirect("/");
   }
 
-  return <BusinessRegistration />;
+  return session?.user ? (
+    <BusinessRegistration userId={(session.user as { id: string }).id} />
+  ) : null;
 };
 
 export default Register;

@@ -15,7 +15,15 @@ export const getUserById = async ({ userId }: { userId: string }) => {
       where: {
         id: parsedId.data.userId,
       },
+      include: {
+        admin: true,
+      },
     });
+
+    if (user && user.role === "admin" && user.admin) {
+      return { success: true, user: user, admin: user.admin };
+    }
+
     return { success: true, user: user };
   } catch (error) {
     console.error("Error getting user by id:", error);
